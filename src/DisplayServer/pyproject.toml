@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "DisplayServer"
+version = "1.0.0"
+description = "Imaging server for eink doorsign displays"
+license = {file = "LICENSE"}
+authors = [{name = "Marcel Ochsendorf", email = "info@marcelochsendorf.com"}]
+dynamic = ["dependencies"]
+requires-python = ">=3.7"
+readme = {file = "README.md", content-type = "text/markdown"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent"
+]
+
+
+
+[tool.poetry]
+packages = [
+    { include = "DisplayFramework" },
+    { include = "DisplayServer" },
+]
+
+[project.scripts]
+DisplayServer = "DisplayServer.app:run"
+
+
+[tool.setuptools]
+include-package-data = true
+py-modules = ["DisplayFramework", "DisplayServer"]
+
+[tool.setuptools.package-data]
+"*" = ["**/*.yaml", "**/*.html", "**/*.js", "**/*.css", "**/*.md", "**/*.json", "**/*.ts", "**/*.xml"]
+
+[project.urls]
+"Homepage" = "https://github.com/LFB-MRI/DisplayServer"
+"Bug Tracker" = "https://github.com/LFB-MRI/DisplayServer/issues"
