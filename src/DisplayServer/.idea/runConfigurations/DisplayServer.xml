@@ -1,19 +1,20 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="DisplayServer" type="Python.FlaskServer">
-    <option name="additionalOptions" value="--host=0.0.0.0 --port 5556" />
+    <option name="additionalOptions" value="--host=0.0.0.0 --port 55556" />
     <option name="flaskDebug" value="true" />
     <module name="DisplayServer" />
-    <option name="target" value="$PROJECT_DIR$/DisplayServer/app.py" />
-    <option name="targetType" value="PATH" />
+    <option name="target" value="DisplayServer.app" />
+    <option name="targetType" value="PYTHON" />
     <option name="ENV_FILES" value="" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
       <env name="HOST" value="0.0.0.0" />
+      <env name="FLASK_PORT" value="55556" />
       <env name="MAGICK_HOME" value="/opt/homebrew/opt/imagemagick" />
     </envs>
     <option name="SDK_HOME" value="/usr/local/bin/python3" />
-    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <option name="WORKING_DIRECTORY" value="$ProjectFileDir$/" />
     <option name="IS_MODULE_SDK" value="true" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
@@ -33,7 +34,7 @@
         <list />
       </option>
       <option name="publishAllPorts" value="false" />
-      <option name="runCliOptions" value="--entrypoint= --rm -p 5556:5556 --name DisplayServer" />
+      <option name="runCliOptions" value="--entrypoint= --rm -p 55556:55556 --name DisplayServer" />
       <option name="version" value="2" />
       <option name="volumeBindings">
         <list>
@@ -47,6 +48,16 @@
       </option>
     </EXTENSION>
     <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+    <EXTENSION ID="net.ashald.envfile">
+      <option name="IS_ENABLED" value="false" />
+      <option name="IS_SUBST" value="false" />
+      <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+      <option name="IS_IGNORE_MISSING_FILES" value="false" />
+      <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+      <ENTRIES>
+        <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+      </ENTRIES>
+    </EXTENSION>
     <option name="launchJavascriptDebuger" value="false" />
     <method v="2" />
   </configuration>

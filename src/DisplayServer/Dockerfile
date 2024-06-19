@@ -12,13 +12,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 
 
+
+
+
+EXPOSE 55556
+
 RUN pip install -e .
-
-RUN python DisplayServer --install-completion bash
-
-
-EXPOSE 5556
-
+#RUN DisplayServer --install-completion bash
+RUN DisplayServer --help
 
 ENTRYPOINT ["DisplayServer"]
-CMD ["DisplayServer", "--basepath", "./DisplayFramework/data", "launch"]
+CMD ["--basepath", "./DisplayFramework/data", "launch"]

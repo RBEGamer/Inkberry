@@ -29,10 +29,6 @@ def hello_world():  # put application's code here
     return 'Hello World!'
 
 
-# TODO
-# * LIST TILES WITH SIZE AND PARAMETERS
-# *
-
 @app_flask.route('/api/state/<id>')
 def api_state(id: str):  # put application's code here
 
@@ -106,7 +102,7 @@ def api_render(id: str):
 def flask_server_task(_config: dict):
     global hardware_instances
     host: str = _config.get("host", "0.0.0.0")
-    port: int = _config.get("port", 5556)
+    port: int = _config.get("port", 55556)
     debug: bool = _config.get("dbg", False)
 
     app_flask.config.update(_config)
@@ -122,7 +118,7 @@ def flask_server_task(_config: dict):
 
 
 @app_typer.command()
-def launch(typer_ctx: typer.Context, port: int = 5556, host: str = "0.0.0.0", debug: bool = False):
+def launch(typer_ctx: typer.Context, port: int = 55556, host: str = "0.0.0.0", debug: bool = False):
     global terminate_flask
 
     sys_cfg = {
