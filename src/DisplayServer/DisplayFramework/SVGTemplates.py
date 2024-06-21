@@ -3,6 +3,7 @@
 from DisplayFramework.pysvg import builders, structure, text, style
 
 from DisplayFramework import DeviceSpecification, TileFactory, BaseTile
+from DisplayFramework.pysvg.builders import TransformBuilder
 
 
 class SVGTemplates:
@@ -11,13 +12,14 @@ class SVGTemplates:
     def GenerateCurrentDeviceScreen(_id: str, _device: DeviceSpecification.DeviceSpecification) -> str:
         document: structure.Svg = SVGTemplates.getEmptyTeamplate(_device)
 
-
+        # APPEND TILES INTO TO FINAL DEVICE SCREEN SVG
         tiles: [] = TileFactory.TileFactory.GetTiles(_device)
         for t in tiles:
             t: BaseTile.BaseTile
-            t.update()
-            svg = t.render()
-            document.addElement(svg)
+            if t.spec.enabled:
+                t.update()
+                svg = t.render()
+                document.addElement(svg)
 
         return document.getXML()
 
@@ -48,7 +50,7 @@ class SVGTemplates:
         t.set_style(s.getStyle())
         _svg.addElement(t)
         # ADD H LINE
-        shape_builder: builders.ShapeBuilder =  builders.ShapeBuilder()
+        shape_builder: builders.ShapeBuilder = builders.ShapeBuilder()
         cy: int = headline_offset_multiplier*_size + headline_line_offset
         l: builders.ShapeBuilder = shape_builder.createRect(x=0, y=cy, width=_device.screen_size_w, height=headline_line_width, fill='black')
         _svg.addElement(l)
@@ -68,7 +70,11 @@ class SVGTemplates:
         h: int = _device.screen_size_h
 
         # SETUP DOCUMENT
-        svg_document: structure.Svg =  structure.Svg()
+        svg_document: structure.Svg = structure.Svg()
+
+
+
+
         svg_document.set_x(0)
         svg_document.set_y(0)
         svg_document.set_width(w)
@@ -76,6 +82,12 @@ class SVGTemplates:
         svg_document.set_viewBox("{} {} {} {}".format(0, 0, w, h))
         # ADD CONTENT RECT
         shape_builder: builders.ShapeBuilder = builders.ShapeBuilder()
-        svg_document.addElement(shape_builder.createRect(0, 0, w, h, strokewidth=1,stroke="black", fill="rgb(250, 250, 250)"))
 
+        scale_transform = TransformBuilder()
+        scale_transform.setScaling(_device.content_scale, _device.content_scale)
+        svg_document.set_transform(scale_transform.getTransform())
+
+        # ADD RECT FOR CONTENT TO LIVE IN
+        content_rect = shape_builder.createRect(0, 0, w, h, strokewidth=1,stroke="black", fill="rgb(250, 250, 250)")
+        svg_document.addElement(content_rect)
         return svg_document

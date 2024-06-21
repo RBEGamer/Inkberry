@@ -5,6 +5,7 @@ class TileSpecification:
     module_name: str = ""
     parameters: [dict] = []
     position: GridPosition.GridPosition = GridPosition.GridPosition()
+    enabled: bool = True
     _valid: bool = True
 
 
@@ -27,6 +28,8 @@ class TileSpecification:
             errors = errors + 1
         if 'position' in _dict:
             self.position = GridPosition.GridPosition(_dict['position'])
+        if 'enabled' in _dict:
+            self.enabled = _dict['enabled']
         if errors > 0:
             self._valid = True
 
@@ -36,7 +39,8 @@ class TileSpecification:
             'name': self.name,
             'module_name': self.module_name,
             'parameters': self.parameters,
-            'position': self.position.to_dict()
+            'position': self.position.to_dict(),
+            'enabled': self.enabled
         }
 
 

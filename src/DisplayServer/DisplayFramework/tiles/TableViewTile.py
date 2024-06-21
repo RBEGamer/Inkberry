@@ -89,7 +89,7 @@ class TableViewTile(ImageTile.ImageTile):
 
         apr_w: float = 7.0
         apr_h: float = 3.0
-        if  ":" in self.spec.parameters.get('figure_aspect_ratio', "7:3"):
+        if ":" in self.spec.parameters.get('figure_aspect_ratio', "7:3"):
             spr: [str] = self.spec.parameters.get('figure_aspect_ratio', "7:3").split(":")
             apr_w = max(1.0, float(spr[0]))
             apr_h = max(1.0, float(spr[1]))

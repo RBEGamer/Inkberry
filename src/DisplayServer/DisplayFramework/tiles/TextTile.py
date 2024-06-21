@@ -5,11 +5,11 @@ from DisplayFramework.pysvg import structure, builders, text
 class TextTile(BaseTile.BaseTile):
 
     DEFAULT_PARAMETER: dict = {
-        "types":{
+        "types": {
             "text": "str",
             "fontsize": "int",
             "charakter_rotation": "int"
-        },"default":{
+        },"default": {
             "text": "",
             "fontsize": 1,
             "charakter_rotation": 0

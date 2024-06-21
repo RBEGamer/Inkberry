@@ -5,6 +5,7 @@ class ImplementedDevices(Enum):
     ARDUINO_INKPLATE10 = 1
     ARDUINO_INKPLATE10V2 = 2
     ARDUINO_INKPLATE6 = 3
+    ARDUINO_ESP32_7_5_INCH = 4 # https://www.waveshare.com/7.5inch-e-paper-hat.htm
 
 
     @classmethod

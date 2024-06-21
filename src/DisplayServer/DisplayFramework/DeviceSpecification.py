@@ -24,6 +24,7 @@ class DeviceSpecification:
     screen_size_w: int = 1200
     screen_size_h: int = 825
     wakeup_interval: int = 10
+    content_scale: float = 1.0
     display_orientation: DisplayOrientation = DisplayOrientation.DP_HORIZONTAL
     tile_specifications: [TileSpecification.TileSpecification] = []
     _valid: bool = True
@@ -45,7 +46,8 @@ class DeviceSpecification:
             'screen_size_h': self.screen_size_h,
             'wakeup_interval': self.wakeup_interval,
             'display_orientation': self.display_orientation.value,
-            'tile_specifications': sp
+            'tile_specifications': sp,
+            'content_scale': self.content_scale
         }
 
 
@@ -90,6 +92,9 @@ class DeviceSpecification:
             errors = errors + 1
         if 'display_orientation' in _dict:
             self.display_orientation = DisplayOrientation.from_int(_dict['display_orientation'])
+            errors = errors + 1
+        if 'content_scale' in _dict:
+            self.content_scale = float(_dict['content_scale'])
             errors = errors + 1
         if 'tile_specifications' in _dict:
             self.tile_specifications = []
