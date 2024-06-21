@@ -40,6 +40,48 @@ function get_svg_clicked_object(x, y) {
     return null;
 }
 
+async function loadAndExtractSVG(url) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        const svgText = await response.text();
+        return extractSVGObjects(svgText);
+    } catch (error) {
+        console.error('Fetch operation failed: ', error);
+    }
+}
+
+// Funktion zum Extrahieren der SVG-Objekte mit relevanten Attributen
+function extractSVGObjects(svgString) {
+    debugger;
+    // Erstelle ein DOMParser-Objekt zum Parsen des SVG-Strings
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(svgString, "image/svg+xml");
+
+    // Selektiere alle relevanten SVG-Elemente
+    const elements = xmlDoc.querySelectorAll('svg');
+
+    const objects = [];
+
+    // Iteriere über die Elemente und extrahiere die Attribute
+    elements.forEach(function(element) {
+        const obj = { tag: element.tagName };
+
+        // Extrahiere gemeinsame Attribute
+        if (element.hasAttribute('x')) obj.x = parseFloat(element.getAttribute('x'));
+        if (element.hasAttribute('y')) obj.y = parseFloat(element.getAttribute('y'));
+        if (element.hasAttribute('width')) obj.width = parseFloat(element.getAttribute('width'));
+        if (element.hasAttribute('height')) obj.height = parseFloat(element.getAttribute('height'));
+
+        objects.push(obj);
+    });
+
+    return objects;
+}
+
+
 function load_svg_to_canvas(url, callback) {
 
     var canvas = document.getElementById('canvas');
@@ -58,6 +100,8 @@ function load_svg_to_canvas(url, callback) {
 
 
     //EXTRACT OBJECT FROM SVG TO MAKE THEM CLICKABLE
+    loadAndExtractSVG(url);
+
     //DOWNLOAD SVG CONTENT
     //PARSE ALL <svg x y w h> packe in liste für andere fkt
     //FIX CANVAS RESIZE
