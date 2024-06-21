@@ -40,7 +40,29 @@ def api_list_devices():
     ret: dict = {}
     ret['devices'] = Devices.Devices.GetRegisteredDeviceIds()
     return jsonify(ret)
-@app_flask.route('/api/state/<id>')
+
+
+@app_flask.route('/api/information/<string:device_id>')
+def api_information(device_id: str):
+    device_id = bleach.clean(device_id)
+    ret = {"error": None, 'parameter': []}
+
+    if not Devices.Devices.CheckDeviceExists(device_id):
+        ret.update({'error': 'invalid_device'})
+
+    else:
+        device_spec = Devices.Devices.GetDeviceSpecification(device_id)
+
+        ret.update({
+            'hardware': '{} [{}x{} WUP:{}]'.format(device_spec.hardware.name, device_spec.screen_size_w, device_spec.screen_size_h, device_spec.wakeup_interval),
+            'name': '{} [{}]'.format(device_spec.allocation, device_spec.device_id),
+        })
+
+    return jsonify(ret)
+
+
+
+@app_flask.route('/api/state/<string:id>')
 def api_state(id: str):  # put application's code here
 
     rd: dict = {}
@@ -60,7 +82,7 @@ def api_state(id: str):  # put application's code here
     return "", 200
 
 
-@app_flask.route('/api/register/<id>/<typename>')
+@app_flask.route('/api/register/<id>/<string:typename>')
 def api_register(id: str, typename: str):  # put application's code here
     id = bleach.clean(id)
     typename = bleach.clean(typename)
@@ -71,7 +93,7 @@ def api_register(id: str, typename: str):  # put application's code here
 
     return jsonify(ret)
 
-@app_flask.route('/api/render/<id>')
+@app_flask.route('/api/render/<string:id>')
 def api_render(id: str):
     id: str = bleach.clean(id)
     as_png: bool = bool(int(bleach.clean(request.args.get('as_png', default='1'))))
