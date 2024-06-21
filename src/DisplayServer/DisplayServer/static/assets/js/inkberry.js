@@ -1,3 +1,5 @@
+var current_svg_content = "";
+
 function resize_canvas(width, height){
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
@@ -5,28 +7,73 @@ function resize_canvas(width, height){
     ctx.height = height;
 }
 
+function handle_canvas_click(event) {
+    var x = event.offsetX;
+    var y = event.offsetY;
+    var clickedObject = get_svg_clicked_object(x, y);
+    if (clickedObject) {
+        alert('Geklicktes Objekt: ' + clickedObject);
+    }
+}
+
+function get_svg_clicked_object(x, y) {
+    // Beispielhafte Objekte und Koordinaten
+    var objects = [
+        { id: 'rect1', type: 'rect', x: 10, y: 10, width: 50, height: 50 },
+        { id: 'circle1', type: 'circle', cx: 100, cy: 100, r: 30 }
+    ];
+
+    for (var i = 0; i < objects.length; i++) {
+        var obj = objects[i];
+        if (obj.type === 'rect') {
+            if (x >= obj.x && x <= obj.x + obj.width && y >= obj.y && y <= obj.y + obj.height) {
+                return obj.id;
+            }
+        } else if (obj.type === 'circle') {
+            var dx = x - obj.cx;
+            var dy = y - obj.cy;
+            if (dx * dx + dy * dy <= obj.r * obj.r) {
+                return obj.id;
+            }
+        }
+    }
+    return null;
+}
+
 function load_svg_to_canvas(url, callback) {
 
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
 
+    canvas.addEventListener('click', handle_canvas_click);
 
     var img = new Image();
     img.onload = function() {
         ctx.drawImage(img, 0, 0);
-        callback();
+        if(callback){
+            callback();
+        }
     };
     img.src = url;
-    }
+
+
+    //EXTRACT OBJECT FROM SVG TO MAKE THEM CLICKABLE
+    //DOWNLOAD SVG CONTENT
+    //PARSE ALL <svg x y w h> packe in liste für andere fkt
+    //FIX CANVAS RESIZE
+}
 
 
 function editor_refresh_rendering(_id){
-     $("#inkberry_device_renderered_image").attr("src","/api/render/" + _id + "as_png=1&ts=" +String(Date.now()));
+     $("#inkberry_device_renderered_image").attr("src","/api/render/" + _id + "?as_png=1&ts=" +String(Date.now()));
      resize_canvas(document.getElementById("inkberry_device_renderered_image").clientWidth, document.getElementById("inkberry_device_renderered_image").clientHeight);
-     load_svg_to_canvas('/api/render/' + _id,)
+    
+     load_svg_to_canvas('/api/render/' + _id + "?as_png=0&ts=" + String(Date.now()))
 }
+
+
 function load_editor_for_device(_id){
-    console.log('load_editor_for_device: ' + _id); // Beispielaktion
+    console.log('load_editor_for_device: ' + _id, null); // Beispielaktion
 
     editor_refresh_rendering(_id);
 
