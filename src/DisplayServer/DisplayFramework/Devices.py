@@ -50,6 +50,16 @@ class Devices:
             return {}
 
     @staticmethod
+    def GetRegisteredDeviceIds() -> list:
+        try:
+            rt: list = []
+            for d in Devices.getDB().getAll():
+                rt.append({'id': d["device_id"], 'name': d["allocation"]})
+            return rt
+        except Exception as e:
+            print(e)
+            return []
+    @staticmethod
     def GetRandomDeviceRecord() -> dict:
         k = random.choice(Devices.getDB().getAll())
         if k is None or 'device_id' not in k or not Devices.CheckDeviceExists(k['device_id']):

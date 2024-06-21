@@ -16,24 +16,24 @@
  * @authors     Robert @ Soldered
  ***************************************************/
 
-#ifndef INKPLATE7_H
-#define INKPLATE7_H
+#ifndef INKPLATE_INKBERRY_H
+#define INKPLATE_INKBERRY_H
 
 #define EPAPER_RST_PIN  19
 #define EPAPER_DC_PIN   33
 #define EPAPER_CS_PIN   27
-#define EPAPER_BUSY_PIN 32
+#define EPAPER_BUSY_PIN 32 
 #define EPAPER_CLK      18
 #define EPAPER_DIN      23
 
 #define BUSY_TIMEOUT_MS 1000
 
 // ePaper specific defines
-#define E_INK_HEIGHT    384
-#define E_INK_WIDTH     640
-#define INKPLATE7_WHITE 0
-#define INKPLATE7_BLACK 1
-#define INKPLATE7_RED   2
+#define E_INK_HEIGHT    480
+#define E_INK_WIDTH     800
+#define INKPLATE_INKBERRY_WHITE 0
+#define INKPLATE_INKBERRY_BLACK 1
+#define INKPLATE_INKBERRY_RED   2
 
 // Pin on the internal io expander which controls MOSFET for turning on and off the SD card
 #define SD_PMOS_PIN IO_PIN_B2 // 10

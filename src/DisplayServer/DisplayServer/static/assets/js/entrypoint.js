@@ -1,0 +1,1 @@
+$(window).on('load', function(){inkberry_init();});

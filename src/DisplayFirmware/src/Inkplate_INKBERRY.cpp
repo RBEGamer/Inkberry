@@ -17,11 +17,10 @@
  * @authors     @ Soldered
  ***************************************************/
 
-#include "../Inkplate.h"
-#include "../include/Graphics.h"
-#include "../include/defines.h"
-
-#ifdef ARDUINO_INKPLATE7
+#include "Inkplate.h"
+//#include "../include/Graphics.h"
+//#include "../include/defines.h"
+#ifdef ARDUINO_INKPLATE_INKBERRY
 
 SPISettings epdSpiSettings(4000000UL, MSBFIRST, SPI_MODE0);
 SPIClass epdSPI(VSPI);

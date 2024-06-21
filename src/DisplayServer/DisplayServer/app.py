@@ -10,10 +10,15 @@ from waitress import serve
 from flask_cors import CORS, cross_origin
 import bleach
 import typer
+import pathlib
 from DisplayFramework import Devices, SVGRenderer, SVGTemplates, DeviceSpecification, BaseTile
 
 app_typer = typer.Typer(add_completion=True)
-app_flask = Flask(__name__)
+
+STATIC_FOLDER_NAME: str = "static"
+STATIC_FOLDER_PATH: str = str(pathlib.Path(__file__).parent.resolve().joinpath(STATIC_FOLDER_NAME))
+
+app_flask = Flask(__name__, static_folder=STATIC_FOLDER_PATH)
 cors = CORS(app_flask)
 app_flask.config['CORS_HEADERS'] = 'Content-Type'
 terminate_flask: bool = False
@@ -24,11 +29,17 @@ terminate_flask: bool = False
 Devices.Devices.SetDatabaseFolder(str(Path(str(os.path.dirname(__file__))).joinpath("data/")))
 BaseTile.BaseTileSettings.SetResourceFolder(str(Path(str(os.path.dirname(__file__))).joinpath("resources/")))
 
+
 @app_flask.route('/')
 def hello_world():  # put application's code here
-    return 'Hello World!'
+    return redirect('/{}/index.html'.format(STATIC_FOLDER_NAME))
 
 
+@app_flask.route('/api/list_devices')
+def api_list_devices():
+    ret: dict = {}
+    ret['devices'] = Devices.Devices.GetRegisteredDeviceIds()
+    return jsonify(ret)
 @app_flask.route('/api/state/<id>')
 def api_state(id: str):  # put application's code here
 
