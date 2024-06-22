@@ -53,6 +53,22 @@ async function loadAndExtractSVG(url) {
     }
 }
 
+function calculateArea(obj) {
+    switch (obj.tag) {
+        case 'svg':
+        case 'rect':
+        case 'image':
+        case 'use':
+            return obj.width * obj.height;
+        case 'circle':
+            return Math.PI * Math.pow(obj.r, 2);
+        case 'ellipse':
+            return Math.PI * obj.rx * obj.ry;
+        default:
+            return 0;
+    }
+}
+
 // Funktion zum Extrahieren der SVG-Objekte mit relevanten Attributen
 function extractSVGObjects(svgString) {
     debugger;
@@ -75,9 +91,12 @@ function extractSVGObjects(svgString) {
         if (element.hasAttribute('width')) obj.width = parseFloat(element.getAttribute('width'));
         if (element.hasAttribute('height')) obj.height = parseFloat(element.getAttribute('height'));
 
+        obj.area = calculateArea(obj);
+
         objects.push(obj);
     });
-
+    // Sortiere die Objekte nach Fläche
+    objects.sort((a, b) => b.area - a.area);
     return objects;
 }
 

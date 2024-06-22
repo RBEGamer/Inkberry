@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -11,84 +11,62 @@
     <link rel="stylesheet" href="assets/css/Lato.css">
     <link rel="stylesheet" href="assets/css/Montserrat.css">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
-$(window).on('load', function(){
-        inkberry_init();
-});
 </head>
 
 <body id="page-top">
     <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-secondary text-uppercase" id="mainNav">
-        <div class="container"><a class="navbar-brand js-scroll-trigger" href="#page-top">Inkberry - EDITOR PREVIEW</a><button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+        <div class="container"><a class="navbar-brand js-scroll-trigger" href="#page-top">Inkberry</a><button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler text-white bg-primary rounded" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
-                <div class="dropdown show" id="inkberry_available_devices_dropdown"><a class="dropdown-toggle d-xl-flex justify-content-xl-start align-items-xl-center" aria-expanded="true" data-toggle="dropdown" href="#">SELECT INKBERRY DEVICE</a>
-                    <div class="dropdown-menu show" id="inkberry_available_devices_dropdown_menu"></div>
-                </div>
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link align-items-center py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#portfolio"></a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="editor.html">OPEN EDITOR</a></li>
                 </ul>
             </div>
         </div>
     </nav>
-    <header class="masthead bg-primary text-white text-center">
-        <div class="row">
-            <div class="col">
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th id="inkberry_device_information_type">---</th>
-                                <th id="inkberry_device_information_name">---</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr></tr>
-                            <tr></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-8" id="inkberry_device_renderered_image_container"><canvas id="canvas" width="800" height="600" </canvas></div>
-                <div class="col">
-                    <h4>PARAMETER</h4>
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr id="inkberry_parameter_table_row_block">
-                                    <th>Column 1</th>
-                                    <th>Column 2</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr></tr>
-                                <tr></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <section class="py-4 py-xl-5">
-                    <div class="container">
-                        <div class="text-white bg-dark border rounded border-dark p-4 p-md-5">
-                            <h2 class="font-weight-bold text-white mb-3">FINAL SCREEN</h2><img id="inkberry_device_renderered_image" src="assets/img/portfolio/first_test_frame_2023-Jun-13_12-58-18PM-000_CustomizedView5355212567_png.png" width="100%" style="margin: initial;padding-right: 20%;padding-left: 20%;">
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col"></div>
+    <header class="text-center text-white bg-primary masthead">
+        <div class="container"><img class="img-fluid d-block mx-auto mb-5" src="assets/img/profile.png">
+            <h1>INKBERRY</h1>
+            <h2 class="font-weight-light mb-0" style="color: var(--white);font-size: 42px;font-weight: bold;text-align: center;">Opening doors. Redefining information.</h2>
         </div>
     </header>
-    <div class="copyright py-4 text-center text-white">
-        <div class="container"><small>Copyright ©&nbsp;Inkberry 2018</small></div>
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <h2 class="text-uppercase text-center text-secondary" style="padding-bottom: 100px;">ECOSYSTEM</h2>
+            <div class="row">
+                <div class="col-md-6 col-lg-4"><a class="d-block mx-auto portfolio-item" data-toggle="modal" href="#portfolio-modal-1">
+                        <div class="d-flex portfolio-item-caption position-absolute h-100 w-100">
+                            <div class="text-center text-white my-auto portfolio-item-caption-content w-100"><i class="fa fa-search-plus fa-3x"></i></div>
+                        </div><img class="img-fluid" src="assets/img/portfolio/a.png">
+                    </a></div>
+                <div class="col-md-6 col-lg-4"><a class="d-block mx-auto portfolio-item" data-toggle="modal" href="#portfolio-modal-2">
+                        <div class="d-flex portfolio-item-caption position-absolute h-100 w-100">
+                            <div class="text-center text-white my-auto portfolio-item-caption-content w-100"><i class="fa fa-search-plus fa-3x"></i></div>
+                        </div><img class="img-fluid" src="assets/img/portfolio/c.png">
+                    </a></div>
+                <div class="col-md-6 col-lg-4"><a class="d-block mx-auto portfolio-item" data-toggle="modal" href="#portfolio-modal-3">
+                        <div class="d-flex portfolio-item-caption position-absolute h-100 w-100">
+                            <div class="text-center text-white my-auto portfolio-item-caption-content w-100"><i class="fa fa-search-plus fa-3x"></i></div>
+                        </div><img class="img-fluid" src="assets/img/portfolio/b.png">
+                    </a></div>
+            </div>
+        </div>
+    </section>
+    <section class="text-white bg-primary mb-0" id="about">
+        <div class="container">
+            <h2 class="text-uppercase text-center text-white">About INKBERRY</h2>
+            <hr class="star-light mb-5">
+            <div class="row">
+                <div class="col">
+                    <p class="font-weight-bold" style="font-size: 23px;">Inkberry is an innovative startup specializing in the development of customizable digital door signs. Using state-of-the-art technology, Inkberry enables the simple and stylish display of information directly on the door. Our solutions offer flexible customization options, intuitive operation and an elegant design that blends seamlessly into any environment. Whether in the office, hotel or at home, Inkberry's digital door signs set new standards in information and communication.</p>
+                </div>
+            </div>
+            <div class="text-center mt-4"><a class="btn btn-outline-light btn-xl" role="button" href="https://github.com/RBEGamer/Inkberry"><i class="fa fa-gittip mr-2"></i><span>INKBERRY ECOSYSTEM IS OPENSOURCE</span></a></div>
+        </div>
+    </section>
+    <div class="text-center text-white copyright py-4">
+        <div class="container"><a href="https://marcelochsendorf.com/impressum"><br><span style="color: rgb(255, 255, 255);">IMPRESSUM</span></a></div>
     </div>
-    <div class="d-lg-none scroll-to-top position-fixed rounded"><a class="d-block js-scroll-trigger text-center text-white rounded" href="#page-top"><i class="fa fa-chevron-up"></i></a></div>
+    <div class="d-lg-none scroll-to-top position-fixed rounded"><a class="text-center text-white d-block js-scroll-trigger rounded" href="#page-top"><i class="fa fa-chevron-up"></i></a></div>
     <div class="modal text-center" role="dialog" tabindex="-1" id="portfolio-modal-1">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -97,14 +75,13 @@ $(window).on('load', function(){
                     <div class="container text-center">
                         <div class="row">
                             <div class="col-lg-8 mx-auto">
-                                <h2 class="text-uppercase text-secondary mb-0">Project Name</h2>
-                                <hr class="star-dark mb-5"><img class="img-fluid mb-5" src="assets/img/portfolio/cabin.png">
-                                <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
+                                <h2 class="text-uppercase text-secondary mb-0">HARDWARE</h2><img class="img-fluid mb-5" src="assets/img/portfolio/a.png">
+                                <p class="mb-5">Our digital door signs use the latest E-INK technology to operate for a long time without electricity. Thanks to integrated solar cells, it is possible to guarantee battery-free operation! This means that there are no additional operating costs.<br>Our software platform also supports many common open-source E-INK displays.</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer pb-5"><a class="btn btn-primary btn-lg mx-auto rounded-pill portfolio-modal-dismiss" role="button" href="#"><i class="fa fa-close"></i>&nbsp;Close Project</a></div>
+                <div class="modal-footer pb-5"><a class="btn btn-primary btn-lg mx-auto rounded-pill" role="button" data-dismiss="modal"><i class="fa fa-close"></i>&nbsp;Close</a></div>
             </div>
         </div>
     </div>
@@ -116,14 +93,13 @@ $(window).on('load', function(){
                     <div class="container text-center">
                         <div class="row">
                             <div class="col-lg-8 mx-auto">
-                                <h2 class="text-uppercase text-secondary mb-0">Project Name</h2>
-                                <hr class="star-dark mb-5"><img class="img-fluid mb-5" src="assets/img/portfolio/cake.png">
-                                <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
+                                <h2 class="text-uppercase text-secondary mb-0">SOFTWARE</h2><img class="img-fluid mb-5" src="assets/img/portfolio/c.png">
+                                <p class="mb-5">Inkberry provides an open and innovative web-based software platform to deliver content to our hardware displays. Sophisticated automation ensures efficient operation without additional user intervention. A plugin-based component system also allows the user to easily develop their own plugins, so any data source can be used with the system.</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer pb-5"><a class="btn btn-primary btn-lg mx-auto rounded-pill portfolio-modal-dismiss" role="button" href="#"><i class="fa fa-close"></i>&nbsp;Close Project</a></div>
+                <div class="modal-footer pb-5"><a class="btn btn-primary btn-lg mx-auto rounded-pill" role="button" data-dismiss="modal"><i class="fa fa-close"></i>&nbsp;Close</a></div>
             </div>
         </div>
     </div>
@@ -135,71 +111,14 @@ $(window).on('load', function(){
                     <div class="container text-center">
                         <div class="row">
                             <div class="col-lg-8 mx-auto">
-                                <h2 class="text-uppercase text-secondary mb-0">Project Name</h2>
-                                <hr class="star-dark mb-5"><img class="img-fluid mb-5" src="assets/img/portfolio/circus.png">
-                                <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
+                                <h2 class="text-uppercase text-secondary mb-0">COMMUNITY</h2>
+                                <hr class="star-dark mb-5"><img class="img-fluid mb-5" src="assets/img/portfolio/b.png">
+                                <p class="mb-5">At Inkberry, openness comes first! We want to make our system accessible to everyone and look forward to modifications from our community and actively promote this development. This is only possible through the disclosure of our hardware and software. For all users who want to use the system without IT knowledge, we offer extensive support.</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer pb-5"><a class="btn btn-primary btn-lg mx-auto rounded-pill portfolio-modal-dismiss" role="button" href="#"><i class="fa fa-close"></i>&nbsp;Close Project</a></div>
-            </div>
-        </div>
-    </div>
-    <div class="modal text-center" role="dialog" tabindex="-1" id="portfolio-modal-4">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header"><button class="close" type="button" aria-label="Close" data-dismiss="modal"><span aria-hidden="true">×</span></button></div>
-                <div class="modal-body">
-                    <div class="container text-center">
-                        <div class="row">
-                            <div class="col-lg-8 mx-auto">
-                                <h2 class="text-uppercase text-secondary mb-0">Project Name</h2>
-                                <hr class="star-dark mb-5"><img class="img-fluid mb-5" src="assets/img/portfolio/game.png">
-                                <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer pb-5"><a class="btn btn-primary btn-lg mx-auto rounded-pill portfolio-modal-dismiss" role="button" href="#"><i class="fa fa-close"></i>&nbsp;Close Project</a></div>
-            </div>
-        </div>
-    </div>
-    <div class="modal text-center" role="dialog" tabindex="-1" id="portfolio-modal-5">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header"><button class="close" type="button" aria-label="Close" data-dismiss="modal"><span aria-hidden="true">×</span></button></div>
-                <div class="modal-body">
-                    <div class="container text-center">
-                        <div class="row">
-                            <div class="col-lg-8 mx-auto">
-                                <h2 class="text-uppercase text-secondary mb-0">Project Name</h2>
-                                <hr class="star-dark mb-5"><img class="img-fluid mb-5" src="assets/img/portfolio/safe.png">
-                                <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer pb-5"><a class="btn btn-primary btn-lg mx-auto rounded-pill portfolio-modal-dismiss" role="button" href="#"><i class="fa fa-close"></i>&nbsp;Close Project</a></div>
-            </div>
-        </div>
-    </div>
-    <div class="modal text-center" role="dialog" tabindex="-1" id="portfolio-modal-6">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header"><button class="close" type="button" aria-label="Close" data-dismiss="modal"><span aria-hidden="true">×</span></button></div>
-                <div class="modal-body">
-                    <div class="container text-center">
-                        <div class="row">
-                            <div class="col-lg-8 mx-auto">
-                                <h2 class="text-uppercase text-secondary mb-0">Project Name</h2>
-                                <hr class="star-dark mb-5"><img class="img-fluid mb-5" src="assets/img/portfolio/submarine.png">
-                                <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer pb-5"><a class="btn btn-primary btn-lg mx-auto rounded-pill portfolio-modal-dismiss" role="button" href="#"><i class="fa fa-close"></i>&nbsp;Close Project</a></div>
+                <div class="modal-footer pb-5"><a class="btn btn-primary btn-lg mx-auto rounded-pill" role="button" data-dismiss="modal"><i class="fa fa-close"></i>&nbsp;Close</a></div>
             </div>
         </div>
     </div>
@@ -209,7 +128,6 @@ $(window).on('load', function(){
     <script src="assets/js/freelancer.js"></script>
     <script src="assets/js/jquery.easing.min.js"></script>
     <script src="assets/js/inkberry.js"></script>
-    <script src="assets/js/entrypoint.js"></script>
 </body>
 
 </html>
