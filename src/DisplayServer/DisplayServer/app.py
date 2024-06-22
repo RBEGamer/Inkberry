@@ -177,9 +177,12 @@ def launch(typer_ctx: typer.Context, port: int = 55556, host: str = "0.0.0.0", d
 @app_typer.callback(invoke_without_command=True)
 def main(ctx: typer.Context, basepath: str = ""):
     if basepath is not None and len(basepath) > 0:
+        print("main with basepath={}".format(basepath))
         Devices.Devices.SetDatabaseFolder(str(Path(str(os.path.dirname(basepath))).joinpath("data/")))
         BaseTile.BaseTileSettings.SetResourceFolder(str(Path(str(os.path.dirname(basepath))).joinpath("resources/")))
-
+    else:
+        Devices.Devices.SetDatabaseFolder(str(pathlib.Path(__file__).parent.resolve().joinpath('data')))
+        BaseTile.BaseTileSettings.SetResourceFolder(str(pathlib.Path(__file__).parent.resolve().joinpath('resources')))
 
 def run():
     app_typer()

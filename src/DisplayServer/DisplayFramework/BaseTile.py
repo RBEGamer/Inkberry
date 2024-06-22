@@ -31,6 +31,8 @@ class BaseTileSettings:
         Path(os.path.dirname(_folder)).mkdir(parents=True, exist_ok=True)
         BaseTileSettings.RESOURCE_FOLDER = _folder
 
+        print("BaseTileSettings.RESOURCE_FOLDER = {}".format(BaseTileSettings.RESOURCE_FOLDER))
+
 class BaseTile(ABC):
 
     DEFAULT_PARAMETER: dict = {

@@ -31,6 +31,7 @@ class Devices:
         Path(os.path.dirname(_db_folder)).mkdir(parents=True, exist_ok=True)
 
         Devices.DATABSE_FILE_ABS_PATH = _db_folder
+        print("Devices.DATABSE_FILE_ABS_PATH = {}".format(Devices.DATABSE_FILE_ABS_PATH))
 
     @staticmethod
     def getDB() -> pysondb.db.JsonDatabase:

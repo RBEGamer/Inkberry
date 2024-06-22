@@ -22,4 +22,4 @@ RUN pip install -e .
 RUN DisplayServer --help
 
 ENTRYPOINT ["DisplayServer"]
-CMD ["--basepath", "./DisplayFramework/data", "launch"]
+CMD ["launch"]
