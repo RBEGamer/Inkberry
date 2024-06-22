@@ -29,6 +29,9 @@ terminate_flask: bool = False
 Devices.Devices.SetDatabaseFolder(str(Path(str(os.path.dirname(__file__))).joinpath("data/")))
 BaseTile.BaseTileSettings.SetResourceFolder(str(Path(str(os.path.dirname(__file__))).joinpath("resources/")))
 
+@app_flask.errorhandler(404)
+def page_not_found(e):
+    return redirect("/", 404)
 
 @app_flask.route('/')
 def hello_world():  # put application's code here

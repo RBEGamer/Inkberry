@@ -25,9 +25,14 @@ function handle_canvas_click(event) {
     var x = event.offsetX;
     var y = event.offsetY;
     var clickedObject = get_svg_clicked_object(x, y);
-    if (clickedObject) {
-        alert('Geklicktes Objekt: ' + clickedObject);
+    if (!clickedObject) {
+        return;
     }
+
+    console.log('canvas_clicked_object: ' + clickedObject);
+
+    // FETCH PARAMETER INTO PARAMS TABLE
+    $("#inkberry_parameter_table_row_block").empty();
 }
 
 function get_svg_clicked_object(x, y) {
