@@ -32,7 +32,7 @@ function handle_canvas_click(event) {
     console.log('canvas_clicked_object: ' + clickedObject);
 
     // FETCH PARAMETER INTO PARAMS TABLE
-    $("#inkberry_parameter_table_row_block").empty();
+   load_parameters(current_loaded_device_id, clickedObject);
 }
 
 function get_svg_clicked_object(x, y) {
@@ -187,12 +187,54 @@ function load_editor_for_device(_id){
 
             // LOAD PARAMETER
             $('#inkberry_parameter_table_row_block').empty();
-            for (var entry in data['parameter']) {
-
-            }
         }
     });
-} 
+}
+
+function on_parameter_changed(d){
+    console.log(d);
+
+    $.getJSON("/api/update_parameter/" + d.currentTarget.dataset['device_id'] + "/" + d.currentTarget.dataset['parameter'] + "/" + d.currentTarget.value, function( data ) {
+        editor_refresh_rendering(current_loaded_device_id);
+    });
+}
+
+function load_parameters(_id, _parameter_id){
+    $('#inkberry_parameter_table_row_block').empty();
+    $('#inkberry_user_selected_parameter_id_text').html(_parameter_id);
+    
+    $.getJSON("/api/get_parameter_list/" + _id + "/" + _parameter_id, function( data ) {
+
+      if(!data['parameters']){return;}
+
+      $.each( data['parameters'], function( key, val ) {
+
+        const $row = $('<tr></tr>');
+        const $col1 = $('<td></td>').text(key);
+        const $input = $('<input/>').attr({ type: 'text', name: key, value: val , 'data-device_id': _id, 'data-parameter': _parameter_id});
+        $input.change(on_parameter_changed);
+
+        const $col2 = $('<td></td>').append($input);
+        $row.append($col1, $col2);
+
+        $('#inkberry_parameter_table_row_block').append($row);
+                //.data("data-device_id", val['id']);
+      });
+
+        /*
+      $('#inkberry_available_devices_dropdown_menu').on('click', '.dropdown-item', function(event) {
+        event.preventDefault();
+        var clicked_id = $(this).data('data-device_id');
+        current_loaded_device_id = clicked_id;
+        load_editor_for_device(current_loaded_device_id);
+      });
+      */
+
+    });
+    }
+
+
+
 function load_available_devices(){
     $('#inkberry_available_devices_dropdown_menu').empty();
 

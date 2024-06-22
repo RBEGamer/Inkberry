@@ -45,6 +45,39 @@ def api_list_devices():
     return jsonify(ret)
 
 
+@app_flask.route('/api/update_parameter/<string:device_id>/<string:parameter_id>/<string:value>')
+def api_update_parameter(device_id: str, parameter_id: str, value: str):
+    device_id = bleach.clean(device_id)
+    parameter_id = bleach.clean(parameter_id)
+    value = bleach.clean(value)
+
+    ret = {"error": None}
+    if not Devices.Devices.CheckDeviceExists(device_id):
+        ret.update({'error': 'invalid_device'})
+    else:
+        device_spec = Devices.Devices.GetDeviceSpecification(device_id)
+        # TODO UPDATE PARAMETER VALUE
+
+    return jsonify(ret)
+@app_flask.route('/api/get_parameter_list/<string:device_id>/<string:parameter_id>')
+def api_get_parameter_list(device_id: str, parameter_id: str):
+    device_id = bleach.clean(device_id)
+    parameter_id = bleach.clean(parameter_id)
+
+    ret = {"error": None, 'parameters': []}
+    if not Devices.Devices.CheckDeviceExists(device_id):
+        ret.update({'error': 'invalid_device'})
+    else:
+        device_spec = Devices.Devices.GetDeviceSpecification(device_id)
+
+    # TODO REVIRE LIST TO DICT APPROACH WITH UNIQUE ID
+
+        for tile in device_spec.tile_specifications:
+            if parameter_id == tile.name:
+                ret.update({'parameters': tile.parameters})
+
+        return jsonify(ret)
+
 @app_flask.route('/api/information/<string:device_id>')
 def api_information(device_id: str):
     device_id = bleach.clean(device_id)
@@ -100,7 +133,14 @@ def api_register(id: str, typename: str):  # put application's code here
 def api_render(id: str):
     id: str = bleach.clean(id)
     as_png: bool = bool(int(bleach.clean(request.args.get('as_png', default='1'))))
-    target_width: int = int(bleach.clean(request.args.get('target_width', default='0')))
+    target_width: int = 0
+    try:
+        target_width = int(bleach.clean(request.args.get('target_width', default='0')))
+    except Exception as e1:
+        try:
+            target_width = int(float(bleach.clean(request.args.get('target_width', default='0'))))
+        except Exception as e2:
+            pass
 
     # GET DEVICE RESOLUTION
     device_spec: DeviceSpecification.DeviceSpecification = None
