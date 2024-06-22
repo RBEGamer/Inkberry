@@ -1,39 +1,18 @@
 import io
 import csv
-from abc import ABC, abstractmethod
 from matplotlib import pyplot as plt
-from svgpathtools import svg2paths
 
-
-from DisplayFramework import BaseTile, SVGHelper
-class TableViewDataSource(ABC):
-    pass
-
-
-class TableViewDataSourceCSV(TableViewDataSource):
-    pass
-
-
-class TableViewDataSource(TableViewDataSource):
-    pass
-
-import base64
-from io import BytesIO
-
-import PIL.Image
 
 from DisplayFramework import BaseTile, TileSpecification, ResourceHelper
 from DisplayFramework.pysvg import structure, builders, text
 from DisplayFramework.tiles import ImageTile
-import shutil
-import requests
 from PIL import Image
 
 
 class TableViewTile(ImageTile.ImageTile):
 
     DEFAULT_PARAMETER: dict = {
-        "types":{
+        "types": {
             "url": "str",
             "figure_aspect_ratio":"str",
             "scale_factor":"float",

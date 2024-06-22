@@ -1,5 +1,7 @@
 var current_svg_content = "";
 var current_loaded_device_id = "";
+var current_svg_clickable_areas = [];
+
 function resize_canvas(_width = null, _height = null){
     if(!_width){
      _width = $("#inkberry_device_editor_canvas_container").width();
@@ -29,22 +31,12 @@ function handle_canvas_click(event) {
 }
 
 function get_svg_clicked_object(x, y) {
-    // Beispielhafte Objekte und Koordinaten
-    var objects = [
-        { id: 'rect1', type: 'rect', x: 10, y: 10, width: 50, height: 50 },
-        { id: 'circle1', type: 'circle', cx: 100, cy: 100, r: 30 }
-    ];
 
-    for (var i = 0; i < objects.length; i++) {
-        var obj = objects[i];
-        if (obj.type === 'rect') {
-            if (x >= obj.x && x <= obj.x + obj.width && y >= obj.y && y <= obj.y + obj.height) {
-                return obj.id;
-            }
-        } else if (obj.type === 'circle') {
-            var dx = x - obj.cx;
-            var dy = y - obj.cy;
-            if (dx * dx + dy * dy <= obj.r * obj.r) {
+    for (var i = 0; i < current_svg_clickable_areas.length; i++) {
+        var obj = current_svg_clickable_areas[i];
+
+        if (x >= obj.x && x <= obj.x + obj.width && y >= obj.y && y <= obj.y + obj.height) {
+            if(obj.id){
                 return obj.id;
             }
         }
@@ -95,15 +87,17 @@ function extractSVGObjects(_xml_doc) {
     // Iteriere über die Elemente und extrahiere die Attribute
     elements.forEach(function(element) {
         const obj = { tag: element.tagName };
-
         if (element.hasAttribute('x')) obj.x = parseFloat(element.getAttribute('x'));
         if (element.hasAttribute('y')) obj.y = parseFloat(element.getAttribute('y'));
         if (element.hasAttribute('width')) obj.width = parseFloat(element.getAttribute('width'));
         if (element.hasAttribute('height')) obj.height = parseFloat(element.getAttribute('height'));
+        if (element.hasAttribute('id')) obj.id = element.getAttribute('id');
+
 
         obj.area = calculateArea(obj);
-
-        objects.push(obj);
+        if(obj.id){
+            objects.push(obj);
+        }
     });
     // Sortiere die Objekte nach Fläche
     objects.sort((a, b) => b.area - a.area);
@@ -120,7 +114,7 @@ function load_svg_to_canvas(_id, callback) {
     // FETCH SVG
     const url = '/api/render/' + _id + "?as_png=0&target_width="+ dw +"&ts=" + String(Date.now());
 
-    debugger;
+
     const svgString = loadSVGSync(url);
 
     if(!svgString){
@@ -133,27 +127,19 @@ function load_svg_to_canvas(_id, callback) {
 
     // SET NEW CANVAS HEIGHT
     const svgElement = xmlDoc.getElementsByTagName("svg")[0];
-    // Extract the width, height, and viewBox attributes
+    // Extract the width, height, and viewBox attributes and resize the canvas
     const width = svgElement.getAttribute("width");
     const height = svgElement.getAttribute("height");
     const viewBox = svgElement.getAttribute("viewBox");
     resize_canvas(width, height);
 
-
+    //SETUP CANVAS
     var canvas = document.getElementById('inkberry_device_editor_canvas');
     var ctx = canvas.getContext('2d');
     //REGISTER ONCLICK EVENT SO THE USER CAN SELECT OBJECTS
     canvas.addEventListener('click', handle_canvas_click);
 
-
-
-    //SET BACKGROUND COLOR
-    //ctx.clearRect(0, 0, dw, dh);
-    //ctx.rect(0, 0, dw, dh);
-    //ctx.fillStyle = "gray";
-    //ctx.fill();
-
-    //RENDER SVG AS IMAGE
+    //RENDER SVG AS IMAGE ON CANVAS
     var img = new Image();
     img.onload = function() {
         ctx.drawImage(img, 0, 0);
@@ -164,12 +150,12 @@ function load_svg_to_canvas(_id, callback) {
     img.src = url;
 
 
-    //EXTRACT OBJECT FROM SVG TO MAKE THEM CLICKABLE
-    extractSVGObjects(xmlDoc);
 
-    //DOWNLOAD SVG CONTENT
-    //PARSE ALL <svg x y w h> packe in liste für andere fkt
-    //FIX CANVAS RESIZE
+    const objs = extractSVGObjects(xmlDoc);
+    if(objs){
+        current_svg_clickable_areas = objs;
+    }
+    //debugger;
 }
 
 
@@ -233,7 +219,6 @@ function inkberry_init(){
 
     var did = getAllUrlParams().did;
     if(did){
-        debugger;
         current_loaded_device_id = did;
         load_editor_for_device(current_loaded_device_id);
     }

@@ -57,6 +57,7 @@ class ImageTile(BaseTile.BaseTile):
 
     def generate_image_container(self, _image: PIL.Image) -> structure.Svg:
         svg_document: structure.Svg = structure.Svg()
+        svg_document.set_id(self.spec.name)
         svg_document.set_x(self.spec.position.pos_x)
         svg_document.set_y(self.spec.position.pos_y)
 

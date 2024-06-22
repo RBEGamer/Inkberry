@@ -49,6 +49,7 @@ class TextTile(BaseTile.BaseTile):
 
     def render(self) -> structure.Svg:
         svg_document: structure.Svg = structure.Svg()
+        svg_document.set_id(self.spec.name)
         svg_document.set_x(self.spec.position.pos_x)
         svg_document.set_y(self.spec.position.pos_y)
         svg_document.set_width(self.spec.position.size_w)
