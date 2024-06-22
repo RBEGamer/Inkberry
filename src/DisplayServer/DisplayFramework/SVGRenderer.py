@@ -21,7 +21,6 @@ class SVGRenderer:
         scale_factor: float = 1.0
 
         # GET SVG SIZE
-
         paths, attributes = svg2paths(img_io)
         img_io.seek(0)
 

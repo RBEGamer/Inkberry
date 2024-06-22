@@ -97,6 +97,7 @@ def api_register(id: str, typename: str):  # put application's code here
 def api_render(id: str):
     id: str = bleach.clean(id)
     as_png: bool = bool(int(bleach.clean(request.args.get('as_png', default='1'))))
+    target_width: int = int(bleach.clean(request.args.get('target_width', default='0')))
 
     # GET DEVICE RESOLUTION
     device_spec: DeviceSpecification.DeviceSpecification = None
@@ -105,19 +106,24 @@ def api_render(id: str):
     else:
         device_spec = Devices.Devices.GetDeviceSpecification(id)
 
+    if not target_width or  target_width > 0:
+        target_width = target_width
+    else:
+        target_width = 0
 
     # GENERATE SVG IMAGE
     svg: str = ""
     if not device_spec.is_valid():
         pass
     elif not Devices.Devices.CheckDeviceExists(id):
-        svg = SVGTemplates.SVGTemplates.GenerateDeviceSetupScreen(id, device_spec)
+        svg = SVGTemplates.SVGTemplates.GenerateDeviceSetupScreen(id, device_spec, target_width)
     elif not Devices.Devices.CheckDeviceEnabled(id):
-        svg = SVGTemplates.SVGTemplates.GenerateDeviceDisabledScreen(id, device_spec)
+        svg = SVGTemplates.SVGTemplates.GenerateDeviceDisabledScreen(id, device_spec, target_width)
     else:
-        svg = SVGTemplates.SVGTemplates.GenerateCurrentDeviceScreen(id, device_spec)
+        svg = SVGTemplates.SVGTemplates.GenerateCurrentDeviceScreen(id, device_spec, target_width)
 
     # SCALE TO DEVICE SCREEN SIZE
+    # TODO target_width
 
 
     # RETURN AS SVG OR PNG TO CLIENT

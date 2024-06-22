@@ -1,10 +1,22 @@
 var current_svg_content = "";
+var current_loaded_device_id = "";
+function resize_canvas(_width = null, _height = null){
+    if(!_width){
+     _width = $("#inkberry_device_editor_canvas_container").width();
+    }
 
-function resize_canvas(width, height){
-    var canvas = document.getElementById('canvas');
-    var ctx = canvas.getContext('2d');
-    ctx.width = width;
-    ctx.height = height;
+    if(!_height){
+        _height = $("#inkberry_device_editor_canvas_container").height();
+    }
+
+    //SET DIV SIZE
+    $("#inkberry_device_editor_canvas_container").width(_width);
+    $("#inkberry_device_editor_canvas_container").height(_height);
+    // SET CANVAS SIZE
+    var canvas = document.getElementById('inkberry_device_editor_canvas');
+    canvas.width = _width;
+    canvas.height = _height;
+
 }
 
 function handle_canvas_click(event) {
@@ -40,17 +52,21 @@ function get_svg_clicked_object(x, y) {
     return null;
 }
 
-async function loadAndExtractSVG(url) {
+function loadSVGSync(url) {
     try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-        }
-        const svgText = await response.text();
-        return extractSVGObjects(svgText);
-    } catch (error) {
-        console.error('Fetch operation failed: ', error);
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, false); // false für synchrone Anfrage
+    xhr.send(null);
+
+    if (xhr.status === 200) {
+        return xhr.responseText;
+    } else {
+        throw new Error('Network response was not ok ' + xhr.statusText);
     }
+    } catch (error) {
+    console.error('Fetch operation failed: ', error);
+    return "";
+}
 }
 
 function calculateArea(obj) {
@@ -70,14 +86,9 @@ function calculateArea(obj) {
 }
 
 // Funktion zum Extrahieren der SVG-Objekte mit relevanten Attributen
-function extractSVGObjects(svgString) {
-    debugger;
-    // Erstelle ein DOMParser-Objekt zum Parsen des SVG-Strings
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(svgString, "image/svg+xml");
-
+function extractSVGObjects(_xml_doc) {
     // Selektiere alle relevanten SVG-Elemente
-    const elements = xmlDoc.querySelectorAll('svg');
+    const elements = _xml_doc.querySelectorAll('svg');
 
     const objects = [];
 
@@ -85,7 +96,6 @@ function extractSVGObjects(svgString) {
     elements.forEach(function(element) {
         const obj = { tag: element.tagName };
 
-        // Extrahiere gemeinsame Attribute
         if (element.hasAttribute('x')) obj.x = parseFloat(element.getAttribute('x'));
         if (element.hasAttribute('y')) obj.y = parseFloat(element.getAttribute('y'));
         if (element.hasAttribute('width')) obj.width = parseFloat(element.getAttribute('width'));
@@ -101,13 +111,49 @@ function extractSVGObjects(svgString) {
 }
 
 
-function load_svg_to_canvas(url, callback) {
+function load_svg_to_canvas(_id, callback) {
 
-    var canvas = document.getElementById('canvas');
+    // GET CANVAS SIZE
+    const dw = $("#inkberry_device_editor_canvas_container").width();
+    const dh = $("#inkberry_device_editor_canvas_container").height();
+
+    // FETCH SVG
+    const url = '/api/render/' + _id + "?as_png=0&target_width="+ dw +"&ts=" + String(Date.now());
+
+    debugger;
+    const svgString = loadSVGSync(url);
+
+    if(!svgString){
+        alert("cant get Device Document from " + url);
+        window.location.reload();
+        return;
+    }
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(svgString, "image/svg+xml");
+
+    // SET NEW CANVAS HEIGHT
+    const svgElement = xmlDoc.getElementsByTagName("svg")[0];
+    // Extract the width, height, and viewBox attributes
+    const width = svgElement.getAttribute("width");
+    const height = svgElement.getAttribute("height");
+    const viewBox = svgElement.getAttribute("viewBox");
+    resize_canvas(width, height);
+
+
+    var canvas = document.getElementById('inkberry_device_editor_canvas');
     var ctx = canvas.getContext('2d');
-
+    //REGISTER ONCLICK EVENT SO THE USER CAN SELECT OBJECTS
     canvas.addEventListener('click', handle_canvas_click);
 
+
+
+    //SET BACKGROUND COLOR
+    //ctx.clearRect(0, 0, dw, dh);
+    //ctx.rect(0, 0, dw, dh);
+    //ctx.fillStyle = "gray";
+    //ctx.fill();
+
+    //RENDER SVG AS IMAGE
     var img = new Image();
     img.onload = function() {
         ctx.drawImage(img, 0, 0);
@@ -119,7 +165,7 @@ function load_svg_to_canvas(url, callback) {
 
 
     //EXTRACT OBJECT FROM SVG TO MAKE THEM CLICKABLE
-    loadAndExtractSVG(url);
+    extractSVGObjects(xmlDoc);
 
     //DOWNLOAD SVG CONTENT
     //PARSE ALL <svg x y w h> packe in liste für andere fkt
@@ -129,9 +175,8 @@ function load_svg_to_canvas(url, callback) {
 
 function editor_refresh_rendering(_id){
      $("#inkberry_device_renderered_image").attr("src","/api/render/" + _id + "?as_png=1&ts=" +String(Date.now()));
-     resize_canvas(document.getElementById("inkberry_device_renderered_image").clientWidth, document.getElementById("inkberry_device_renderered_image").clientHeight);
-    
-     load_svg_to_canvas('/api/render/' + _id + "?as_png=0&ts=" + String(Date.now()))
+     resize_canvas(document.getElementById("inkberry_device_editor_canvas_container").clientWidth, document.getElementById("inkberry_device_editor_canvas_container").clientHeight);
+     load_svg_to_canvas(_id);
 }
 
 
@@ -172,17 +217,25 @@ function load_available_devices(){
       $('#inkberry_available_devices_dropdown_menu').on('click', '.dropdown-item', function(event) {
         event.preventDefault();
         var clicked_id = $(this).data('data-device_id');
-        load_editor_for_device(clicked_id);
+        current_loaded_device_id = clicked_id;
+        load_editor_for_device(current_loaded_device_id);
       });
     });
     }
 
 function inkberry_init(){
+    resize_canvas();
+    $(window).on( "resize", function() {
+        load_svg_to_canvas(current_loaded_device_id);
+    });
+
     load_available_devices();
 
     var did = getAllUrlParams().did;
     if(did){
-        load_editor_for_device(did);
+        debugger;
+        current_loaded_device_id = did;
+        load_editor_for_device(current_loaded_device_id);
     }
 }
 
