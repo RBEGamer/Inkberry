@@ -194,7 +194,7 @@ function load_editor_for_device(_id){
 function on_parameter_changed(d){
     console.log(d);
 
-    $.getJSON("/api/update_parameter/" + d.currentTarget.dataset['device_id'] + "/" + d.currentTarget.dataset['parameter'] + "/" + d.currentTarget.value, function( data ) {
+    $.getJSON("/api/update_parameter/" + d.currentTarget.dataset['device_id'] + "/" + d.currentTarget.dataset['tile_id'] + "/"+  d.currentTarget.dataset['parameter'] +"/" + d.currentTarget.value, function( data ) {
         editor_refresh_rendering(current_loaded_device_id);
     });
 }
@@ -211,25 +211,14 @@ function load_parameters(_id, _parameter_id){
 
         const $row = $('<tr></tr>');
         const $col1 = $('<td></td>').text(key);
-        const $input = $('<input/>').attr({ type: 'text', name: key, value: val , 'data-device_id': _id, 'data-parameter': _parameter_id});
+        const $input = $('<input/>').attr({ type: 'text', name: key, value: val , 'data-device_id': _id, 'data-tile_id': _parameter_id, 'data-parameter': key});
         $input.change(on_parameter_changed);
 
         const $col2 = $('<td></td>').append($input);
         $row.append($col1, $col2);
 
         $('#inkberry_parameter_table_row_block').append($row);
-                //.data("data-device_id", val['id']);
       });
-
-        /*
-      $('#inkberry_available_devices_dropdown_menu').on('click', '.dropdown-item', function(event) {
-        event.preventDefault();
-        var clicked_id = $(this).data('data-device_id');
-        current_loaded_device_id = clicked_id;
-        load_editor_for_device(current_loaded_device_id);
-      });
-      */
-
     });
     }
 

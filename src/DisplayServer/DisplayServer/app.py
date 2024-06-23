@@ -45,9 +45,10 @@ def api_list_devices():
     return jsonify(ret)
 
 
-@app_flask.route('/api/update_parameter/<string:device_id>/<string:parameter_id>/<string:value>')
-def api_update_parameter(device_id: str, parameter_id: str, value: str):
+@app_flask.route('/api/update_parameter/<string:device_id>/<string:tile_id>/<string:parameter_id>/<string:value>')
+def api_update_parameter(device_id: str, tile_id: str, parameter_id: str ,value: str):
     device_id = bleach.clean(device_id)
+    tile_id = bleach.clean(tile_id)
     parameter_id = bleach.clean(parameter_id)
     value = bleach.clean(value)
 
@@ -55,8 +56,17 @@ def api_update_parameter(device_id: str, parameter_id: str, value: str):
     if not Devices.Devices.CheckDeviceExists(device_id):
         ret.update({'error': 'invalid_device'})
     else:
-        device_spec = Devices.Devices.GetDeviceSpecification(device_id)
-        # TODO UPDATE PARAMETER VALUE
+        device_spec: DeviceSpecification.DeviceSpecification = Devices.Devices.GetDeviceSpecification(device_id)
+
+        # TODO REWORK DICT
+        for idx, tile in enumerate(device_spec.tile_specifications):
+            if tile_id == tile.name:
+                if parameter_id in device_spec.tile_specifications[idx].parameters:
+                    device_spec.tile_specifications[idx].parameters[parameter_id] = value
+                break
+
+
+        Devices.Devices.UpdateDeviceSpecification(device_spec)
 
     return jsonify(ret)
 @app_flask.route('/api/get_parameter_list/<string:device_id>/<string:parameter_id>')
@@ -90,7 +100,7 @@ def api_information(device_id: str):
         device_spec = Devices.Devices.GetDeviceSpecification(device_id)
 
         ret.update({
-            'hardware': '{} [{}x{} WUP:{}]'.format(device_spec.hardware.name, device_spec.screen_size_w, device_spec.screen_size_h, device_spec.wakeup_interval),
+            'hardware': '{} [{}x{} WUP:{}]'.format(device_spec.get_hardware_type().name, device_spec.screen_size_w, device_spec.screen_size_h, device_spec.wakeup_interval),
             'name': '{} [{}]'.format(device_spec.allocation, device_spec.device_id),
         })
 
@@ -233,6 +243,7 @@ def main(ctx: typer.Context, basepath: str = ""):
         Devices.Devices.SetDatabaseFolder(str(pathlib.Path(__file__).parent.resolve().joinpath('data')))
         BaseTile.BaseTileSettings.SetResourceFolder(str(pathlib.Path(__file__).parent.resolve().joinpath('resources')))
 
+    Devices.Devices.CreateDevice(Devices.ImplementedDevices.ImplementedDevices.ARDUINO_ESP32_7_5_INCH, "boom")
 def run():
     app_typer()
 

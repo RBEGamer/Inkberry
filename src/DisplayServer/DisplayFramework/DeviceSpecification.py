@@ -15,8 +15,7 @@ class DisplayOrientation(Enum):
 
 class DeviceSpecification:
 
-    hardware: ImplementedDevices.ImplementedDevices = ImplementedDevices.ImplementedDevices.SIMULATED
-    hardware_type_name: str =  "unknown"
+    hardware: int  = ImplementedDevices.ImplementedDevices.SIMULATED.value
     device_id: str = ""
     enabled: bool = False
     allocation: str = "undefined"
@@ -36,8 +35,7 @@ class DeviceSpecification:
             sp.append(e.to_dict())
 
         return {
-            'hardware': self.hardware.value,
-            'hardware_type_name': self.hardware.name,
+            'hardware': self.hardware,
             'device_id': self.device_id,
             'enabled': self.enabled,
             'allocation': self.allocation,
@@ -50,11 +48,10 @@ class DeviceSpecification:
             'content_scale': self.content_scale
         }
 
-
+    def get_hardware_type(self) -> ImplementedDevices.ImplementedDevices:
+         return ImplementedDevices.ImplementedDevices.from_int(self.hardware)
     def set_hardware_type(self, value: ImplementedDevices.ImplementedDevices):
-        self.hardware =  value.value
-        self.hardware_type_name =  value.name
-
+        self.hardware = value.value
     def is_valid(self) -> bool:
         return self._valid
 
@@ -64,10 +61,7 @@ class DeviceSpecification:
     def from_dict(self, _dict: dict):
         errors = 0
         if 'hardware' in _dict:
-            self.hardware = ImplementedDevices.ImplementedDevices.from_int(_dict['hardware'])
-            errors = errors + 1
-        if 'hardware_type_name' in _dict:
-            self.hardware_type_name = str(_dict['hardware_type_name'])
+            self.hardware = ImplementedDevices.ImplementedDevices.from_int(_dict['hardware']).value
             errors = errors + 1
         if 'device_id' in _dict:
             self.device_id = _dict['device_id']

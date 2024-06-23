@@ -86,18 +86,37 @@ class Devices:
         if 'enabled' in r:
             return bool(r.get('enabled'))
         return False
+
     @staticmethod
-    def UpdateDeviceStatus(_id: str, _last_request: str, _dict: dict):
-        if Devices.CheckDeviceExists(_id):
+    def UpdateDeviceSpecification(spec: DeviceSpecification.DeviceSpecification) -> bool:
+        if Devices.CheckDeviceExists(spec.device_id):
             dr: dict = {}
-            dr.update(Devices.GetDeviceRecord(_id))
-            if dr:
-                dr.update({'last_request': _last_request, 'status': _dict})
-                id: int = dr.get('id')
-                dr.pop('id', None)
-                dr.pop('device_id', None)
-                #a = Devices.getDB()
-                #a.updateById(id, dr)
+            original_record = Devices.GetDeviceRecord(spec.device_id)
+            update_data = spec.to_dict()
+            id: int = original_record.get('id')
+
+            dr.update(original_record)
+
+            dr.update(update_data)
+            Devices.getDB().updateByQuery({"device_id":spec.device_id}, dr)
+
+            #if dr:
+            #    dr.update(spec.to_dict())
+            #    id: int = original_record.get('id')
+            #    #dr.pop('id')
+            #    Devices.getDB().updateById(id, dr)
+
+                # TODO
+        return False
+    @staticmethod
+    def UpdateDeviceStatus(_id: str, _last_request: str, _dict: dict) -> bool:
+        spec = Devices.GetDeviceSpecification(_id)
+        spec.last_request = _last_request
+
+        #spec.additional_information = _dict
+
+        return Devices.UpdateDeviceSpecification(spec)
+
 
 
     @staticmethod
