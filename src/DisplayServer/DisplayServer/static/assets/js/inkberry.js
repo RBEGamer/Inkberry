@@ -194,7 +194,7 @@ function load_editor_for_device(_id){
 function on_parameter_changed(d){
     console.log(d);
 
-    $.getJSON("/api/update_parameter/" + d.currentTarget.dataset['device_id'] + "/" + d.currentTarget.dataset['tile_id'] + "/"+  d.currentTarget.dataset['parameter'] +"/" + d.currentTarget.value, function( data ) {
+    $.getJSON("/api/update_parameter/" + d.currentTarget.dataset['device_id'] + "/" + d.currentTarget.dataset['tile_id'] + "/"+  d.currentTarget.dataset['parameter'] +"/" + d.currentTarget.value + "/" + d.currentTarget.dataset['is_system_parameter'], function( data ) {
         editor_refresh_rendering(current_loaded_device_id);
     });
 }
@@ -208,10 +208,23 @@ function load_parameters(_id, _parameter_id){
       if(!data['parameters']){return;}
 
       $.each( data['parameters'], function( key, val ) {
-
         const $row = $('<tr></tr>');
         const $col1 = $('<td></td>').text(key);
-        const $input = $('<input/>').attr({ type: 'text', name: key, value: val , 'data-device_id': _id, 'data-tile_id': _parameter_id, 'data-parameter': key});
+        const $input = $('<input/>').attr({ type: 'text', name: key, value: val , 'data-device_id': _id, 'data-tile_id': _parameter_id, 'data-parameter': key, 'data-is_system_parameter': '0'});
+        $input.change(on_parameter_changed);
+
+        const $col2 = $('<td></td>').append($input);
+        $row.append($col1, $col2);
+
+        $('#inkberry_parameter_table_row_block').append($row);
+      });
+
+      $('#inkberry_parameter_table_row_block').append($('<tr>TILE</tr>').append($('<td>TILE</td>'), $('<td>SETTINGS</td>')));
+
+      $.each( data['system_parameters'], function( key, val ) {
+        const $row = $('<tr></tr>');
+        const $col1 = $('<td></td>').text(key);
+        const $input = $('<input/>').attr({ type: 'text', name: key, value: val , 'data-device_id': _id, 'data-tile_id': _parameter_id, 'data-parameter': key, 'data-is_system_parameter': '1'});
         $input.change(on_parameter_changed);
 
         const $col2 = $('<td></td>').append($input);

@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="assets/css/Lato.css">
     <link rel="stylesheet" href="assets/css/Montserrat.css">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/Pricing-Free-Paid-badges.css">
+    <link rel="stylesheet" href="assets/css/Pricing-Free-Paid-icons.css">
 $(window).on('load', function(){
         inkberry_init();
 });
@@ -42,7 +44,7 @@ $(window).on('load', function(){
                         <h5></h5>
                     </div>
                     <div class="col">
-                        <p>To change the elements displayed on the Inkberry, please use the rendered image on the left. If you click on elements in it, this settings field shows the possible parameters to be changed. After a change, this display is updated immediately.</p>
+                        <p class="font-weight-bolder" style="text-align: justify;font-size: 23px;">To change the elements displayed on the Inkberry, please use the rendered image on the left. If you click on elements in it, this settings field shows the possible parameters to be changed. After a change, this display is updated immediately.</p>
                     </div>
                     <div class="col-2">
                         <h1></h1>
@@ -68,21 +70,31 @@ $(window).on('load', function(){
             <div class="row">
                 <div class="col-7" id="inkberry_device_editor_canvas_container" style="color: var(--white);"><canvas id="inkberry_device_editor_canvas" width="100%" height="100%"> </canvas></div>
                 <div class="col-5">
-                    <h4>PARAMETER</h4>
-                    <h3 class="font-weight-bolder text-center" id="inkberry_user_selected_parameter_id_text">---</h3>
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead id="inkberry_parameter_table_row_block">
-                                <tr>
-                                    <th>---</th>
-                                    <th>---</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr></tr>
-                                <tr></tr>
-                            </tbody>
-                        </table>
+                    <div class="row">
+                        <div class="col">
+                            <h4>PARAMETER</h4>
+                        </div>
+                        <div class="col">
+                            <h4 class="font-weight-bolder text-center" id="inkberry_user_selected_parameter_id_text">---</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead id="inkberry_parameter_table_row_block">
+                                        <tr>
+                                            <th>---</th>
+                                            <th>---</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr></tr>
+                                        <tr></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -93,7 +105,7 @@ $(window).on('load', function(){
                     <div class="container">
                         <div class="text-white bg-dark border rounded border-dark p-4 p-md-5">
                             <h2 class="font-weight-bold text-white mb-3">FINAL SCREEN</h2>
-                            <p>The following images reflect the expected image displayed (with the settings from above) on the Inkberry device. Please note that these changes will not be visible until the Inkberry hardware has gone through an update cycle. This depends on the set refresh rate. A manual refresh is possible via the WAKE-UP button on the Inkberry hardware itself.</p><img id="inkberry_device_renderered_image" src="assets/img/portfolio/first_test_frame_2023-Jun-13_12-58-18PM-000_CustomizedView5355212567_png.png" width="100%" style="margin: initial;padding-right: 20%;padding-left: 20%;">
+                            <p class="font-weight-bolder" style="text-align: justify;font-size: 23px;">The following images reflect the expected image displayed on the Inkberry device. Please note that these changes will not be visible until the Inkberry hardware has gone through an update cycle. This depends on the set refresh rate. A manual refresh is possible via the button on the display itself.</p><img id="inkberry_device_renderered_image" src="assets/img/portfolio/first_test_frame_2023-Jun-13_12-58-18PM-000_CustomizedView5355212567_png.png" width="100%" style="margin: initial;padding-right: 20%;padding-left: 20%;">
                         </div>
                     </div>
                 </section>

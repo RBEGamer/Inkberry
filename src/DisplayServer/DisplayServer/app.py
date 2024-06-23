@@ -45,12 +45,17 @@ def api_list_devices():
     return jsonify(ret)
 
 
-@app_flask.route('/api/update_parameter/<string:device_id>/<string:tile_id>/<string:parameter_id>/<string:value>')
-def api_update_parameter(device_id: str, tile_id: str, parameter_id: str ,value: str):
+@app_flask.route('/api/update_parameter/<string:device_id>/<string:tile_id>/<string:parameter_id>/<string:value>/<string:is_system_parameter>')
+def api_update_parameter(device_id: str, tile_id: str, parameter_id: str ,value: str, is_system_parameter: str):
     device_id = bleach.clean(device_id)
     tile_id = bleach.clean(tile_id)
     parameter_id = bleach.clean(parameter_id)
     value = bleach.clean(value)
+
+    try:
+        is_system_parameter = bool(int(bleach.clean(is_system_parameter)))
+    except Exception:
+        is_system_parameter = False
 
     ret = {"error": None}
     if not Devices.Devices.CheckDeviceExists(device_id):
@@ -61,8 +66,19 @@ def api_update_parameter(device_id: str, tile_id: str, parameter_id: str ,value:
         # TODO REWORK DICT
         for idx, tile in enumerate(device_spec.tile_specifications):
             if tile_id == tile.name:
-                if parameter_id in device_spec.tile_specifications[idx].parameters:
-                    device_spec.tile_specifications[idx].parameters[parameter_id] = value
+
+                if is_system_parameter:
+                        try:
+                            if parameter_id == "enabled":
+                                if value == "true" or value == "1" or value == "True":
+                                    device_spec.tile_specifications[idx].enabled = True
+                                elif value == "false" or value == "0" or value == "False":
+                                    device_spec.tile_specifications[idx].enabled = False
+                        except Exception:
+                            pass
+                else:
+                    if parameter_id in device_spec.tile_specifications[idx].parameters:
+                        device_spec.tile_specifications[idx].parameters[parameter_id] = value
                 break
 
 
@@ -74,17 +90,23 @@ def api_get_parameter_list(device_id: str, parameter_id: str):
     device_id = bleach.clean(device_id)
     parameter_id = bleach.clean(parameter_id)
 
-    ret = {"error": None, 'parameters': []}
+    ret = {"error": None, 'parameters': [], 'system_parameters': []}
     if not Devices.Devices.CheckDeviceExists(device_id):
         ret.update({'error': 'invalid_device'})
     else:
         device_spec = Devices.Devices.GetDeviceSpecification(device_id)
 
-    # TODO REVIRE LIST TO DICT APPROACH WITH UNIQUE ID
 
+        # TODO REWORK
+        # ADD OPTIONAL PARAMETERS FROM TILE
         for tile in device_spec.tile_specifications:
             if parameter_id == tile.name:
                 ret.update({'parameters': tile.parameters})
+
+                # ADD SYSTEM PARAMETERS EQUAL FOR EACH TILE
+                ret.update({'system_parameters': {'enabled': tile.enabled}})
+
+
 
         return jsonify(ret)
 

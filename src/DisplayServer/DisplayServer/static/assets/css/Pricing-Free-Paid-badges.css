@@ -1,0 +1,34 @@
+.bg-white-300 {
+  background: rgba(255, 255, 255, 0.3) !important;
+}
+
+.top-0 {
+  top: 0!important;
+}
+
+.end-0 {
+  right: 0!important;
+}
+
+.start-0 {
+  left: 0!important;
+}
+
+.start-50 {
+  left: 50%!important;
+}
+
+.translate-middle {
+  transform: translate(-50%,-50%)!important;
+}
+
+.rounded-bottom-left {
+  border-radius: 0;
+  border-bottom-left-radius: 0.25rem!important;
+}
+
+.rounded-bottom-right {
+  border-radius: 0;
+  border-bottom-right-radius: 0.25rem!important;
+}
+
