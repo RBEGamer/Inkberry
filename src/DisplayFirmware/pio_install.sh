@@ -8,8 +8,8 @@ fi
 apt install curl wget screen -y
 apt install python3-pip -y
 apt install python3.6-venv -y
-
-
+apt install python3-dev libffi-dev libssl-dev -y
+apt install libbz2-dev -y
 
 cd ~
 curl -fsSL -o get-platformio.py https://raw.githubusercontent.com/platformio/platformio-core-installer/master/get-platformio.py
