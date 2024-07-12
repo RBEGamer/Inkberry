@@ -1,11 +1,15 @@
 #!/bin/bash
 
-if ! command -v pio & /dev/null
+command="pio"
+if [ "$(which "$command")" != "" ]; 
 then
-    echo "pio could not be found"
-else
+    echo "pio found -> no installation needed"
     exit 1
+else
+    echo "pio not found -> install required"
 fi
+
+
 
 if [ "$EUID" -ne 0 ]
   then echo "Please run as root"
