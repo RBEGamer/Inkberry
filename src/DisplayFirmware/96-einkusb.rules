@@ -1,1 +1,1 @@
-SUBSYSTEM=="tty", ATTRS{idVendor}=="2341", ATTRS{idProduct}=="804f", SYMLINK+="ttyEINK"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1A86", ATTRS{idProduct}=="55D3", SYMLINK+="ttyEINK"
