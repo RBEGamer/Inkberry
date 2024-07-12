@@ -4,7 +4,7 @@ command="pio"
 if [ "$(which "$command")" != "" ]; 
 then
     echo "pio found -> no installation needed"
-    exit 1
+    exit 0
 else
     echo "pio not found -> install required"
 fi
