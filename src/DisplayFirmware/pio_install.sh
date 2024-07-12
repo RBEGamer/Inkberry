@@ -33,5 +33,7 @@ ln -s ~/.platformio/penv/bin/pio /usr/local/bin/pio
 ln -s ~/.platformio/penv/bin/piodebuggdb /usr/local/bin/piodebuggdb
 
 
+usermod -a -G dialout $USER
+
 
 pio upgrade
