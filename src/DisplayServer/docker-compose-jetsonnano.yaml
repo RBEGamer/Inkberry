@@ -1,0 +1,50 @@
+services:
+
+
+  inkberry-displayserver:
+    container_name: inkberry-displayserver
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: inkberry-displayserver:latest
+    restart: unless-stopped
+
+    environment:
+      - FLASK_DEBUG=0
+      - FLASK_HOST=0.0.0.0
+      - FLASK_PORT=55556
+
+      # DATABASE SETUP
+      - MONGODB_URI=mongodb://inkberry:inkberry@mongo/
+      - MONGODB_DB=inkberry
+      - MONGODB_COLLECTION=displayserver
+
+    expose:
+      - 55556
+
+    ports:
+      - 55556:55556
+    links:
+      - inkberry-mongo
+
+    depends_on:
+      - inkberry-mongo
+
+  inkberry-mongo:
+    container_name: inkberry-mongo
+    image: mongo:4.2.6
+    ports:
+      - 21016:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=inkberry
+      - MONGO_INITDB_ROOT_PASSWORD=inkberry
+      - MONGO_INITDB_DATABASE=inkberry
+      - MONGODB_COLLECTION=displayserver
+    volumes:
+      - mongo-data:/data/db
+
+
+# Define named volumes
+volumes:
+  mongo-data:
+    driver: local
