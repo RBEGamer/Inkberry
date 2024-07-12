@@ -1,5 +1,12 @@
 #!/bin/bash
 
+if ! command -v pio & /dev/null
+then
+    echo "pio could not be found"
+else
+    exit 1
+fi
+
 if [ "$EUID" -ne 0 ]
   then echo "Please run as root"
   exit
