@@ -1,7 +1,7 @@
 class GridPosition:
 
-    pos_x: int
-    pos_y: int
+    pos_x: int = 0
+    pos_y: int = 0
     size_w: int = 0
     size_h: int = 0
     _valid: bool = True

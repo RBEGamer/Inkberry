@@ -198,11 +198,6 @@ def api_render(id: str):
         svg = SVGTemplates.SVGTemplates.GenerateCurrentDeviceScreen(id, device_spec, target_width)
 
 
-
-    # SCALE TO DEVICE SCREEN SIZE
-    # TODO target_width
-
-
     # RETURN AS SVG OR PNG TO CLIENT
 
     if type == "png":

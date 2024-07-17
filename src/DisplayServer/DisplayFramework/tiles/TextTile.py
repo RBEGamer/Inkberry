@@ -16,7 +16,7 @@ class TextTile(BaseTile.BaseTile):
         }
     }
 
-    spec: TileSpecification.TileSpecification =  TileSpecification.TileSpecification()
+    spec: TileSpecification.TileSpecification = TileSpecification.TileSpecification()
 
     def __init__(self, _specification: TileSpecification.TileSpecification):
         self.spec = _specification

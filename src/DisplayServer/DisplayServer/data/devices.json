@@ -2,131 +2,30 @@
    "data": [
       {
          "hardware": 1,
-         "device_id": "booking",
+         "device_id": "home",
          "enabled": true,
          "display_orientation": 0,
-         "allocation": "FH - E020",
+         "allocation": "HOME",
          "last_request": "",
-         "screen_size_w": 825,
-         "screen_size_h": 1200,
+         "screen_size_w": 800,
+         "screen_size_h": 480,
          "wakeup_interval": 1,
          "content_scale": 1.0,
          "id": 136168391603048615,
          "tile_specifications": [
             {
-               "name": "RoomNumber",
-               "module_name": "DisplayFramework.tiles.TextTile.TextTile",
+               "name": "SETUP QR CODE",
+               "module_name": "DisplayFramework.tiles.QrTile.QrTile",
                "parameters": {
-                  "text": "E 020",
-                  "fontsize": "10",
-                  "charakter_rotation": 0
-               },
-               "position": {
-                  "pos_x": 0,
-                  "pos_y": 0,
-                  "size_w": 500,
-                  "size_h": 250
-               },
-               "enabled": true
-            },
-            {
-               "name": "RoomName",
-               "module_name": "DisplayFramework.tiles.TextTile.TextTile",
-               "parameters": {
-                  "text": "Makerspace",
-                  "fontsize": "5",
-                  "charakter_rotation": 0
-               },
-               "position": {
-                  "pos_x": 20,
-                  "pos_y": 170,
-                  "size_w": 500,
-                  "size_h": 120
-               },
-               "enabled": true
-            },
-            {
-               "name": "RoomOwner",
-               "module_name": "DisplayFramework.tiles.TextTile.TextTile",
-               "parameters": {
-                  "text": "Christoph Gollok",
-                  "fontsize": "3",
-                  "charakter_rotation": 0
-               },
-               "position": {
-                  "pos_x": -20,
-                  "pos_y": 270,
-                  "size_w": 500,
-                  "size_h": 80
-               },
-               "enabled": false
-            },
-            {
-               "name": "RoomPhone",
-               "module_name": "DisplayFramework.tiles.TextTile.TextTile",
-               "parameters": {
-                  "text": "Tel. +49 241 6009 54437",
-                  "fontsize": "1.5",
-                  "charakter_rotation": 0
-               },
-               "position": {
-                  "pos_x": -60,
-                  "pos_y": 350,
-                  "size_w": 500,
-                  "size_h": 40
-               },
-               "enabled": true
-            },
-            {
-               "name": "RoomMail",
-               "module_name": "DisplayFramework.tiles.TextTile.TextTile",
-               "parameters": {
-                  "text": "makerspace@fh-aachen.de",
-                  "fontsize": "1.5",
-                  "charakter_rotation": 0
-               },
-               "position": {
-                  "pos_x": -48,
-                  "pos_y": 390,
-                  "size_w": 500,
-                  "size_h": 40
-               },
-               "enabled": true
-            },
-            {
-               "name": "Logo Image Tile Test",
-               "module_name": "DisplayFramework.tiles.ImageTile.ImageTile",
-               "parameters": {
-                  "url": "FHAachen-logo2010.svg.png",
+                  "url": "https://inkberry.marcelochsendorf.com/static/index.html",
                   "rotation": 0,
                   "image_rotation": 0,
-                  "preserve_aspect_ration": 1,
-                  "scale_factor": 0.8
+                  "preserve_aspect_ratio": 1,
+                  "scale_factor": "0.5"
                },
                "position": {
-                  "pos_x": 700,
-                  "pos_y": 10,
-                  "size_w": 0,
-                  "size_h": 0
-               },
-               "enabled": true
-            },
-            {
-               "name": "Table View Test",
-               "module_name": "DisplayFramework.tiles.TableViewTile.TableViewTile",
-               "parameters": {
-                  "url": "opening_hours.csv",
-                  "scale_factor": 0.65,
-                  "figure_aspect_ratio": "6:3",
-                  "title": "Opening Hours         ",
-                  "figure_scale_factor": 0.8,
-                  "tile_size": 18,
-                  "image_rotation": 0,
-                  "show_lines": 0
-               },
-               "position": {
-                  "pos_x": 0,
-                  "pos_y": 440,
+                  "pos_x": 50,
+                  "pos_y": 50,
                   "size_w": 0,
                   "size_h": 0
                },

@@ -14,16 +14,16 @@ from PIL import Image
 class ImageTile(BaseTile.BaseTile):
 
     DEFAULT_PARAMETER: dict = {
-        "types":{
+        "types": {
             "url": "str",
             "rotation": "int",
-            "preserve_aspect_ration": "bool",
+            "preserve_aspect_ratio": "bool",
             "image_rotation": "int",
             "scale_factor": "float"
         },"default":{
             "url": "",
             "rotation": "0",
-            "preserve_aspect_ration": 1,
+            "preserve_aspect_ratio": 1,
             "image_rotation": 0,
             "scale_factor": 1.0
         }
@@ -54,40 +54,40 @@ class ImageTile(BaseTile.BaseTile):
     def get_parameter_current(self) -> dict:
         return self.spec.parameters
 
-
-    def generate_image_container(self, _image: PIL.Image) -> structure.Svg:
+    @staticmethod
+    def generate_image_container(_image: PIL.Image, _spec: TileSpecification.TileSpecification) -> structure.Svg:
         svg_document: structure.Svg = structure.Svg()
-        svg_document.set_id(self.spec.name)
-        svg_document.set_x(self.spec.position.pos_x)
-        svg_document.set_y(self.spec.position.pos_y)
+        svg_document.set_id(_spec.name)
+        svg_document.set_x(_spec.position.pos_x)
+        svg_document.set_y(_spec.position.pos_y)
 
-        if int(self.spec.parameters.get('rotation', 0)) > 0:
-            svg_document.set_transform("rotate(-{})".format(self.spec.parameters.get('rotation', 0)))
+        if int(_spec.parameters.get('rotation', 0)) > 0:
+            svg_document.set_transform("rotate(-{})".format(_spec.parameters.get('rotation', 0)))
 
 
-        image_rotation: int = int(self.spec.parameters.get('image_rotation', 1)) % 360
+        image_rotation: int = int(_spec.parameters.get('image_rotation', 1)) % 360
         if image_rotation != 0:
             loaded_image = _image.rotate(image_rotation, expand=True)
 
         # SCALE IMAGE
         width_org, height_org = _image.size
-        scale_factor: float = abs(float(self.spec.parameters.get('scale_factor', 1.0)))
+        scale_factor: float = abs(float(_spec.parameters.get('scale_factor', 1.0)))
         # CALCULATE NEW SVG BOX
         loaded_image = _image.resize((int(width_org * scale_factor), int(height_org * scale_factor)))
         # GET NEW IMAGE SIZE
         width, height = loaded_image.size
 
         # RESIZE SVG CONTAINER TO FIT IMAGE
-        if self.spec.position.size_w <= 0 or self.spec.position.size_w <= 0:
-            self.spec.position.size_w = width
-            self.spec.position.size_h = height
+        if _spec.position.size_w <= 0 or _spec.position.size_w <= 0:
+            _spec.position.size_w = width
+            _spec.position.size_h = height
 
-        svg_document.set_width(self.spec.position.size_w)
-        svg_document.set_height(self.spec.position.size_h)
+        svg_document.set_width(_spec.position.size_w)
+        svg_document.set_height(_spec.position.size_h)
 
         # FINALLY CREATE IMAGE SVG ELEMENT
         preserve_aspect_ration: bool = True
-        if not bool(int(self.spec.parameters.get('preserve_aspect_ration', 1))):
+        if not bool(int(_spec.parameters.get('preserve_aspect_ration', 1))):
             preserve_aspect_ration = False
 
         i = structure.Image('0%', '0%', width=width, height=height, preserveAspectRatio=preserve_aspect_ration)
@@ -115,4 +115,4 @@ class ImageTile(BaseTile.BaseTile):
         # CREATE IMAGE ELEMENT
         loaded_image = Image.open(image_path)
 
-        return self.generate_image_container(loaded_image)
+        return ImageTile.generate_image_container(loaded_image, self.spec)
