@@ -2,6 +2,14 @@ var current_svg_content = "";
 var current_loaded_device_id = "";
 var current_svg_clickable_areas = [];
 
+
+function open_render_preview_popup(_type = "html"){
+    console.log("open_render_preview_popup " + _type);
+    
+    window.open("/api/render/" + current_loaded_device_id + "?type=" + _type, '_blank');
+}
+
+
 function resize_canvas(_width = null, _height = null){
     if(!_width){
      _width = $("#inkberry_device_editor_canvas_container").width();
@@ -117,7 +125,7 @@ function load_svg_to_canvas(_id, callback) {
     const dh = $("#inkberry_device_editor_canvas_container").height();
 
     // FETCH SVG
-    const url = '/api/render/' + _id + "?as_png=0&target_width="+ dw +"&ts=" + String(Date.now());
+    const url = '/api/render/' + _id + "?type=svg&target_width="+ dw +"&ts=" + String(Date.now());
 
 
     const svgString = loadSVGSync(url);
@@ -165,7 +173,7 @@ function load_svg_to_canvas(_id, callback) {
 
 
 function editor_refresh_rendering(_id){
-     $("#inkberry_device_renderered_image").attr("src","/api/render/" + _id + "?as_png=1&ts=" +String(Date.now()));
+     $("#inkberry_device_renderered_image").attr("src","/api/render/" + _id + "?type=png&ts=" +String(Date.now()));
      resize_canvas(document.getElementById("inkberry_device_editor_canvas_container").clientWidth, document.getElementById("inkberry_device_editor_canvas_container").clientHeight);
      load_svg_to_canvas(_id);
 }
@@ -265,12 +273,19 @@ function inkberry_init(){
     });
 
     load_available_devices();
-
+    
     var did = getAllUrlParams().did;
     if(did){
         current_loaded_device_id = did;
         load_editor_for_device(current_loaded_device_id);
     }
+    
+    
+    // REGISTER OPEN PREVIEW POPUP BUITTONS EVENT
+    $('#inkberry_open_preview_button_group').on('click', 'button', function(event) {
+        var popup_type = this.textContent.toLowerCase();
+        open_render_preview_popup(popup_type);
+    });
 }
 
 

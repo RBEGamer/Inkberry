@@ -8,8 +8,8 @@
     <title>Home - Inkberry</title>
     <meta name="description" content="A smart eink display">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/Lato.css">
-    <link rel="stylesheet" href="assets/css/Montserrat.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&amp;display=swap">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/Pricing-Free-Paid-badges.css">
     <link rel="stylesheet" href="assets/css/Pricing-Free-Paid-icons.css">
@@ -20,7 +20,7 @@ $(window).on('load', function(){
 
 <body id="page-top">
     <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-secondary text-uppercase" id="mainNav">
-        <div class="container"><a class="navbar-brand js-scroll-trigger" href="/static/index.html">Inkberry</a><button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+        <div class="container"><a class="navbar-brand js-scroll-trigger" href="/static/index.html"><img class="rounded-circle" src="assets/img/first_test_frame_2023-Jun-13_12-58-18PM-000_CustomizedView5355212567_png.png" style="width: 50px;">Inkberry</a><button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <div class="dropdown show" id="inkberry_available_devices_dropdown"><a class="dropdown-toggle d-xl-flex justify-content-xl-start align-items-xl-center" aria-expanded="true" data-toggle="dropdown" href="#">SELECT INKBERRY DEVICE</a>
                     <div class="dropdown-menu show" id="inkberry_available_devices_dropdown_menu"></div>
@@ -106,6 +106,11 @@ $(window).on('load', function(){
                         <div class="text-white bg-dark border rounded border-dark p-4 p-md-5">
                             <h2 class="font-weight-bold text-white mb-3">FINAL SCREEN</h2>
                             <p class="font-weight-bolder" style="text-align: justify;font-size: 23px;">The following images reflect the expected image displayed on the Inkberry device. Please note that these changes will not be visible until the Inkberry hardware has gone through an update cycle. This depends on the set refresh rate. A manual refresh is possible via the button on the display itself.</p><img id="inkberry_device_renderered_image" src="assets/img/portfolio/first_test_frame_2023-Jun-13_12-58-18PM-000_CustomizedView5355212567_png.png" width="100%" style="margin: initial;padding-right: 20%;padding-left: 20%;">
+                            <div class="row">
+                                <div class="col" style="margin: auto;padding: 50px;">
+                                    <div class="btn-group" role="group" id="inkberry_open_preview_button_group"><button class="btn btn-primary" id="inkberry_open_preview_popup_html" type="button">HTML</button><button class="btn btn-primary" id="inkberry_open_preview_popup_png" type="button">PNG</button><button class="btn btn-primary" id="inkberry_open_preview_popup_svg" type="button">SVG</button><button class="btn btn-primary" id="inkberry_open_preview_popup_bmp-1" type="button">PNG</button></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>

@@ -11,7 +11,23 @@ class SVGRenderer:
         # TODO FOR EACH MODULE
         # CALCULATE GRIDSPACE
 
+    @staticmethod
+    def SVGGetSize(_svg: str) -> [int, int]:
+        img_io = io.BytesIO(_svg.encode(encoding="UTF-8"))
+        paths, attributes = svg2paths(img_io)
 
+        svg_size_w: int = 0
+        svg_size_h: int = 0
+        for a in attributes:
+            if 'width' in a and 'height' in a:
+                svg_size_w = int(a['width'])
+                svg_size_h = int(a['height'])
+                break
+        return svg_size_w, svg_size_h
+
+    @staticmethod
+    def SVG2BMP(_svg: str, _device: DeviceSpecification.DeviceSpecification = None)-> BytesIO:
+       pass
 
     @staticmethod
     def SVG2PNG(_svg: str, _device: DeviceSpecification.DeviceSpecification = None) -> BytesIO:

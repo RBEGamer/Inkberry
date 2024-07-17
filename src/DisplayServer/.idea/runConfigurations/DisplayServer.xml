@@ -14,8 +14,9 @@
       <env name="MAGICK_HOME" value="/opt/homebrew/opt/imagemagick" />
     </envs>
     <option name="SDK_HOME" value="/usr/local/bin/python3" />
+    <option name="SDK_NAME" value="Python 3.10 (DisplayServer)" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-    <option name="IS_MODULE_SDK" value="true" />
+    <option name="IS_MODULE_SDK" value="false" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <EXTENSION ID="DockerContainerSettingsRunConfigurationExtension">

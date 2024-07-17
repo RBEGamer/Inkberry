@@ -164,7 +164,7 @@ def api_register(id: str, typename: str):  # put application's code here
 @app_flask.route('/api/render/<string:id>')
 def api_render(id: str):
     id: str = bleach.clean(id)
-    as_png: bool = bool(int(bleach.clean(request.args.get('as_png', default='1'))))
+    type: str = bleach.clean(request.args.get('type', default='png')).lower().strip(' ')
     target_width: int = 0
     try:
         target_width = int(bleach.clean(request.args.get('target_width', default='0')))
@@ -197,19 +197,26 @@ def api_render(id: str):
     else:
         svg = SVGTemplates.SVGTemplates.GenerateCurrentDeviceScreen(id, device_spec, target_width)
 
+
+
     # SCALE TO DEVICE SCREEN SIZE
     # TODO target_width
 
 
     # RETURN AS SVG OR PNG TO CLIENT
-    if not as_png:
-        svgByteArr: io.BytesIO = io.BytesIO(svg.encode(encoding = 'UTF-8'))
-        #svgByteArr.seek(0)
-        return send_file(svgByteArr, mimetype="image/svg+xml")
-    else:
-        png_bytes: io.BytesIO = SVGRenderer.SVGRenderer.SVG2PNG(svg, _device=device_spec)
-        return send_file(png_bytes, mimetype='image/png')
 
+    if type == "png":
+        return send_file(SVGRenderer.SVGRenderer.SVG2PNG(svg, _device=device_spec), mimetype='image/png')
+    elif type == "svg":
+        svgByteArr: io.BytesIO = io.BytesIO(svg.encode(encoding='UTF-8'))
+        return send_file(svgByteArr, mimetype="image/svg+xml")
+    elif type == "html":
+        w, h = SVGRenderer.SVGRenderer.SVGGetSize(svg)
+        rsp = make_response("<html><body><img src='{}{}?type={}' width='{}' height='{}' /></body></html>".format('/api/render/', id, 'svg', w, h), 200)
+        rsp.mimetype = "text/html"
+        return rsp
+    else:
+        return send_file(SVGRenderer.SVGRenderer.SVG2BMP(svg, _device=device_spec), mimetype='image/bmp')
 
 
 
