@@ -207,7 +207,7 @@ def api_render(id: str):
         return send_file(svgByteArr, mimetype="image/svg+xml")
     elif type == "html":
         w, h = SVGRenderer.SVGRenderer.SVGGetSize(svg)
-        rsp = make_response("<html><body><img src='{}{}?type={}' width='{}' height='{}' /></body></html>".format('/api/render/', id, 'svg', w, h), 200)
+        rsp = make_response("<html><head><meta http-equiv='refresh' content='60'></head><body><img src='{}{}?type={}' width='{}' height='{}' /></body></html>".format('/api/render/', id, 'svg', w, h), 200)
         rsp.mimetype = "text/html"
         return rsp
     else:
