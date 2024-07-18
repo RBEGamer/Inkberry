@@ -2,7 +2,7 @@ FROM python:3.8
 LABEL authors="marcelochsendorf"
 
 
-RUN apt update && apt upgrade -y && apt install -y libcairo2 libcairo2-dev libxt-dev
+RUN apt update && apt upgrade -y && apt install -y libcairo2 libcairo2-dev libxt-dev libmagickwand-dev
 
 WORKDIR /usr/src/app
 

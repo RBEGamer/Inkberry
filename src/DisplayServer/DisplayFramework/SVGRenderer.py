@@ -1,6 +1,8 @@
 import io
 from io import BytesIO
 import cairosvg
+
+import wand.image
 from svgpathtools import svg2paths
 from DisplayFramework import DeviceSpecification
 class SVGRenderer:
@@ -27,7 +29,16 @@ class SVGRenderer:
 
     @staticmethod
     def SVG2BMP(_svg: str, _device: DeviceSpecification.DeviceSpecification = None)-> BytesIO:
-       pass
+
+        png_bytes: BytesIO = SVGRenderer.SVG2PNG(_svg, _device)
+        bmp_bytes = io.BytesIO()
+
+        with wand.image.Image(file=png_bytes) as img:
+            img.format = 'bmp'
+            img.save(file=bmp_bytes)
+
+        bmp_bytes.seek(0)  # Move to the beginning of the stream
+        return bmp_bytes
 
     @staticmethod
     def SVG2PNG(_svg: str, _device: DeviceSpecification.DeviceSpecification = None) -> BytesIO:
