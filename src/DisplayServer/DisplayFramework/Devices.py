@@ -67,6 +67,13 @@ class Devices:
             return {}
         return k
 
+    @staticmethod
+    def GetRandomDeviceSpecification() -> DeviceSpecification.DeviceSpecification:
+        d: dict = Devices.GetRandomDeviceRecord()
+        if d is not None and 'device_id' in d:
+            return Devices.GetDeviceSpecification(d['device_id'])
+        else:
+            return None
 
     @staticmethod
     def GetDeviceSpecification(_id: str) -> DeviceSpecification.DeviceSpecification:

@@ -4,7 +4,7 @@ import os
 from datetime import datetime
 from pathlib import Path
 
-
+import flask
 from flask import Flask, request, jsonify, make_response, redirect, render_template, g, send_file
 from waitress import serve
 from flask_cors import CORS, cross_origin
@@ -23,25 +23,26 @@ cors = CORS(app_flask)
 app_flask.config['CORS_HEADERS'] = 'Content-Type'
 terminate_flask: bool = False
 
-
 # CONFIGURE COMPONENTS
 ## SETUP DATABASE FILE FOR STORING DEVICES
 Devices.Devices.SetDatabaseFolder(str(Path(str(os.path.dirname(__file__))).joinpath("data/")))
 BaseTile.BaseTileSettings.SetResourceFolder(str(Path(str(os.path.dirname(__file__))).joinpath("resources/")))
+
 
 @app_flask.errorhandler(404)
 def page_not_found(e):
     return redirect("/", 404)
 
 
-
 @app_flask.route('/')
 def hello_world():  # put application's code here
     return redirect('/{}/index.html'.format(STATIC_FOLDER_NAME))
 
+
 @app_flask.route('/favicon.ico')
 def favicon_redirect():  # put application's code here
     return redirect('/{}/favicon.ico'.format(STATIC_FOLDER_NAME))
+
 
 @app_flask.route('/api/list_devices')
 def api_list_devices():
@@ -50,12 +51,36 @@ def api_list_devices():
     return jsonify(ret)
 
 
-@app_flask.route('/api/imageapi/<string:image>')
+@app_flask.route('/api/imageapi/<path:image>')
 def imageapi(image: str):
-    return send_file('./static/test.bmp', mimetype='image/bmp')
+    image = bleach.clean(image).strip(' ').strip('/')
 
-@app_flask.route('/api/update_parameter/<string:device_id>/<string:tile_id>/<string:parameter_id>/<string:value>/<string:is_system_parameter>')
-def api_update_parameter(device_id: str, tile_id: str, parameter_id: str ,value: str, is_system_parameter: str):
+    # ALWAYS RETURN AN SCREEN :)
+    # TODO REMOVE HANDLE ERRORS
+    device_spec: DeviceSpecification.DeviceSpecification = None
+    image_type: str = None
+    image_id: str = None
+    if len(image) <= 0 or '.' not in image:
+        device_spec = Devices.Devices.GetRandomDeviceSpecification()
+        image_id = device_spec.device_id
+        image_type = 'bmp'
+    else:
+
+        spr: [str] = image.split(".")
+        image_id = spr[0]
+        image_type = spr[1].lower()
+
+        if Devices.Devices.CheckDeviceExists(image_id):
+            device_spec = Devices.Devices.GetDeviceSpecification(image_id)
+        else:
+            device_spec = Devices.Devices.GetRandomDeviceSpecification()
+
+    return generate_rendered_screen_response(image_id, device_spec, image_type, 0)
+
+
+@app_flask.route(
+    '/api/update_parameter/<string:device_id>/<string:tile_id>/<string:parameter_id>/<string:value>/<string:is_system_parameter>')
+def api_update_parameter(device_id: str, tile_id: str, parameter_id: str, value: str, is_system_parameter: str):
     device_id = bleach.clean(device_id)
     tile_id = bleach.clean(tile_id)
     parameter_id = bleach.clean(parameter_id)
@@ -77,23 +102,24 @@ def api_update_parameter(device_id: str, tile_id: str, parameter_id: str ,value:
             if tile_id == tile.name:
 
                 if is_system_parameter:
-                        try:
-                            if parameter_id == "enabled":
-                                if value == "true" or value == "1" or value == "True":
-                                    device_spec.tile_specifications[idx].enabled = True
-                                elif value == "false" or value == "0" or value == "False":
-                                    device_spec.tile_specifications[idx].enabled = False
-                        except Exception:
-                            pass
+                    try:
+                        if parameter_id == "enabled":
+                            if value == "true" or value == "1" or value == "True":
+                                device_spec.tile_specifications[idx].enabled = True
+                            elif value == "false" or value == "0" or value == "False":
+                                device_spec.tile_specifications[idx].enabled = False
+                    except Exception:
+                        pass
                 else:
                     if parameter_id in device_spec.tile_specifications[idx].parameters:
                         device_spec.tile_specifications[idx].parameters[parameter_id] = value
                 break
 
-
         Devices.Devices.UpdateDeviceSpecification(device_spec)
 
     return jsonify(ret)
+
+
 @app_flask.route('/api/get_parameter_list/<string:device_id>/<string:parameter_id>')
 def api_get_parameter_list(device_id: str, parameter_id: str):
     device_id = bleach.clean(device_id)
@@ -105,7 +131,6 @@ def api_get_parameter_list(device_id: str, parameter_id: str):
     else:
         device_spec = Devices.Devices.GetDeviceSpecification(device_id)
 
-
         # TODO REWORK
         # ADD OPTIONAL PARAMETERS FROM TILE
         for tile in device_spec.tile_specifications:
@@ -115,9 +140,8 @@ def api_get_parameter_list(device_id: str, parameter_id: str):
                 # ADD SYSTEM PARAMETERS EQUAL FOR EACH TILE
                 ret.update({'system_parameters': {'enabled': tile.enabled}})
 
-
-
         return jsonify(ret)
+
 
 @app_flask.route('/api/information/<string:device_id>')
 def api_information(device_id: str):
@@ -131,49 +155,49 @@ def api_information(device_id: str):
         device_spec = Devices.Devices.GetDeviceSpecification(device_id)
 
         ret.update({
-            'hardware': '{} [{}x{} WUP:{}]'.format(device_spec.get_hardware_type().name, device_spec.screen_size_w, device_spec.screen_size_h, device_spec.wakeup_interval),
+            'hardware': '{} [{}x{} WUP:{}]'.format(device_spec.get_hardware_type().name, device_spec.screen_size_w,
+                                                   device_spec.screen_size_h, device_spec.wakeup_interval),
             'name': '{} [{}]'.format(device_spec.allocation, device_spec.device_id),
         })
 
     return jsonify(ret)
 
 
-
-@app_flask.route('/api/state/<string:id>')
-def api_state(id: str):  # put application's code here
+@app_flask.route('/api/state/<string:did>')
+def api_state(did: str):  # put application's code here
 
     rd: dict = {}
     for k in request.args.keys():
         ks: str = bleach.clean(k)
         rd.update({ks: bleach.clean(request.args.get(k, default=''))})
 
-    Devices.Devices.UpdateDeviceStatus(bleach.clean(id), str(datetime.now()), rd)
+    Devices.Devices.UpdateDeviceStatus(bleach.clean(did), str(datetime.now()), rd)
 
-
-    if not Devices.Devices.CheckDeviceExists(bleach.clean(id)):
+    if not Devices.Devices.CheckDeviceExists(bleach.clean(did)):
         return "CheckDeviceExistsFailed", 200
 
-    if Devices.Devices.CheckForUpdatedData(bleach.clean(id)):
+    if Devices.Devices.CheckForUpdatedData(bleach.clean(did)):
         return "RefreshRequired", 200
 
     return "", 200
 
 
-@app_flask.route('/api/register/<id>/<string:typename>')
-def api_register(id: str, typename: str):  # put application's code here
-    id = bleach.clean(id)
+@app_flask.route('/api/register/<string:did>/<string:typename>')
+def api_register(did: str, typename: str):  # put application's code here
+    did = bleach.clean(did)
     typename = bleach.clean(typename)
 
     ret = {}
-    if not Devices.Devices.CheckDeviceExists(id):
-        ret = Devices.Devices.CreateDeviceFromName(typename, id)
+    if not Devices.Devices.CheckDeviceExists(did):
+        ret = Devices.Devices.CreateDeviceFromName(typename, did)
 
     return jsonify(ret)
 
-@app_flask.route('/api/render/<string:id>')
-def api_render(id: str):
-    id: str = bleach.clean(id)
-    type: str = bleach.clean(request.args.get('type', default='png')).lower().strip(' ')
+
+@app_flask.route('/api/render/<string:did>')
+def api_render(did: str):
+    did: str = bleach.clean(did)
+    image_type: str = bleach.clean(request.args.get('type', default='png')).lower().strip(' ')
     target_width: int = 0
     try:
         target_width = int(bleach.clean(request.args.get('target_width', default='0')))
@@ -185,50 +209,61 @@ def api_render(id: str):
 
     # GET DEVICE RESOLUTION
     device_spec: DeviceSpecification.DeviceSpecification = None
-    if id == "":
-        device_spec = Devices.Devices.GetRandomDeviceRecord()
+    if did == "":
+        device_spec = Devices.Devices.GetRandomDeviceSpecification()
     else:
-        device_spec = Devices.Devices.GetDeviceSpecification(id)
+        device_spec = Devices.Devices.GetDeviceSpecification(did)
 
-    if not target_width or  target_width > 0:
+    if not target_width or target_width > 0:
         target_width = target_width
     else:
         target_width = 0
 
+    return generate_rendered_screen_response(did, device_spec, image_type, target_width)
+
+
+def generate_rendered_screen_response(did: str, device_spec: DeviceSpecification.DeviceSpecification, image_type: str,
+                                      target_width: int = 0) -> flask.Response:
     # GENERATE SVG IMAGE
     svg: str = ""
     if not device_spec.is_valid():
         pass
-    elif not Devices.Devices.CheckDeviceExists(id):
-        svg = SVGTemplates.SVGTemplates.GenerateDeviceSetupScreen(id, device_spec, target_width)
-    elif not Devices.Devices.CheckDeviceEnabled(id):
-        svg = SVGTemplates.SVGTemplates.GenerateDeviceDisabledScreen(id, device_spec, target_width)
+    elif not Devices.Devices.CheckDeviceExists(did):
+        svg = SVGTemplates.SVGTemplates.GenerateDeviceSetupScreen(did, device_spec, target_width)
+    elif not Devices.Devices.CheckDeviceEnabled(did):
+        svg = SVGTemplates.SVGTemplates.GenerateDeviceDisabledScreen(did, device_spec, target_width)
     else:
-        svg = SVGTemplates.SVGTemplates.GenerateCurrentDeviceScreen(id, device_spec, target_width)
-
+        svg = SVGTemplates.SVGTemplates.GenerateCurrentDeviceScreen(did, device_spec, target_width)
 
     # RETURN AS SVG OR PNG TO CLIENT
 
-    if type == "png":
-        return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.PNG), mimetype='image/png')
-    elif type == "pdf":
-        return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.PDF), mimetype='application/pdf')
-    elif type == "ps":
-        return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.PS), mimetype='application/pdf')
-    elif type == "eps":
-        return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.EPS), mimetype='application/pdf')
-    elif type == "svg":
-        return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.SVG), mimetype='image/svg+xml')
-        #svgByteArr: io.BytesIO = io.BytesIO(svg.encode(encoding='UTF-8'))
-        #return send_file(svgByteArr, mimetype="image/svg+xml")
-    elif type == "html":
+    if image_type == "png":
+        return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.PNG),
+                         mimetype='image/png')
+    elif image_type == "pdf":
+        return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.PDF),
+                         mimetype='application/pdf')
+    elif image_type == "ps":
+        return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.PS),
+                         mimetype='application/pdf')
+    elif image_type == "eps":
+        return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.EPS),
+                         mimetype='application/pdf')
+    elif image_type == "svg":
+        return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.SVG),
+                         mimetype='image/svg+xml')
+        # svgByteArr: io.BytesIO = io.BytesIO(svg.encode(encoding='UTF-8'))
+        # return send_file(svgByteArr, mimetype="image/svg+xml")
+    elif image_type == "html":
         w, h = SVGRenderer.SVGRenderer.SVGGetSize(svg)
-        rsp = make_response("<html><head><meta http-equiv='refresh' content='60'></head><body><img src='{}{}?type={}' width='{}' height='{}' /></body></html>".format('/api/render/', id, 'svg', w, h), 200)
+        rsp = make_response(
+            "<html><head><meta http-equiv='refresh' content='60'></head><body><img src='{}{}?type={}' width='{}' height='{}' /></body></html>".format(
+                '/api/render/', id, 'svg', w, h), 200)
         rsp.mimetype = "text/html"
         return rsp
     else:
-        return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.BMP), mimetype='image/bmp')
-
+        return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.BMP),
+                         mimetype='image/bmp')
 
 
 def flask_server_task(_config: dict):
@@ -248,7 +283,6 @@ def flask_server_task(_config: dict):
         serve(app_flask, host=host, port=port)
 
 
-
 @app_typer.command()
 def launch(typer_ctx: typer.Context, port: int = 55556, host: str = "0.0.0.0", debug: bool = False):
     global terminate_flask
@@ -262,11 +296,10 @@ def launch(typer_ctx: typer.Context, port: int = 55556, host: str = "0.0.0.0", d
     flask_server: multiprocessing.Process = multiprocessing.Process(target=flask_server_task, args=(flask_config,))
     flask_server.start()
 
-    while( not terminate_flask):
+    while (not terminate_flask):
         print("DisplayServer started. http://{}:{}/".format(host, port))
         if typer.prompt("Terminate  [Y/n]", 'y') == 'y':
             break
-
 
     # STOP
     flask_server.terminate()
@@ -284,9 +317,10 @@ def main(ctx: typer.Context, basepath: str = ""):
         BaseTile.BaseTileSettings.SetResourceFolder(str(pathlib.Path(__file__).parent.resolve().joinpath('resources')))
 
     Devices.Devices.CreateDevice(Devices.ImplementedDevices.ImplementedDevices.ARDUINO_ESP32_7_5_INCH, "boom")
+
+
 def run():
     app_typer()
-
 
 
 if __name__ == "__main__":
