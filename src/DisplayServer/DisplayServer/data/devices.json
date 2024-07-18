@@ -1,11 +1,14 @@
 {
    "data": [
       {
-         "hardware": 1,
+         "hardware": 4,
          "device_id": "home",
          "enabled": true,
          "display_orientation": 0,
          "allocation": "HOME",
+         "colorspace": 0,
+         "image_filter": 1,
+         "auth_token": "",
          "last_request": "",
          "screen_size_w": 800,
          "screen_size_h": 480,
@@ -18,10 +21,7 @@
                "module_name": "DisplayFramework.tiles.QrTile.QrTile",
                "parameters": {
                   "url": "https://inkberry.marcelochsendorf.com/static/index.html",
-                  "rotation": 0,
-                  "image_rotation": 0,
-                  "preserve_aspect_ratio": 1,
-                  "scale_factor": "0.5"
+                  "scale_factor": "1.0"
                },
                "position": {
                   "pos_x": 50,
@@ -30,6 +30,23 @@
                   "size_h": 0
                },
                "enabled": true
+            },{
+               "enabled": true,
+               "name": "Logo Image Tile Test",
+               "module_name": "DisplayFramework.tiles.ImageTile.ImageTile",
+               "position": {
+                  "pos_x": 500,
+                  "pos_y": 10,
+                  "size_w": 0,
+                  "size_h": 0
+               },
+               "parameters": {
+                  "url":"FHAachen-logo2010.svg.png",
+                  "rotation": 0,
+                  "image_rotation": 0,
+                  "preserve_aspect_ration": 1,
+                  "scale_factor": 0.8
+               }
             }
          ]
       }

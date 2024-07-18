@@ -3,7 +3,7 @@ class TileSpecification:
 
     name: str = ""
     module_name: str = ""
-    parameters: [dict] = []
+    parameters: dict = {}
     position: GridPosition.GridPosition = GridPosition.GridPosition()
     enabled: bool = True
     _valid: bool = True

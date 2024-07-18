@@ -33,7 +33,7 @@ class BaseTileSettings:
 
         print("BaseTileSettings.RESOURCE_FOLDER = {}".format(BaseTileSettings.RESOURCE_FOLDER))
 
-class BaseTile(ABC):
+class BaseTile:
 
     DEFAULT_PARAMETER: dict = {
         "types": {},
@@ -51,27 +51,28 @@ class BaseTile(ABC):
                 self.spec.parameters[k] = self.DEFAULT_PARAMETER['default'][k]
 
 
-    @abstractmethod
+
     def update_parameters(self, _parameter: dict):
         for k, v in _parameter.items():
-            pass
+            if k in self.spec.parameters:
+                self.spec.parameters[k] = v
 
-    @abstractmethod
+
     def update(self):
         pass
 
-    @abstractmethod
+
     def render(self) -> structure.Svg:
         pass
 
-    @abstractmethod
+
     def get_parameter_types(self) -> dict:
         return self.DEFAULT_PARAMETER['types']
 
-    @abstractmethod
+
     def get_parameter_defaults(self) -> dict:
         return self.DEFAULT_PARAMETER['default']
 
-    @abstractmethod
+
     def get_parameter_current(self) -> dict:
         return self.spec.parameters

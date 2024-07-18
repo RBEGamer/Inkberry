@@ -23,7 +23,7 @@ EpdSpi io;
 Gdew075T7 display(io);
 
 // BMP debug Mode: Turn false for production since it will make things slower and dump Serial debug
-bool bmpDebug = false;
+bool bmpDebug = true;
 
 // IP is sent per post for logging purpouses. Authentication: Bearer token in the headers
 char espIpAddress[16];

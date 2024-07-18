@@ -1,4 +1,5 @@
 import PIL.Image
+from DisplayFramework import BaseTile
 from DisplayFramework.tiles import ImageTile
 from DisplayFramework.pysvg import structure
 
@@ -8,24 +9,18 @@ import qrcode
 import qrcode.image.svg
 import qrcode.image.pil
 
-class QrTile(ImageTile.ImageTile):
+class QrTile(BaseTile.BaseTile):
 
     DEFAULT_PARAMETER: dict = {
         "types": {
             "url": "str",
-            "width": "int"
+            "scale_factor": "int"
         }, "default": {
             "url": "",
-            "width": 10
+            "scale_factor": 0.5
         }
     }
 
-
-
-
-    def update_parameters(self, _parameter: dict):
-        for k, v in _parameter.items():
-            pass
 
     def update(self):
        pass
@@ -42,28 +37,15 @@ class QrTile(ImageTile.ImageTile):
 
     def render(self) -> structure.Svg:
 
-        # CREATE QR ELEMENT
+        # CREATE URL QR ELEMENT
         url: str = self.spec.parameters.get('url', '')
-
+        # CREATE QR CODE IMAGE
         img: PIL.Image = qrcode.make("{}".format(url), image_factory=qrcode.image.pil.PilImage)
-        width, height = img.size
-        #im = img.resize((width // 2, height // 2))
-        #t = 0
-        #buffered: BytesIO = BytesIO()
-        #img.save(buffered)
-        #qr_svg_text: str = buffered.getvalue().decode('utf-8')
 
-        # REMOVE <?xml version='1.0' encoding='UTF-8'?>
-        #sp: [str] = qr_svg_text.split('\n')
-        #if len(sp) > 1:
-        #    if '<?xml' in sp[0]:
-        #        sp.pop(0)
-        #    qr_svg_text = ''.join(sp)
 
-        #svg_document: structure.Svg = structure.Svg()
-        #svg_document.set_id(self.spec.name)
-        #svg_document.set_x(self.spec.position.pos_x)
-        #svg_document.set_y(self.spec.position.pos_y)
-        #svg_document.addElement(structure.BaseElement(self.spec.name))
+        # USE A IMAGE TILE AS BASE TO GENERATE THE SVG FILE OF THE QR IMAGE
+        # CURRENTLY THIS WAY IS USED TO ALWAYS USE THE LATEST TILE SPECIFICATION
+        img_tile: ImageTile.ImageTile = ImageTile.ImageTile(self.spec)
+        img_tile.update_parameters({'scale_factor': self.get_parameter_current()['scale_factor']})
 
-        return ImageTile.ImageTile.generate_image_container(img, self.spec)
+        return ImageTile.ImageTile.generate_image_container(img, img_tile.spec)

@@ -121,8 +121,8 @@ function extractSVGObjects(_xml_doc) {
 function load_svg_to_canvas(_id, callback) {
 
     // GET CANVAS SIZE
-    const dw = $("#inkberry_device_editor_canvas_container").width();
-    const dh = $("#inkberry_device_editor_canvas_container").height();
+    const dw = Math.floor($("#inkberry_device_editor_canvas_container").width() * 0.8);
+    const dh = Math.floor($("#inkberry_device_editor_canvas_container").height());
 
     // FETCH SVG
     const url = '/api/render/' + _id + "?type=svg&target_width="+ dw +"&ts=" + String(Date.now());

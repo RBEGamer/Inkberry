@@ -11,13 +11,36 @@ class DisplayOrientation(Enum):
             return DisplayOrientation(_val)
         except:
             return DisplayOrientation.DP_HORIZONTAL
+class DisplaySupportedColors(Enum):
+    DSC_BW = 0,
+    DSC_BWR = 1
+    DSC_COLOR = 2
 
+    @staticmethod
+    def from_int(_val: int):
+        try:
+            return DisplaySupportedColors(_val)
+        except:
+            return DisplaySupportedColors.DSC_BW
 
+class DisplayImageFilters(Enum):
+    DIF_NONE = 0,
+    DIF_DITHER = 1
+
+    @staticmethod
+    def from_int(_val: int):
+        try:
+            return DisplayImageFilters(_val)
+        except:
+            return DisplayImageFilters.DIF_DITHER
 class DeviceSpecification:
 
-    hardware: int  = ImplementedDevices.ImplementedDevices.SIMULATED.value
+    hardware: int = ImplementedDevices.ImplementedDevices.SIMULATED.value
+    colorspace: DisplaySupportedColors = DisplaySupportedColors.DSC_BW.value
+    image_filter: DisplayImageFilters = DisplayImageFilters.DIF_DITHER.value
     device_id: str = ""
     enabled: bool = False
+    auth_token: str = ""
     allocation: str = "undefined"
     last_request: str = ""
     screen_size_w: int = 1200
@@ -45,7 +68,10 @@ class DeviceSpecification:
             'wakeup_interval': self.wakeup_interval,
             'display_orientation': self.display_orientation.value,
             'tile_specifications': sp,
-            'content_scale': self.content_scale
+            'content_scale': self.content_scale,
+            'auth_token': self.auth_token,
+            'colorspace': self.colorspace.value,
+            'image_filter': self.image_filter.value,
         }
 
     def get_hardware_type(self) -> ImplementedDevices.ImplementedDevices:
@@ -87,6 +113,9 @@ class DeviceSpecification:
         if 'display_orientation' in _dict:
             self.display_orientation = DisplayOrientation.from_int(_dict['display_orientation'])
             errors = errors + 1
+        if 'auth_token' in _dict:
+            self.auth_token = _dict['auth_token']
+            errors = errors + 1
         if 'content_scale' in _dict:
             self.content_scale = float(_dict['content_scale'])
             errors = errors + 1
@@ -95,11 +124,13 @@ class DeviceSpecification:
             for e in _dict['tile_specifications']:
                  self.tile_specifications.append(TileSpecification.TileSpecification(e))
             errors = errors + 1
+        if 'colorspace' in _dict:
+            self.colorspace = DisplaySupportedColors.from_int(_dict['colorspace'])
+        if 'image_filter' in _dict:
+            self.image_filter = DisplayImageFilters.from_int(_dict['image_filter'])
+
         if errors > 0:
             self._valid = True
-
-
-
 
 
     def __init__(self, _load_from_dict: dict = None):

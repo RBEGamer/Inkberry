@@ -33,10 +33,15 @@ BaseTile.BaseTileSettings.SetResourceFolder(str(Path(str(os.path.dirname(__file_
 def page_not_found(e):
     return redirect("/", 404)
 
+
+
 @app_flask.route('/')
 def hello_world():  # put application's code here
     return redirect('/{}/index.html'.format(STATIC_FOLDER_NAME))
 
+@app_flask.route('/favicon.ico')
+def favicon_redirect():  # put application's code here
+    return redirect('/{}/favicon.ico'.format(STATIC_FOLDER_NAME))
 
 @app_flask.route('/api/list_devices')
 def api_list_devices():
@@ -44,6 +49,10 @@ def api_list_devices():
     ret['devices'] = Devices.Devices.GetRegisteredDeviceIds()
     return jsonify(ret)
 
+
+@app_flask.route('/api/imageapi/<string:image>')
+def imageapi(image: str):
+    return send_file('./static/test.bmp', mimetype='image/bmp')
 
 @app_flask.route('/api/update_parameter/<string:device_id>/<string:tile_id>/<string:parameter_id>/<string:value>/<string:is_system_parameter>')
 def api_update_parameter(device_id: str, tile_id: str, parameter_id: str ,value: str, is_system_parameter: str):
