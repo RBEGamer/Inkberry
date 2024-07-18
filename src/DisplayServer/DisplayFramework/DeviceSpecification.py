@@ -1,8 +1,8 @@
 from DisplayFramework import ImplementedDevices, TileSpecification
-from enum import  Enum
+from enum import IntEnum
 
-class DisplayOrientation(Enum):
-    DP_HORIZONTAL = 0
+class DisplayOrientation(IntEnum):
+    DP_HORIZONTAL = 0,
     DP_VERTICAL = 1
 
     @staticmethod
@@ -11,9 +11,9 @@ class DisplayOrientation(Enum):
             return DisplayOrientation(_val)
         except:
             return DisplayOrientation.DP_HORIZONTAL
-class DisplaySupportedColors(Enum):
+class DisplaySupportedColors(IntEnum):
     DSC_BW = 0,
-    DSC_BWR = 1
+    DSC_BWR = 1,
     DSC_COLOR = 2
 
     @staticmethod
@@ -23,7 +23,7 @@ class DisplaySupportedColors(Enum):
         except:
             return DisplaySupportedColors.DSC_BW
 
-class DisplayImageFilters(Enum):
+class DisplayImageFilters(IntEnum):
     DIF_NONE = 0,
     DIF_DITHER = 1
 
@@ -32,7 +32,7 @@ class DisplayImageFilters(Enum):
         try:
             return DisplayImageFilters(_val)
         except:
-            return DisplayImageFilters.DIF_DITHER
+            return DisplayImageFilters.DIF_NONE
 class DeviceSpecification:
 
     hardware: int = ImplementedDevices.ImplementedDevices.SIMULATED.value

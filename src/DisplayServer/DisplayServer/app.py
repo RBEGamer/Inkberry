@@ -44,14 +44,14 @@ def favicon_redirect():  # put application's code here
     return redirect('/{}/favicon.ico'.format(STATIC_FOLDER_NAME))
 
 
-@app_flask.route('/api/list_devices')
+@app_flask.route('/api/list_devices', methods=['GET', 'POST'])
 def api_list_devices():
     ret: dict = {}
     ret['devices'] = Devices.Devices.GetRegisteredDeviceIds()
     return jsonify(ret)
 
 
-@app_flask.route('/api/imageapi/<path:image>')
+@app_flask.route('/api/imageapi/<path:image>', methods=['GET', 'POST'])
 def imageapi(image: str):
     image = bleach.clean(image).strip(' ').strip('/')
 
@@ -79,7 +79,7 @@ def imageapi(image: str):
 
 
 @app_flask.route(
-    '/api/update_parameter/<string:device_id>/<string:tile_id>/<string:parameter_id>/<string:value>/<string:is_system_parameter>')
+    '/api/update_parameter/<string:device_id>/<string:tile_id>/<string:parameter_id>/<string:value>/<string:is_system_parameter>', methods=['GET', 'POST'])
 def api_update_parameter(device_id: str, tile_id: str, parameter_id: str, value: str, is_system_parameter: str):
     device_id = bleach.clean(device_id)
     tile_id = bleach.clean(tile_id)
@@ -120,7 +120,7 @@ def api_update_parameter(device_id: str, tile_id: str, parameter_id: str, value:
     return jsonify(ret)
 
 
-@app_flask.route('/api/get_parameter_list/<string:device_id>/<string:parameter_id>')
+@app_flask.route('/api/get_parameter_list/<string:device_id>/<string:parameter_id>', methods=['GET', 'POST'])
 def api_get_parameter_list(device_id: str, parameter_id: str):
     device_id = bleach.clean(device_id)
     parameter_id = bleach.clean(parameter_id)
@@ -143,7 +143,7 @@ def api_get_parameter_list(device_id: str, parameter_id: str):
         return jsonify(ret)
 
 
-@app_flask.route('/api/information/<string:device_id>')
+@app_flask.route('/api/information/<string:device_id>', methods=['GET', 'POST'])
 def api_information(device_id: str):
     device_id = bleach.clean(device_id)
     ret = {"error": None, 'parameter': []}
@@ -163,7 +163,7 @@ def api_information(device_id: str):
     return jsonify(ret)
 
 
-@app_flask.route('/api/state/<string:did>')
+@app_flask.route('/api/state/<string:did>', methods=['GET', 'POST'])
 def api_state(did: str):  # put application's code here
 
     rd: dict = {}
@@ -182,7 +182,7 @@ def api_state(did: str):  # put application's code here
     return "", 200
 
 
-@app_flask.route('/api/register/<string:did>/<string:typename>')
+@app_flask.route('/api/register/<string:did>/<string:typename>', methods=['GET', 'POST'])
 def api_register(did: str, typename: str):  # put application's code here
     did = bleach.clean(did)
     typename = bleach.clean(typename)
@@ -194,7 +194,7 @@ def api_register(did: str, typename: str):  # put application's code here
     return jsonify(ret)
 
 
-@app_flask.route('/api/render/<string:did>')
+@app_flask.route('/api/render/<string:did>', methods=['GET', 'POST'])
 def api_render(did: str):
     did: str = bleach.clean(did)
     image_type: str = bleach.clean(request.args.get('type', default='png')).lower().strip(' ')
@@ -252,8 +252,15 @@ def generate_rendered_screen_response(did: str, device_spec: DeviceSpecification
     elif image_type == "svg":
         return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.SVG),
                          mimetype='image/svg+xml')
-        # svgByteArr: io.BytesIO = io.BytesIO(svg.encode(encoding='UTF-8'))
-        # return send_file(svgByteArr, mimetype="image/svg+xml")
+
+    elif image_type == "jpg" or image_type == "jpeg":
+        return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.JPG),
+                         mimetype='image/jpeg')
+
+    elif image_type == "calepd":
+        return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.CalEPD),
+                         mimetype='image/bmp')
+
     elif image_type == "html":
         w, h = SVGRenderer.SVGRenderer.SVGGetSize(svg)
         rsp = make_response(

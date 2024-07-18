@@ -23,7 +23,7 @@ EpdSpi io;
 Gdew075T7 display(io);
 
 // BMP debug Mode: Turn false for production since it will make things slower and dump Serial debug
-bool bmpDebug = true;
+bool bmpDebug = false;
 
 // IP is sent per post for logging purpouses. Authentication: Bearer token in the headers
 char espIpAddress[16];
@@ -84,6 +84,7 @@ uint16_t in_blue = 0;  // for depth 24
  *  For 8 gray-levels:
  *  0: Black 32: DGray  64: Gray  96: LGRAY C8: SLGRAY DF: Whitish FF: White 
  **/
+
 #ifdef HAS_16_LEVELS_GRAY
     uint8_t wgray_hb = 0xF0; // 240 Near to white
     uint8_t wgray_lb = 0xC9; // 201 Near to super light gray
