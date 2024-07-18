@@ -35,9 +35,9 @@ class DisplayImageFilters(IntEnum):
             return DisplayImageFilters.DIF_NONE
 class DeviceSpecification:
 
-    hardware: int = ImplementedDevices.ImplementedDevices.SIMULATED.value
-    colorspace: DisplaySupportedColors = DisplaySupportedColors.DSC_BW.value
-    image_filter: DisplayImageFilters = DisplayImageFilters.DIF_DITHER.value
+    hardware: ImplementedDevices.ImplementedDevices = ImplementedDevices.ImplementedDevices.SIMULATED
+    colorspace: DisplaySupportedColors = DisplaySupportedColors.DSC_COLOR
+    image_filter: DisplayImageFilters = DisplayImageFilters.DIF_NONE
     device_id: str = ""
     enabled: bool = False
     auth_token: str = ""
@@ -58,7 +58,7 @@ class DeviceSpecification:
             sp.append(e.to_dict())
 
         return {
-            'hardware': self.hardware,
+            'hardware': self.hardware.value,
             'device_id': self.device_id,
             'enabled': self.enabled,
             'allocation': self.allocation,
@@ -75,9 +75,9 @@ class DeviceSpecification:
         }
 
     def get_hardware_type(self) -> ImplementedDevices.ImplementedDevices:
-         return ImplementedDevices.ImplementedDevices.from_int(self.hardware)
+        return self.hardware
     def set_hardware_type(self, value: ImplementedDevices.ImplementedDevices):
-        self.hardware = value.value
+        self.hardware = value
     def is_valid(self) -> bool:
         return self._valid
 
@@ -87,7 +87,7 @@ class DeviceSpecification:
     def from_dict(self, _dict: dict):
         errors = 0
         if 'hardware' in _dict:
-            self.hardware = ImplementedDevices.ImplementedDevices.from_int(_dict['hardware']).value
+            self.hardware = ImplementedDevices.ImplementedDevices.from_int(_dict['hardware'])
             errors = errors + 1
         if 'device_id' in _dict:
             self.device_id = _dict['device_id']
@@ -122,7 +122,7 @@ class DeviceSpecification:
         if 'tile_specifications' in _dict:
             self.tile_specifications = []
             for e in _dict['tile_specifications']:
-                 self.tile_specifications.append(TileSpecification.TileSpecification(e))
+                self.tile_specifications.append(TileSpecification.TileSpecification(e))
             errors = errors + 1
         if 'colorspace' in _dict:
             self.colorspace = DisplaySupportedColors.from_int(_dict['colorspace'])

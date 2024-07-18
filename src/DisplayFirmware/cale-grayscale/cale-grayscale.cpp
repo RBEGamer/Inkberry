@@ -485,6 +485,9 @@ static void http_post(void)
        http://cale.es/img/test/circle.bmp           -> Circle test
      */
     // POST Send the IP for logging purpouses
+  
+
+
     char post_data[22];
     uint8_t postsize = sizeof(post_data);
     strlcpy(post_data, "ip=", postsize);

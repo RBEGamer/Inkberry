@@ -49,13 +49,11 @@ class SVGTemplates:
 
     @staticmethod
     def GenerateDeviceSetupScreen(_id: str, _device: DeviceSpecification.DeviceSpecification, _target_width: int = 0) -> str:
-        return SVGTemplates.GenerateDeviceDisabledScreen(_id,  _device, _target_width)
+        _device.image_filter = DeviceSpecification.DisplayImageFilters.DIF_NONE
+        _device.colorspace = DeviceSpecification.DisplaySupportedColors.DSC_COLOR
 
-    @staticmethod
-    def GenerateDeviceDisabledScreen(_id: str, _device: DeviceSpecification.DeviceSpecification, _target_width: int = 0) -> str:
         document: structure.Svg = SVGTemplates.getEmptyTeamplate(_device)
-
-        document = SVGTemplates.getSystemStautsScreen(document, _device , _title="IntelliBoard ePaper Door Sign")
+        document = SVGTemplates.getSystemStautsScreen(document, _device, _title="STP:{}".format(_id))
 
         if _target_width and _target_width > 0:
             document = SVGTemplates.GetScaledSVGContent(document, _target_width)
@@ -64,33 +62,50 @@ class SVGTemplates:
         return xml
 
     @staticmethod
-    def getSystemStautsScreen(_svg: structure.Svg, _device: DeviceSpecification.DeviceSpecification, _title: str = "---", _size: int = 3) -> structure.Svg:
-        headline_offset_multiplier: int = 20
-        headline_line_offset: int = 20
-        headline_line_width: int = 10
-        s: builders.StyleBuilder = builders.StyleBuilder({})
-        s.setTextAnchor("middle")
-        s.setDisplayAlign("middle")
-        s.setFontFamily(fontfamily="Verdana")
-        s.setFontSize('{}em'.format(_size))
+    def GenerateDeviceDisabledScreen(_id: str, _device: DeviceSpecification.DeviceSpecification, _target_width: int = 0) -> str:
+        _device.image_filter = DeviceSpecification.DisplayImageFilters.DIF_NONE
+        _device.colorspace = DeviceSpecification.DisplaySupportedColors.DSC_COLOR
 
-        t = text.Text(_title, '50%', headline_offset_multiplier*_size)
+        document: structure.Svg = SVGTemplates.getEmptyTeamplate(_device)
+        document = SVGTemplates.getSystemStautsScreen(document, _device , _title="DIS:{}".format(_id))
+
+        if _target_width and _target_width > 0:
+            document = SVGTemplates.GetScaledSVGContent(document, _target_width)
+
+        xml: str = document.getXML()
+        return xml
+
+    @staticmethod
+    def getSystemStautsScreen(_svg: structure.Svg, _device: DeviceSpecification.DeviceSpecification, _title: str = "---", _headline_size: int = 3, _list_text_site: int = 2) -> structure.Svg:
+        headline_offset_multiplier: int = 20
+        headline_line_offset: int = 15
+        headline_line_width: int = 5
+        s: builders.StyleBuilder = builders.StyleBuilder({})
+        s.setTextAnchor("left")
+        s.setDisplayAlign("left")
+        s.setFontFamily(fontfamily="Verdana")
+        s.setFontSize('{}em'.format(_headline_size))
+
+        t = text.Text(_title, '5%', headline_offset_multiplier*_headline_size)
         t.set_style(s.getStyle())
         _svg.addElement(t)
         # ADD H LINE
         shape_builder: builders.ShapeBuilder = builders.ShapeBuilder()
-        cy: int = headline_offset_multiplier*_size + headline_line_offset
+        cy: int = headline_offset_multiplier*_headline_size + headline_line_offset
         l: builders.ShapeBuilder = shape_builder.createRect(x=0, y=cy, width=_device.screen_size_w, height=headline_line_width, fill='black')
         _svg.addElement(l)
 
         # ADD SYSTEM INFO
         info_text: str = ""
 
-        for k, v in _device.to_dict().items():
-            info_text = "{}={}".format(k, v)
-
-            cy += headline_line_offset* 1.5
-            _svg.addElement(text.Text(info_text, 10, cy))
+        #info_style : builders.StyleBuilder = builders.StyleBuilder({})
+        #info_style.setFontSize('{}em'.format(_list_text_site))
+        #for k, v in _device.to_dict().items():
+        #    info_text = "{}={}".format(k, v)
+        #    cy += headline_line_offset * 1.5
+        #    list_text_element = text.Text(info_text, 10, cy)
+        #    list_text_element.set_style(info_style.getStyle())
+        #    _svg.addElement(list_text_element)
 
         return _svg
     @staticmethod

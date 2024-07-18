@@ -92,7 +92,7 @@ class SVGRenderer:
 
                 # Create a custom colormap with only black and white
                 if _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_BW:
-                    num_colors = 2
+                    num_colors = 16
                     img.depth = 4
                     img.type = 'palette'
                     img.color_map(0, wand.color.Color('#000000'))
@@ -109,10 +109,10 @@ class SVGRenderer:
                 # CONVERT IMAGE INTO THE SELECTED COLORSPACE
                 if _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_BW or _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_BWR:
                     img.transform_colorspace('gray')
-                    img.quantize(number_colors=num_colors, colorspace_type='gray', dither=img.dither)
+                    img.quantize(number_colors=num_colors, colorspace_type='gray')
                 elif _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_COLOR:
                     img.depth = 24
-                    img.transform_colorspace('rgb', dither=img.dither)
+                    img.transform_colorspace('rgb')
                 else:
                     raise Exception("Unsupported color space")
 

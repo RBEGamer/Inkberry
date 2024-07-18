@@ -2,7 +2,7 @@
    "data": [
       {
          "hardware": 4,
-         "device_id": "home",
+         "device_id": "asd",
          "enabled": true,
          "display_orientation": 0,
          "allocation": "HOME",
