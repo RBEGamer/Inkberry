@@ -201,17 +201,24 @@ def api_render(id: str):
     # RETURN AS SVG OR PNG TO CLIENT
 
     if type == "png":
-        return send_file(SVGRenderer.SVGRenderer.SVG2PNG(svg, _device=device_spec), mimetype='image/png')
+        return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.PNG), mimetype='image/png')
+    elif type == "pdf":
+        return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.PDF), mimetype='application/pdf')
+    elif type == "ps":
+        return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.PS), mimetype='application/pdf')
+    elif type == "eps":
+        return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.EPS), mimetype='application/pdf')
     elif type == "svg":
-        svgByteArr: io.BytesIO = io.BytesIO(svg.encode(encoding='UTF-8'))
-        return send_file(svgByteArr, mimetype="image/svg+xml")
+        return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.SVG), mimetype='image/svg+xml')
+        #svgByteArr: io.BytesIO = io.BytesIO(svg.encode(encoding='UTF-8'))
+        #return send_file(svgByteArr, mimetype="image/svg+xml")
     elif type == "html":
         w, h = SVGRenderer.SVGRenderer.SVGGetSize(svg)
         rsp = make_response("<html><head><meta http-equiv='refresh' content='60'></head><body><img src='{}{}?type={}' width='{}' height='{}' /></body></html>".format('/api/render/', id, 'svg', w, h), 200)
         rsp.mimetype = "text/html"
         return rsp
     else:
-        return send_file(SVGRenderer.SVGRenderer.SVG2BMP(svg, _device=device_spec), mimetype='image/bmp')
+        return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.BMP), mimetype='image/bmp')
 
 
 
