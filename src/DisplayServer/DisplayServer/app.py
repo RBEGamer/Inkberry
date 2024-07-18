@@ -11,7 +11,7 @@ from flask_cors import CORS, cross_origin
 import bleach
 import typer
 import pathlib
-from DisplayFramework import Devices, SVGRenderer, SVGTemplates, DeviceSpecification, BaseTile
+from DisplayFramework import Devices, SVGRenderer, SVGTemplates, DeviceSpecification, BaseTile, ImplementedDevices
 
 app_typer = typer.Typer(add_completion=True)
 
@@ -75,7 +75,7 @@ def imageapi(image: str):
         else:
             device_spec = Devices.Devices.GetRandomDeviceSpecification()
 
-    return generate_rendered_screen_response(image_id, device_spec, image_type, 0)
+    return generate_rendered_screen_response(image_id, device_spec, image_type, 0, request)
 
 
 @app_flask.route(
@@ -165,7 +165,16 @@ def api_information(device_id: str):
 
 @app_flask.route('/api/state/<string:did>', methods=['GET', 'POST'])
 def api_state(did: str):  # put application's code here
+    did = bleach.clean(did)
 
+
+    if not Devices.Devices.CheckDeviceExists(bleach.clean(did)):
+        return "CheckDeviceExistsFailed", 200
+
+    if Devices.Devices.CheckForUpdatedData(bleach.clean(did)):
+        return "RefreshRequired", 200
+
+    # UPDATE STATE
     rd: dict = {}
     for k in request.args.keys():
         ks: str = bleach.clean(k)
@@ -173,11 +182,6 @@ def api_state(did: str):  # put application's code here
 
     Devices.Devices.UpdateDeviceStatus(bleach.clean(did), str(datetime.now()), rd)
 
-    if not Devices.Devices.CheckDeviceExists(bleach.clean(did)):
-        return "CheckDeviceExistsFailed", 200
-
-    if Devices.Devices.CheckForUpdatedData(bleach.clean(did)):
-        return "RefreshRequired", 200
 
     return "", 200
 
@@ -194,11 +198,26 @@ def api_register(did: str, typename: str):  # put application's code here
     return jsonify(ret)
 
 
+
+@app_flask.route('/api/useractonredirect/<string:did>', methods=['GET', 'POST'])
+def api_useractonredirect(did: str):
+    did: str = bleach.clean(did)
+    hardware_type: str = bleach.clean(request.args.get('hardware_type', default='{}'.format(ImplementedDevices.ImplementedDevices.SIMULATED.value))).lower()
+
+    if not Devices.Devices.CheckDeviceExists(bleach.clean(did)):
+        return redirect('/static/register.html?did={}&hardware_type={}'.format(did, hardware_type))
+    elif not Devices.Devices.CheckDeviceEnabled(did):
+        return redirect('/static/editor.html?did={}&hardware_type={}'.format(did, hardware_type))
+    else:
+        return redirect('/static/index.html?did={}&hardware_type={}'.format(did, hardware_type))
+
+
 @app_flask.route('/api/render/<string:did>', methods=['GET', 'POST'])
 def api_render(did: str):
     did: str = bleach.clean(did)
     image_type: str = bleach.clean(request.args.get('type', default='png')).lower().strip(' ')
     target_width: int = 0
+
     try:
         target_width = int(bleach.clean(request.args.get('target_width', default='0')))
     except Exception as e1:
@@ -219,19 +238,23 @@ def api_render(did: str):
     else:
         target_width = 0
 
-    return generate_rendered_screen_response(did, device_spec, image_type, target_width)
+    return generate_rendered_screen_response(did, device_spec, image_type, target_width, request)
 
 
 def generate_rendered_screen_response(did: str, device_spec: DeviceSpecification.DeviceSpecification, image_type: str,
-                                      target_width: int = 0) -> flask.Response:
-    # GENERATE SVG IMAGE
-    svg: str = ""
-    if not device_spec.is_valid():
-        pass
-    elif not Devices.Devices.CheckDeviceExists(did):
-        svg = SVGTemplates.SVGTemplates.GenerateDeviceSetupScreen(did, device_spec, target_width)
+                                      target_width: int = 0, _origin_request: flask.Request = None) -> flask.Response:
+    # GENERATE SVG IMAGE DEPENDING ON THE DISPLAY CONFIGURED STATE
+
+    # FOR POSSIBLE QR CODES
+    base_url = "https://inkberry.marcelochsendorf.com"
+    if _origin_request is not None:
+        hardware_type: str = bleach.clean(request.args.get('hw', default='99')).lower().strip(' ')
+        base_url = "{}api/useractonredirect/{}?hardware_type={}".format(_origin_request.host_url, did, hardware_type)
+
+    if not device_spec.is_valid() or not Devices.Devices.CheckDeviceExists(did):
+        svg = SVGTemplates.SVGTemplates.GenerateDeviceSetupScreen(did, device_spec, target_width, base_url)
     elif not Devices.Devices.CheckDeviceEnabled(did):
-        svg = SVGTemplates.SVGTemplates.GenerateDeviceDisabledScreen(did, device_spec, target_width)
+        svg = SVGTemplates.SVGTemplates.GenerateDeviceDisabledScreen(did, device_spec, target_width, base_url)
     else:
         svg = SVGTemplates.SVGTemplates.GenerateCurrentDeviceScreen(did, device_spec, target_width)
 

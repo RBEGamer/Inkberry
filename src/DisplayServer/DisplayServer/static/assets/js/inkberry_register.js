@@ -1,0 +1,4 @@
+function inkberry_init(){
+
+    
+}

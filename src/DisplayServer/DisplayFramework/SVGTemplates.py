@@ -1,8 +1,7 @@
 
-
 from DisplayFramework.pysvg import builders, structure, text, style
-
-from DisplayFramework import DeviceSpecification, TileFactory, BaseTile
+from DisplayFramework import DeviceSpecification, TileFactory, BaseTile, TileSpecification
+from DisplayFramework.tiles import QrTile
 from DisplayFramework.pysvg.builders import TransformBuilder
 
 
@@ -48,12 +47,12 @@ class SVGTemplates:
         return document.getXML()
 
     @staticmethod
-    def GenerateDeviceSetupScreen(_id: str, _device: DeviceSpecification.DeviceSpecification, _target_width: int = 0) -> str:
+    def GenerateDeviceSetupScreen(_id: str, _device: DeviceSpecification.DeviceSpecification, _target_width: int = 0, _qrcode_url: str = "inkberry.marcelochsendorf.com") -> str:
         _device.image_filter = DeviceSpecification.DisplayImageFilters.DIF_NONE
         _device.colorspace = DeviceSpecification.DisplaySupportedColors.DSC_COLOR
 
         document: structure.Svg = SVGTemplates.getEmptyTeamplate(_device)
-        document = SVGTemplates.getSystemStautsScreen(document, _device, _title="STP:{}".format(_id))
+        document = SVGTemplates.getSystemStautsScreen(document, _device, _title="STP:{}".format(_id), _qrcode_url=_qrcode_url)
 
         if _target_width and _target_width > 0:
             document = SVGTemplates.GetScaledSVGContent(document, _target_width)
@@ -62,12 +61,12 @@ class SVGTemplates:
         return xml
 
     @staticmethod
-    def GenerateDeviceDisabledScreen(_id: str, _device: DeviceSpecification.DeviceSpecification, _target_width: int = 0) -> str:
+    def GenerateDeviceDisabledScreen(_id: str, _device: DeviceSpecification.DeviceSpecification, _target_width: int = 0, _qrcode_url: str = "inkberry.marcelochsendorf.com") -> str:
         _device.image_filter = DeviceSpecification.DisplayImageFilters.DIF_NONE
         _device.colorspace = DeviceSpecification.DisplaySupportedColors.DSC_COLOR
 
         document: structure.Svg = SVGTemplates.getEmptyTeamplate(_device)
-        document = SVGTemplates.getSystemStautsScreen(document, _device , _title="DIS:{}".format(_id))
+        document = SVGTemplates.getSystemStautsScreen(document, _device , _title="DIS:{}".format(_id), _qrcode_url=_qrcode_url)
 
         if _target_width and _target_width > 0:
             document = SVGTemplates.GetScaledSVGContent(document, _target_width)
@@ -76,9 +75,9 @@ class SVGTemplates:
         return xml
 
     @staticmethod
-    def getSystemStautsScreen(_svg: structure.Svg, _device: DeviceSpecification.DeviceSpecification, _title: str = "---", _headline_size: int = 3, _list_text_site: int = 2) -> structure.Svg:
-        headline_offset_multiplier: int = 20
-        headline_line_offset: int = 15
+    def getSystemStautsScreen(_svg: structure.Svg, _device: DeviceSpecification.DeviceSpecification, _title: str = "---", _headline_size: int = 3, _list_text_site: int = 2, _qrcode_url: str = None) -> structure.Svg:
+        headline_offset_multiplier: int = 15
+        headline_line_offset: int = 5
         headline_line_width: int = 5
         s: builders.StyleBuilder = builders.StyleBuilder({})
         s.setTextAnchor("left")
@@ -93,7 +92,25 @@ class SVGTemplates:
         shape_builder: builders.ShapeBuilder = builders.ShapeBuilder()
         cy: int = headline_offset_multiplier*_headline_size + headline_line_offset
         l: builders.ShapeBuilder = shape_builder.createRect(x=0, y=cy, width=_device.screen_size_w, height=headline_line_width, fill='black')
-        _svg.addElement(l)
+
+
+
+        # ADD QR CODE FOR EASY SETUP
+        if _qrcode_url is not None:
+            qrctsp: TileSpecification.TileSpecification = TileSpecification.TileSpecification()
+            qrctsp.position.size_w = _device.screen_size_h / 3
+            qrctsp.position.size_h = _device.screen_size_h / 3
+            qrctsp.position.pos_x = 10
+            qrctsp.position.pos_y = headline_line_offset * headline_offset_multiplier
+            qrcode: QrTile.QrTile = QrTile.QrTile(qrctsp)
+
+            qrcode.update_parameters({'url': _qrcode_url})
+            _svg.addElement(qrcode.render())
+
+
+
+
+
 
         # ADD SYSTEM INFO
         info_text: str = ""
