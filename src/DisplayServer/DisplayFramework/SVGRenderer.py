@@ -158,11 +158,11 @@ class SVGRenderer:
                 if _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_BW or _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_BWR or _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_GRAY:
                     # IF A COLOR PALETTE IS SET APPLY IT
                     if _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_BW:
-                        img.quantize(number_colors=num_colors, colorspace_type='gray')
+                        img.quantize(number_colors=num_colors, colorspace_type='gray', dither=img.dither)
                     elif _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_BWR:
-                        img.quantize(number_colors=num_colors, colorspace_type='rgb')
+                        img.quantize(number_colors=num_colors, colorspace_type='rgb', dither=img.dither)
                     elif _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_GRAY:
-                        img.quantize(number_colors=num_colors, colorspace_type='gray')
+                        img.quantize(number_colors=num_colors, colorspace_type='gray', dither=img.dither)
                     else:
                         img.transform_colorspace('gray')
 

@@ -1,32 +1,53 @@
-from DisplayFramework import ImplementedDevices
+from DisplayFramework import ImplementedDevices, DeviceSpecification
+
 
 class DeviceLookUpTable(object):
     # TODO REWORK TO FILE BASED TEMPLATES
     @staticmethod
-    def get_hardware_definition(_hardware_type: ImplementedDevices) -> dict:
-        res: dict = {
-            'screen_size_w': 0,
-            'screen_size_h': 0,
-            'wakeup_interval': -1
-        }
+    def get_hardware_definition(_hardware_type: ImplementedDevices) -> DeviceSpecification.DeviceSpecification:
+        spec: DeviceSpecification.DeviceSpecification = DeviceSpecification.DeviceSpecification()
+
 
         if _hardware_type == ImplementedDevices.ImplementedDevices.SIMULATED:
-            res.update({})
-        elif _hardware_type == ImplementedDevices.ImplementedDevices.ARDUINO_INKPLATE10 or _hardware_type == ImplementedDevices.ImplementedDevices.ARDUINO_INKPLATE10V2:
-            res.update({'screen_size_w': 1200, 'screen_size_h': 825, 'wakeup_interval':10})
-        elif _hardware_type == ImplementedDevices.ImplementedDevices.ARDUINO_INKPLATE6:
-            res.update({'screen_size_w': 800, 'screen_size_h': 600, 'wakeup_interval':10})
-        elif _hardware_type == ImplementedDevices.ImplementedDevices.ARDUINO_ESP32_7_5_INCH:
-            res.update({'screen_size_w': 800, 'screen_size_h': 480, 'wakeup_interval': 1})
+            spec.screen_size_w = 640
+            spec.screen_size_h = 480
+            spec.content_scale = 1.0
+            spec.display_orientation = DeviceSpecification.DisplayOrientation.DP_HORIZONTAL
+            spec.image_filter = DeviceSpecification.DisplayImageFilters.DIF_NONE
+            spec.colorspace = DeviceSpecification.DisplaySupportedColors.DSC_COLOR
+
+        elif _hardware_type == ImplementedDevices.ImplementedDevices.INKPLATE10:
+            spec.screen_size_w = 1200
+            spec.screen_size_h = 820
+            spec.content_scale = 1.0
+            spec.display_orientation = DeviceSpecification.DisplayOrientation.DP_HORIZONTAL
+            spec.image_filter = DeviceSpecification.DisplayImageFilters.DIF_NONE
+            spec.colorspace = DeviceSpecification.DisplaySupportedColors.DSC_GRAY
+
+        elif _hardware_type == ImplementedDevices.ImplementedDevices.INKBERRY_75_LAMINATED_BW:
+            spec.screen_size_w = 800
+            spec.screen_size_h = 480
+            spec.content_scale = 1.0
+            spec.display_orientation = DeviceSpecification.DisplayOrientation.DP_HORIZONTAL
+            spec.image_filter = DeviceSpecification.DisplayImageFilters.DIF_DITHER
+            spec.colorspace = DeviceSpecification.DisplaySupportedColors.DSC_BWR
+
+        elif _hardware_type == ImplementedDevices.ImplementedDevices.INKBERRY_75_RBW:
+            spec.screen_size_w = 800
+            spec.screen_size_h = 480
+            spec.content_scale = 1.0
+            spec.display_orientation = DeviceSpecification.DisplayOrientation.DP_HORIZONTAL
+            spec.image_filter = DeviceSpecification.DisplayImageFilters.DIF_DITHER
+            spec.colorspace = DeviceSpecification.DisplaySupportedColors.DSC_BWR
 
 
 
-        return res
+        return spec
 
     @staticmethod
     def get_screen_size_w(_hardware_type: ImplementedDevices) -> int:
-        return DeviceLookUpTable.get_hardware_definition(_hardware_type)['screen_size_w']
+        return DeviceLookUpTable.get_hardware_definition(_hardware_type).screen_size_w
 
     @staticmethod
     def get_screen_size_h(_hardware_type: ImplementedDevices) -> int:
-        return DeviceLookUpTable.get_hardware_definition(_hardware_type)['screen_size_h']
+        return DeviceLookUpTable.get_hardware_definition(_hardware_type).screen_size_h

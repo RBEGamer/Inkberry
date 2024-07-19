@@ -28,11 +28,20 @@
 //#include <gdew027w3.h>
 //#include <gdeh0213b73.h>
 //#include <gdew0583z21.h>
-#include <gdew075c64.h>
 
+#define EINK_75_LAMINATED
+
+#ifdef EINK_75_RBW
+#include <gdew075c64.h>
 EpdSpi io;
 Gdew075C64 display(io);
+#endif
 
+#ifdef EINK_75_LAMINATED
+#include <gdew075T7.h>
+EpdSpi io;
+Gdew075T7 display(io);
+#endif
 // Plastic Logic test: Check cale-grayscale.cpp
 
 // Multi-SPI 4 channels EPD only

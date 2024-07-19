@@ -17,10 +17,10 @@
 
 // Should match your display model (Check WiKi)
 // As default using GDEW042T2 from GOODISPLAY
-#include <gdew075z09.h>
+#include <gdew075T7.h>
 
 EpdSpi io;
-Gdew075z09 display(io);
+Gdew075T7 display(io);
 
 // BMP debug Mode: Turn false for production since it will make things slower and dump Serial debug
 bool bmpDebug = false;
@@ -84,7 +84,6 @@ uint16_t in_blue = 0;  // for depth 24
  *  For 8 gray-levels:
  *  0: Black 32: DGray  64: Gray  96: LGRAY C8: SLGRAY DF: Whitish FF: White 
  **/
-
 #ifdef HAS_16_LEVELS_GRAY
     uint8_t wgray_hb = 0xF0; // 240 Near to white
     uint8_t wgray_lb = 0xC9; // 201 Near to super light gray
@@ -485,7 +484,7 @@ static void http_post(void)
        http://cale.es/img/test/circle.bmp           -> Circle test
      */
     // POST Send the IP for logging purpouses
-  
+  //  printf("%02x:%02x:%02x:%02x:%02x:%02x\n",chipid[0], chipid[1], chipid[2], chipid[3], chipid[4], chipid[5]);
 
 
     char post_data[22];

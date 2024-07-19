@@ -146,17 +146,11 @@ class Devices:
 
 
         # CREATE DEVICE ENTRY
-        device_definition: DeviceSpecification.DeviceSpecification = DeviceSpecification.DeviceSpecification()
+        device_definition: DeviceSpecification.DeviceSpecification = DeviceLookUpTable.DeviceLookUpTable.get_hardware_definition(hardware_type)
         device_definition.set_hardware_type(hardware_type)
         device_definition.device_id = _id
         device_definition.enabled = False
         device_definition.allocation = _allocation
-
-        # TODO REWORK DEVICE LUT INTO SPECICE SPECIFICATION
-        hws: dict = DeviceLookUpTable.DeviceLookUpTable.get_hardware_definition(hardware_type)
-        device_definition.screen_size_w = hws['screen_size_w']
-        device_definition.screen_size_h = hws['screen_size_h']
-        device_definition.wakeup_interval = hws['wakeup_interval']
 
 
         device_definition_json: dict = device_definition.to_dict()
