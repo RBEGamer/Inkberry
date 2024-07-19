@@ -11,7 +11,7 @@ from flask_cors import CORS, cross_origin
 import bleach
 import typer
 import pathlib
-from DisplayFramework import Devices, SVGRenderer, SVGTemplates, DeviceSpecification, BaseTile, ImplementedDevices
+from DisplayFramework import Devices, SVGRenderer, SVGTemplates, DeviceSpecification, BaseTile, ImplementedDevices, DeviceLookUpTable
 
 app_typer = typer.Typer(add_completion=True)
 
@@ -61,7 +61,8 @@ def imageapi(image: str):
     image_type: str = None
     image_id: str = None
     if len(image) <= 0 or '.' not in image:
-        device_spec = Devices.Devices.GetRandomDeviceSpecification()
+        hardware_type: ImplementedDevices.ImplementedDevices = ImplementedDevices.ImplementedDevices.MINIMAL
+        device_spec = DeviceLookUpTable.DeviceLookUpTable.get_hardware_definition(hardware_type)
         image_id = device_spec.device_id
         image_type = 'bmp'
     else:
@@ -238,6 +239,7 @@ def api_useractonredirect(did: str):
 def api_render(did: str):
     did: str = bleach.clean(did)
     image_type: str = bleach.clean(request.args.get('type', default='png')).lower().strip(' ')
+    hw_type: int = int(bleach.clean(request.args.get('hw', default='0')))
     target_width: int = 0
 
     try:
@@ -250,8 +252,11 @@ def api_render(did: str):
 
     # GET DEVICE RESOLUTION
     device_spec: DeviceSpecification.DeviceSpecification = None
-    if did == "":
-        device_spec = Devices.Devices.GetRandomDeviceSpecification()
+    if did == "" or not Devices.Devices.CheckDeviceExists(did):
+        # IF NO DEVICE IS GIVEN BUT THE HARDWARE TYPE, THEN CREATE A TEMPORARY DEVICE SPECIFICATION TO RENDER THE SETUP/ DISABLED SCREEN
+        if hw_type is not None:
+            hardware_type: ImplementedDevices.ImplementedDevices = ImplementedDevices.ImplementedDevices.from_int(hw_type)
+            device_spec = DeviceLookUpTable.DeviceLookUpTable.get_hardware_definition(hardware_type)
     else:
         device_spec = Devices.Devices.GetDeviceSpecification(did)
 
@@ -368,7 +373,7 @@ def main(ctx: typer.Context, basepath: str = ""):
         Devices.Devices.SetDatabaseFolder(str(pathlib.Path(__file__).parent.resolve().joinpath('data')))
         BaseTile.BaseTileSettings.SetResourceFolder(str(pathlib.Path(__file__).parent.resolve().joinpath('resources')))
 
-   
+
 
 def run():
     app_typer()

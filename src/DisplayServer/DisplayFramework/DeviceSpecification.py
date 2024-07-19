@@ -36,7 +36,7 @@ class DisplayImageFilters(IntEnum):
             return DisplayImageFilters.DIF_NONE
 class DeviceSpecification:
 
-    hardware: ImplementedDevices.ImplementedDevices = ImplementedDevices.ImplementedDevices.SIMULATED
+    hardware: ImplementedDevices.ImplementedDevices = ImplementedDevices.ImplementedDevices.MINIMAL
     colorspace: DisplaySupportedColors = DisplaySupportedColors.DSC_COLOR
     image_filter: DisplayImageFilters = DisplayImageFilters.DIF_NONE
     device_id: str = ""

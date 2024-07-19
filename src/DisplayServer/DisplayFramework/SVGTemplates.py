@@ -49,8 +49,7 @@ class SVGTemplates:
     @staticmethod
     def GenerateDeviceSetupScreen(_id: str, _device: DeviceSpecification.DeviceSpecification, _target_width: int = 0, _qrcode_url: str = "inkberry.marcelochsendorf.com") -> str:
         _device.image_filter = DeviceSpecification.DisplayImageFilters.DIF_NONE
-        _device.colorspace = DeviceSpecification.DisplaySupportedColors.DSC_COLOR
-
+        _device.colorspace = DeviceSpecification.DisplaySupportedColors.DSC_BW
         document: structure.Svg = SVGTemplates.getEmptyTeamplate(_device)
         document = SVGTemplates.getSystemStautsScreen(document, _device, _title="STP:{}".format(_id), _qrcode_url=_qrcode_url)
 
@@ -62,9 +61,6 @@ class SVGTemplates:
 
     @staticmethod
     def GenerateDeviceDisabledScreen(_id: str, _device: DeviceSpecification.DeviceSpecification, _target_width: int = 0, _qrcode_url: str = "inkberry.marcelochsendorf.com") -> str:
-        _device.image_filter = DeviceSpecification.DisplayImageFilters.DIF_NONE
-        _device.colorspace = DeviceSpecification.DisplaySupportedColors.DSC_COLOR
-
         document: structure.Svg = SVGTemplates.getEmptyTeamplate(_device)
         document = SVGTemplates.getSystemStautsScreen(document, _device , _title="DIS:{}".format(_id), _qrcode_url=_qrcode_url)
 
@@ -98,8 +94,10 @@ class SVGTemplates:
         # ADD QR CODE FOR EASY SETUP
         if _qrcode_url is not None:
             qrctsp: TileSpecification.TileSpecification = TileSpecification.TileSpecification()
-            qrctsp.position.size_w = _device.screen_size_h / 3
-            qrctsp.position.size_h = _device.screen_size_h / 3
+            qrctsp.position.size_w = _device.screen_size_h / 2
+            qrctsp.position.size_h = _device.screen_size_h / 2
+            qrctsp.parameters['scale_factor'] = 0.3
+
             qrctsp.position.pos_x = 10
             qrctsp.position.pos_y = headline_line_offset * headline_offset_multiplier
             qrcode: QrTile.QrTile = QrTile.QrTile(qrctsp)

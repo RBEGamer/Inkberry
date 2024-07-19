@@ -1,7 +1,8 @@
-from enum import Enum
-class ImplementedDevices(Enum):
+from enum import Enum, IntEnum
+class ImplementedDevices(IntEnum):
     INVALID = 99,
-    SIMULATED = 0,
+    MINIMAL = 0,
+    SIMULATED = 1,
     INKPLATE10 = 3,
     INKBERRY_75_LAMINATED_BW = 4,
     INKBERRY_75_RBW = 5,
