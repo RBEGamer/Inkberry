@@ -214,3 +214,22 @@
       }
    ]
 }
+
+
+
+
+{
+   "name": "SETUP QR CODE",
+   "module_name": "DisplayFramework.tiles.QrTile.QrTile",
+   "parameters": {
+      "url": "https://inkberry.marcelochsendorf.com/static/index.html",
+      "scale_factor": "1.0"
+   },
+   "position": {
+      "pos_x": 50,
+      "pos_y": 50,
+      "size_w": 0,
+      "size_h": 0
+   },
+   "enabled": false
+},

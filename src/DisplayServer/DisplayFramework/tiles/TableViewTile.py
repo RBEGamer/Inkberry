@@ -9,7 +9,7 @@ from DisplayFramework.tiles import ImageTile
 from PIL import Image
 
 
-class TableViewTile(ImageTile.ImageTile):
+class TableViewTile(BaseTile.BaseTile):
 
     DEFAULT_PARAMETER: dict = {
         "types": {
@@ -168,4 +168,4 @@ class TableViewTile(ImageTile.ImageTile):
 
         # CREATE PIL IMAGE TO GENERATE SVG ELEMENT
         loaded_image = Image.open(plot_image)
-        return self.generate_image_container(loaded_image)
+        return ImageTile.ImageTile.generate_image_container(loaded_image, self.spec)

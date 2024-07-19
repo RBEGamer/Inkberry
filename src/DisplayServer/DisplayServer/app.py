@@ -87,6 +87,7 @@ def api_setdisplay_state(device_id: str, enable_state: str):
         return jsonify({"CheckDeviceExistsFailed": None}), 500
     else:
         device_spec = Devices.Devices.GetDeviceSpecification(device_id)
+        device_spec = Devices.Devices.GetDeviceSpecification(device_id)
 
         if enable_state == "true" or enable_state == "1" or enable_state == "True":
             device_spec.enabled = True
@@ -308,8 +309,8 @@ def generate_rendered_screen_response(did: str, device_spec: DeviceSpecification
     elif image_type == "html":
         w, h = SVGRenderer.SVGRenderer.SVGGetSize(svg)
         rsp = make_response(
-            "<html><head><meta http-equiv='refresh' content='60'></head><body><img src='{}{}?type={}' width='{}' height='{}' /></body></html>".format(
-                '/api/render/', id, 'svg', w, h), 200)
+            "<html><head><meta http-equiv='refresh' content='1'></head><body><img src='{}{}?type={}' width='{}' height='{}' /></body></html>".format(
+                '/api/render/', did, 'svg', w, h), 200)
         rsp.mimetype = "text/html"
         return rsp
     else:

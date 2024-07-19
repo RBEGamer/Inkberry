@@ -2,10 +2,10 @@
    "data": [
       {
          "hardware": 4,
-         "device_id": "home",
-         "enabled": false,
+         "device_id": "laminatedmint",
+         "enabled": true,
          "display_orientation": 0,
-         "allocation": "HOME",
+         "allocation": "laminatedmint",
          "colorspace": 0,
          "image_filter": 1,
          "auth_token": "",
@@ -16,36 +16,22 @@
          "content_scale": 1.0,
          "id": 136168391603048615,
          "tile_specifications": [
-            {
-               "name": "SETUP QR CODE",
-               "module_name": "DisplayFramework.tiles.QrTile.QrTile",
-               "parameters": {
-                  "url": "https://inkberry.marcelochsendorf.com/static/index.html",
-                  "scale_factor": "1.0"
-               },
-               "position": {
-                  "pos_x": 50,
-                  "pos_y": 50,
-                  "size_w": 0,
-                  "size_h": 0
-               },
-               "enabled": true
-            },
+
             {
                "name": "Logo Image Tile Test",
                "module_name": "DisplayFramework.tiles.ImageTile.ImageTile",
                "parameters": {
-                  "url": "FHAachen-logo2010.svg.png",
+                  "url": "cern.JPG",
                   "rotation": 0,
                   "image_rotation": 0,
                   "preserve_aspect_ration": 1,
-                  "scale_factor": 0.8
+                  "scale_factor": 0.15
                },
                "position": {
-                  "pos_x": 500,
-                  "pos_y": 10,
-                  "size_w": 0,
-                  "size_h": 0
+                  "pos_x": 0,
+                  "pos_y": 0,
+                  "size_w": 6000,
+                  "size_h": 4000
                },
                "enabled": true
             }
