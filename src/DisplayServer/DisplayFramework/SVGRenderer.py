@@ -1,4 +1,5 @@
 import io
+import math
 from io import BytesIO
 import cairosvg
 from PIL import Image
@@ -11,6 +12,9 @@ from wand.display import display
 from DisplayFramework import DeviceSpecification
 
 from enum import Enum
+
+
+
 
 class SVG_ExportTypes(Enum):
     BMP = 1,
@@ -59,6 +63,27 @@ class SVGRenderer:
         return scale_factor
 
 
+    @staticmethod
+    def generate_red_shades(num_shades=8):
+        red_shades = []
+        for i in range(num_shades):
+            # Calculate the red value, incrementally increasing from light to full red
+            red_value = int(255 * (i + 1) / num_shades)
+            # Convert the RGB value to hex format
+            hex_color = f'#{red_value:02X}0000'
+            red_shades.append(hex_color)
+        return red_shades
+
+    @staticmethod
+    def generate_gray_shades(num_shades=8):
+        red_shades = []
+        for i in range(num_shades):
+            # Calculate the red value, incrementally increasing from light to full red
+            red_value = int(255 * (i + 1) / num_shades)
+            # Convert the RGB value to hex format
+            hex_color = f'#{red_value:02X}{red_value:02X}{red_value:02X}'
+            red_shades.append(hex_color)
+        return red_shades
 
     @staticmethod
     def SVG2Image(_svg: str, _device: DeviceSpecification.DeviceSpecification, _export_type: SVG_ExportTypes) -> BytesIO:
@@ -84,32 +109,63 @@ class SVGRenderer:
                     img.dither = False
 
                 # Convert the image to 4-bit depth
-                img.depth = 24
+                img.depth = 4
                 num_colors = None
 
-                if _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_BW or _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_BWR:
-                    img.type = 'palette'
 
                 # Create a custom colormap with only black and white
                 if _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_BW:
-                    num_colors = 16
+                    num_colors = 2
                     img.depth = 4
                     img.type = 'palette'
                     img.color_map(0, wand.color.Color('#000000'))
-                    img.color_map(1, wand.color.Color('#FFFFFF'))
+                    img.color_map(2, wand.color.Color('#FFFFFF'))
                 elif _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_BWR:
-                    num_colors = 3
-                    img.depth = 4
+                    # FOR RED BLACK WHITE, A ADDITIONAL COLOR PALETTE IS GENERATED FOR RED AND GRAY COLORS
+                    num_colors = 16
+                    img.depth = 8
                     img.type = 'palette'
-                    img.color_map(0, wand.color.Color('#000000'))
-                    img.color_map(1, wand.color.Color('#FFFFFF'))
-                    img.color_map(2, Color('#FF0000'))#
+                    palette_index = 0
+
+                    if num_colors > 2:
+                        # ADD GRAY SHAED TO COLOR PALETTE
+                        gray_steps: [str] = SVGRenderer.generate_gray_shades(math.floor(num_colors / 2))
+                        for idx, red_step in enumerate(gray_steps):
+                            img.color_map(idx+palette_index, wand.color.Color(red_step))
+                        palette_index = palette_index + len(gray_steps)
+
+                        # ADD RED SHADES TO COLOR PALETTE
+                        red_steps: [str] = SVGRenderer.generate_red_shades(math.floor(num_colors/2))
+                        for idx, red_step in enumerate(red_steps):
+                            img.color_map(idx+palette_index, wand.color.Color(red_step))
+                        palette_index = palette_index + len(red_steps)
+
+                elif _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_GRAY:
+                    # FOR GRAY, A ADDITIONAL COLOR PALETTE IS GENERATED GRAY COLORS
+                    num_colors = 16
+                    img.depth = 8
+                    img.type = 'palette'
+                    palette_index = 0
+
+                    gray_steps: [str] = SVGRenderer.generate_gray_shades(math.floor(num_colors))
+                    for idx, red_step in enumerate(gray_steps):
+                        img.color_map(idx + palette_index, wand.color.Color(red_step))
+                    palette_index = palette_index + len(gray_steps)
+
 
 
                 # CONVERT IMAGE INTO THE SELECTED COLORSPACE
-                if _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_BW or _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_BWR:
-                    img.transform_colorspace('gray')
-                    img.quantize(number_colors=num_colors, colorspace_type='gray')
+                if _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_BW or _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_BWR or _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_GRAY:
+                    # IF A COLOR PALETTE IS SET APPLY IT
+                    if _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_BW:
+                        img.quantize(number_colors=num_colors, colorspace_type='gray')
+                    elif _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_BWR:
+                        img.quantize(number_colors=num_colors, colorspace_type='rgb')
+                    elif _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_GRAY:
+                        img.quantize(number_colors=num_colors, colorspace_type='gray')
+                    else:
+                        img.transform_colorspace('gray')
+
                 elif _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_COLOR:
                     img.depth = 24
                     img.transform_colorspace('rgb')

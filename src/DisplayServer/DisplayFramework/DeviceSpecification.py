@@ -14,7 +14,8 @@ class DisplayOrientation(IntEnum):
 class DisplaySupportedColors(IntEnum):
     DSC_BW = 0,
     DSC_BWR = 1,
-    DSC_COLOR = 2
+    DSC_GRAY = 2,
+    DSC_COLOR = 3
 
     @staticmethod
     def from_int(_val: int):

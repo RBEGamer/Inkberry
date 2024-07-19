@@ -17,10 +17,10 @@
 
 // Should match your display model (Check WiKi)
 // As default using GDEW042T2 from GOODISPLAY
-#include <gdew075T7.h>
+#include <gdew075z09.h>
 
 EpdSpi io;
-Gdew075T7 display(io);
+Gdew075z09 display(io);
 
 // BMP debug Mode: Turn false for production since it will make things slower and dump Serial debug
 bool bmpDebug = false;

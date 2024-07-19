@@ -6,7 +6,7 @@
          "enabled": true,
          "display_orientation": 0,
          "allocation": "laminatedmint",
-         "colorspace": 0,
+         "colorspace": 2,
          "image_filter": 1,
          "auth_token": "",
          "last_request": "",

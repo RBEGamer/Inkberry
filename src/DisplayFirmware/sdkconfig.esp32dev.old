@@ -1,3 +1,7 @@
+#
+# Automatically generated file. DO NOT EDIT.
+# Espressif IoT Development Framework (ESP-IDF) 5.2.1 Project Configuration
+#
 CONFIG_SOC_BROWNOUT_RESET_SUPPORTED="Not determined"
 CONFIG_SOC_TWAI_BRP_DIV_SUPPORTED="Not determined"
 CONFIG_SOC_DPORT_WORKAROUND="Not determined"
@@ -371,9 +375,9 @@ CONFIG_PARTITION_TABLE_MD5=y
 #
 CONFIG_ESP_WIFI_SSID="ProDevMoDev"
 CONFIG_ESP_WIFI_PASSWORD="6226054527192856"
-CONFIG_CALE_SCREEN_URL="https://inkberry.marcelochsendorf.com/api/render/laminatedmint?type=calepd&hw=4"
+CONFIG_CALE_SCREEN_URL="http://inkberry.marcelochsendorf.com/api/render/laminatedmint?type=calepd&hw=4"
 CONFIG_CALE_BEARER_TOKEN=""
-CONFIG_DEEPSLEEP_MINUTES_AFTER_RENDER=20
+CONFIG_DEEPSLEEP_MINUTES_AFTER_RENDER=10
 CONFIG_ESP_TRIGGER_SENSOR1=27
 CONFIG_DISPLAY_ROTATION=0
 CONFIG_ESP_MAXIMUM_RETRY=5

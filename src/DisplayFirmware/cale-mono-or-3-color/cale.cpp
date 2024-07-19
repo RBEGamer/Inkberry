@@ -28,11 +28,11 @@
 //#include <gdew027w3.h>
 //#include <gdeh0213b73.h>
 //#include <gdew0583z21.h>
-#include <color/gdeq042Z21.h>
+#include <gdew075c64.h>
+
 EpdSpi io;
-//Gdeh0213b73 display(io);
-//Gdew0583z21 display(io);
-Gdeq042Z21 display(io);
+Gdew075C64 display(io);
+
 // Plastic Logic test: Check cale-grayscale.cpp
 
 // Multi-SPI 4 channels EPD only
