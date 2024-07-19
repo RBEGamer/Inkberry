@@ -368,8 +368,7 @@ def main(ctx: typer.Context, basepath: str = ""):
         Devices.Devices.SetDatabaseFolder(str(pathlib.Path(__file__).parent.resolve().joinpath('data')))
         BaseTile.BaseTileSettings.SetResourceFolder(str(pathlib.Path(__file__).parent.resolve().joinpath('resources')))
 
-    Devices.Devices.CreateDevice(Devices.ImplementedDevices.ImplementedDevices.ARDUINO_ESP32_7_5_INCH, "boom")
-
+   
 
 def run():
     app_typer()
