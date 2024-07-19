@@ -61,6 +61,8 @@ class SVGTemplates:
 
     @staticmethod
     def GenerateDeviceDisabledScreen(_id: str, _device: DeviceSpecification.DeviceSpecification, _target_width: int = 0, _qrcode_url: str = "inkberry.marcelochsendorf.com") -> str:
+        _device.image_filter = DeviceSpecification.DisplayImageFilters.DIF_NONE
+        _device.colorspace = DeviceSpecification.DisplaySupportedColors.DSC_BW
         document: structure.Svg = SVGTemplates.getEmptyTeamplate(_device)
         document = SVGTemplates.getSystemStautsScreen(document, _device , _title="DIS:{}".format(_id), _qrcode_url=_qrcode_url)
 

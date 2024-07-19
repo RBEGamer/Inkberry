@@ -176,7 +176,6 @@ class SVGRenderer:
                 img.format = 'bmp'
                 img.compression = 'no'  # This ensures no compression
 
-                img.save(filename='t.bmp')
                 img.save(file=return_bytes)
                 return_bytes.seek(0)
 
