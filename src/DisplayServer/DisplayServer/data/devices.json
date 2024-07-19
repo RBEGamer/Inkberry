@@ -2,8 +2,8 @@
    "data": [
       {
          "hardware": 4,
-         "device_id": "asd",
-         "enabled": true,
+         "device_id": "home",
+         "enabled": false,
          "display_orientation": 0,
          "allocation": "HOME",
          "colorspace": 0,
@@ -30,23 +30,24 @@
                   "size_h": 0
                },
                "enabled": true
-            },{
-               "enabled": true,
+            },
+            {
                "name": "Logo Image Tile Test",
                "module_name": "DisplayFramework.tiles.ImageTile.ImageTile",
+               "parameters": {
+                  "url": "FHAachen-logo2010.svg.png",
+                  "rotation": 0,
+                  "image_rotation": 0,
+                  "preserve_aspect_ration": 1,
+                  "scale_factor": 0.8
+               },
                "position": {
                   "pos_x": 500,
                   "pos_y": 10,
                   "size_w": 0,
                   "size_h": 0
                },
-               "parameters": {
-                  "url":"FHAachen-logo2010.svg.png",
-                  "rotation": 0,
-                  "image_rotation": 0,
-                  "preserve_aspect_ration": 1,
-                  "scale_factor": 0.8
-               }
+               "enabled": true
             }
          ]
       }

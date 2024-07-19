@@ -77,6 +77,27 @@ def imageapi(image: str):
 
     return generate_rendered_screen_response(image_id, device_spec, image_type, 0, request)
 
+@app_flask.route('/api/set_display_state/<string:device_id>/<string:enable_state>', methods=['GET', 'POST'])
+def api_setdisplay_state(device_id: str, enable_state: str):
+    device_id = bleach.clean(device_id)
+    enable_state = bleach.clean(enable_state)
+
+
+    if not Devices.Devices.CheckDeviceExists(device_id):
+        return jsonify({"CheckDeviceExistsFailed": None}), 500
+    else:
+        device_spec = Devices.Devices.GetDeviceSpecification(device_id)
+
+        if enable_state == "true" or enable_state == "1" or enable_state == "True":
+            device_spec.enabled = True
+        elif enable_state == "false" or enable_state == "0" or enable_state == "False":
+            device_spec.enabled = False
+
+        Devices.Devices.UpdateDeviceSpecification(device_spec)
+
+        return jsonify({"error": None}), 200
+        #device_spec.tile_specifications[idx].enabled = False
+
 
 @app_flask.route(
     '/api/update_parameter/<string:device_id>/<string:tile_id>/<string:parameter_id>/<string:value>/<string:is_system_parameter>', methods=['GET', 'POST'])
@@ -207,7 +228,7 @@ def api_useractonredirect(did: str):
     if not Devices.Devices.CheckDeviceExists(bleach.clean(did)):
         return redirect('/static/register.html?did={}&hardware_type={}'.format(did, hardware_type))
     elif not Devices.Devices.CheckDeviceEnabled(did):
-        return redirect('/static/editor.html?did={}&hardware_type={}'.format(did, hardware_type))
+        return redirect('/static/reactivate.html?did={}&hardware_type={}'.format(did, hardware_type))
     else:
         return redirect('/static/index.html?did={}&hardware_type={}'.format(did, hardware_type))
 

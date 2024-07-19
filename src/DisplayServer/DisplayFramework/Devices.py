@@ -105,14 +105,14 @@ class Devices:
             dr.update(original_record)
 
             dr.update(update_data)
-            Devices.getDB().updateByQuery({"device_id":spec.device_id}, dr)
+            result = Devices.getDB().updateByQuery({"device_id":spec.device_id}, dr)
 
             #if dr:
             #    dr.update(spec.to_dict())
             #    id: int = original_record.get('id')
             #    #dr.pop('id')
             #    Devices.getDB().updateById(id, dr)
-
+            return True
                 # TODO
         return False
     @staticmethod
