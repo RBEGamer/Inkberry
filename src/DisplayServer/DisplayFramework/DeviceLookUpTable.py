@@ -47,6 +47,14 @@ class DeviceLookUpTable(object):
             spec.image_filter = DeviceSpecification.DisplayImageFilters.DIF_DITHER
             spec.colorspace = DeviceSpecification.DisplaySupportedColors.DSC_BWR
 
+        elif _hardware_type == ImplementedDevices.ImplementedDevices.INKBERRY_73_7COLOR:
+            spec.screen_size_w = 800
+            spec.screen_size_h = 480
+            spec.content_scale = 1.0
+            spec.display_orientation = DeviceSpecification.DisplayOrientation.DP_HORIZONTAL
+            spec.image_filter = DeviceSpecification.DisplayImageFilters.DIF_NONE
+            spec.colorspace = DeviceSpecification.DisplaySupportedColors.DSC_7COL
+
 
 
         return spec

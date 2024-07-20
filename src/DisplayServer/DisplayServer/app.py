@@ -88,7 +88,6 @@ def api_setdisplay_state(device_id: str, enable_state: str):
         return jsonify({"CheckDeviceExistsFailed": None}), 500
     else:
         device_spec = Devices.Devices.GetDeviceSpecification(device_id)
-        device_spec = Devices.Devices.GetDeviceSpecification(device_id)
 
         if enable_state == "true" or enable_state == "1" or enable_state == "True":
             device_spec.enabled = True
@@ -98,7 +97,6 @@ def api_setdisplay_state(device_id: str, enable_state: str):
         Devices.Devices.UpdateDeviceSpecification(device_spec)
 
         return jsonify({"error": None}), 200
-        #device_spec.tile_specifications[idx].enabled = False
 
 
 @app_flask.route(

@@ -1,4 +1,4 @@
-from DisplayFramework import ImplementedDevices, TileSpecification
+from DisplayFramework import ImplementedDevices, TileSpecification, DeviceLookUpTable
 from enum import IntEnum
 
 class DisplayOrientation(IntEnum):
@@ -15,7 +15,8 @@ class DisplaySupportedColors(IntEnum):
     DSC_BW = 0,
     DSC_BWR = 1,
     DSC_GRAY = 2,
-    DSC_COLOR = 3
+    DSC_COLOR = 3,
+    DSC_7COLOR = 4
 
     @staticmethod
     def from_int(_val: int):
@@ -137,3 +138,6 @@ class DeviceSpecification:
     def __init__(self, _load_from_dict: dict = None):
         if _load_from_dict is not None:
             self.from_dict(_load_from_dict)
+        else:
+            default_device: ImplementedDevices.ImplementedDevices = ImplementedDevices.ImplementedDevices.MINIMAL
+            self.from_dict(DeviceLookUpTable.DeviceLookUpTable.get_hardware_definition(default_device).to_dict())

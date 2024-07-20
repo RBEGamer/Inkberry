@@ -9,6 +9,7 @@ from svgwrite import Drawing
 from wand.color import Color
 from wand.drawing import Drawing
 from wand.display import display
+from SVGHelper import SVGHelper
 from DisplayFramework import DeviceSpecification
 
 from enum import Enum
@@ -63,27 +64,7 @@ class SVGRenderer:
         return scale_factor
 
 
-    @staticmethod
-    def generate_red_shades(num_shades=8):
-        red_shades = []
-        for i in range(num_shades):
-            # Calculate the red value, incrementally increasing from light to full red
-            red_value = int(255 * (i + 1) / num_shades)
-            # Convert the RGB value to hex format
-            hex_color = f'#{red_value:02X}0000'
-            red_shades.append(hex_color)
-        return red_shades
 
-    @staticmethod
-    def generate_gray_shades(num_shades=8):
-        red_shades = []
-        for i in range(num_shades):
-            # Calculate the red value, incrementally increasing from light to full red
-            red_value = int(255 * (i + 1) / num_shades)
-            # Convert the RGB value to hex format
-            hex_color = f'#{red_value:02X}{red_value:02X}{red_value:02X}'
-            red_shades.append(hex_color)
-        return red_shades
 
     @staticmethod
     def SVG2Image(_svg: str, _device: DeviceSpecification.DeviceSpecification, _export_type: SVG_ExportTypes) -> BytesIO:
@@ -129,13 +110,13 @@ class SVGRenderer:
 
                     if num_colors > 2:
                         # ADD GRAY SHAED TO COLOR PALETTE
-                        gray_steps: [str] = SVGRenderer.generate_gray_shades(math.floor(num_colors / 2))
+                        gray_steps: [str] = SVGHelper.generate_gray_shades(math.floor(num_colors / 2))
                         for idx, red_step in enumerate(gray_steps):
                             img.color_map(idx+palette_index, wand.color.Color(red_step))
                         palette_index = palette_index + len(gray_steps)
 
                         # ADD RED SHADES TO COLOR PALETTE
-                        red_steps: [str] = SVGRenderer.generate_red_shades(math.floor(num_colors/2))
+                        red_steps: [str] = SVGHelper.generate_red_shades(math.floor(num_colors/2))
                         for idx, red_step in enumerate(red_steps):
                             img.color_map(idx+palette_index, wand.color.Color(red_step))
                         palette_index = palette_index + len(red_steps)
@@ -147,10 +128,20 @@ class SVGRenderer:
                     img.type = 'palette'
                     palette_index = 0
 
-                    gray_steps: [str] = SVGRenderer.generate_gray_shades(math.floor(num_colors))
+                    gray_steps: [str] = SVGHelper.generate_gray_shades(math.floor(num_colors))
                     for idx, red_step in enumerate(gray_steps):
                         img.color_map(idx + palette_index, wand.color.Color(red_step))
                     palette_index = palette_index + len(gray_steps)
+
+                elif _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_7COLOR:
+                    # FOR 7 COLOR DIPLAYS
+                    num_colors = 16 # generate_seven_colors_colorpalette generates 7 colors so 16 shades of each color
+                    img.depth = 8
+                    img.type = 'palette'
+
+                    color_palette = SVGHelper.generate_seven_colors_colorpalette(num_colors)
+                    for idx, hexcolor in enumerate(color_palette):
+                        img.color_map(idx, wand.color.Color(hexcolor))
 
 
 
@@ -163,6 +154,8 @@ class SVGRenderer:
                         img.quantize(number_colors=num_colors, colorspace_type='rgb', dither=img.dither)
                     elif _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_GRAY:
                         img.quantize(number_colors=num_colors, colorspace_type='gray', dither=img.dither)
+                    elif _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_7COLOR:
+                        img.quantize(number_colors=num_colors, colorspace_type='rgb', dither=img.dither)
                     else:
                         img.transform_colorspace('gray')
 
@@ -178,25 +171,7 @@ class SVGRenderer:
 
                 img.save(file=return_bytes)
                 return_bytes.seek(0)
-
                 return return_bytes
-                #if _export_type == SVG_ExportTypes.BMP:
-                #    return return_bytes
-                #else:
-                    # CAL EPD NEEDS A BIT MODIFIED BMP IMAGE
-                #    pil_return_bytes: BytesIO = BytesIO()
-                #    pilimg = Image.new('RGB', (255, 255), "black")  # Create a new black image
-                #    pixels = img.load()  # Create the pixel map
-                #    for i in range(img.size[0]):  # For every pixel:
-                #        for j in range(img.size[1]):
-                #            pixels[i, j] = (i, j, 100)  # Set the colour accordingly
-                #    #if len(img.split()) == 4:
-                #    #    r, g, b, a = pilimg.split()
-                #    #    pilimg = Image.merge("RGB", (r, g, b))
-                #    pilimg.save(pil_return_bytes, format='BMP')#
-
-                #    pil_return_bytes.seek(0)
-                #    return pil_return_bytes
 
         elif _export_type == SVG_ExportTypes.JPG:
             return_bytes = io.BytesIO()
@@ -208,29 +183,33 @@ class SVGRenderer:
             im = Image.open(png_bytes)
             rgb_im = im.convert('RGB')
             rgb_im.save(return_bytes, format='JPEG', quality=95)
-
             return_bytes.seek(0)
             return return_bytes
+
         elif _export_type == SVG_ExportTypes.PNG:
             return_bytes = io.BytesIO()
             cairosvg.svg2png(file_obj=img_io, write_to=return_bytes, output_width=_device.screen_size_w, parent_height=_device.screen_size_h, scale=scale_factor)
             return_bytes.seek(0)
             return return_bytes
+
         elif _export_type == SVG_ExportTypes.PDF:
             return_bytes = io.BytesIO()
             cairosvg.svg2pdf(file_obj=img_io, write_to=return_bytes, output_width=_device.screen_size_w, parent_height=_device.screen_size_h, scale=scale_factor)
             return_bytes.seek(0)
             return return_bytes
+
         elif _export_type == SVG_ExportTypes.SVG:
             return_bytes = io.BytesIO()
             cairosvg.svg2svg(file_obj=img_io, write_to=return_bytes, output_width=_device.screen_size_w, parent_height=_device.screen_size_h, scale=scale_factor)
             return_bytes.seek(0)
             return return_bytes
+
         elif _export_type == SVG_ExportTypes.PS:
             return_bytes = io.BytesIO()
             cairosvg.svg2ps(file_obj=img_io, write_to=return_bytes, output_width=_device.screen_size_w, parent_height=_device.screen_size_h, scale=scale_factor)
             return_bytes.seek(0)
             return return_bytes
+
         elif _export_type == SVG_ExportTypes.EPS:
             return_bytes = io.BytesIO()
             cairosvg.svg2eps(file_obj=img_io, write_to=return_bytes, output_width=_device.screen_size_w, parent_height=_device.screen_size_h, scale=scale_factor)
@@ -238,10 +217,6 @@ class SVGRenderer:
             return return_bytes
         else:
             raise Exception("SVG export type not supported")
-
-        rt.seek(0)
-        return rt
-
 
 
     def __init__(self):

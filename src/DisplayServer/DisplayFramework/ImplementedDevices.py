@@ -6,6 +6,7 @@ class ImplementedDevices(IntEnum):
     INKPLATE10 = 3,
     INKBERRY_75_LAMINATED_BW = 4,
     INKBERRY_75_RBW = 5,
+    INKBERRY_73_7COLOR = 6
 
 
     @classmethod
