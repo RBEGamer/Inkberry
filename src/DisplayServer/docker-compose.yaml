@@ -30,6 +30,9 @@ services:
     depends_on:
       - inkberry-mongo
 
+    deploy:
+      replicas: 3
+
   inkberry-mongo:
     container_name: inkberry-mongo
     image: mongo:latest
@@ -42,6 +45,20 @@ services:
       - MONGODB_COLLECTION=displayserver
     volumes:
       - mongo-data:/data/db
+
+  inkberry-nginx:
+    # The official nginx Docker from Docker Hub. For building the nginx container
+    image: nginx:latest
+    volumes:
+      # Volume for the nginx Docker container
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    # The nginx service depends on the Flask application service (It will link the Flask web application and Nginx Load balancer)
+    depends_on:
+      - inkberry-displayserver
+    # ports for the nginx application service
+    ports:
+      # Port for the Nginx load balancer
+      - "55557:55557"
 
 
 # Define named volumes
