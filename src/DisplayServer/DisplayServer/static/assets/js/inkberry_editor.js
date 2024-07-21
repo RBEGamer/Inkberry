@@ -270,6 +270,15 @@ function load_available_devices(){
     });
     }
 
+
+
+function set_activation_state(deivce_id, new_state){
+    $.getJSON("/api/set_display_state/" + deivce_id + "/" + new_state, function( data ) {
+
+    });
+}
+
+
 function inkberry_init(){
     resize_canvas();
     $(window).on( "resize", function() {
@@ -302,7 +311,7 @@ function inkberry_init(){
     });
     
     $('#inkberry_disbale_device_btn').on('click', 'button', function(event) {
-      
+      set_activation_state(current_loaded_device_id, 0)
     });
     
     
