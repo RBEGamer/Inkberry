@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-bs-theme="dark" style="display: inline-block;width: 100%;">
 
 <head>
     <meta charset="utf-8">
@@ -8,6 +8,7 @@
     <title>Home - Inkberry</title>
     <meta name="description" content="A smart eink display">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
     <link rel="stylesheet" href="assets/css/Lato.css">
     <link rel="stylesheet" href="assets/css/Montserrat.css">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
@@ -19,13 +20,14 @@ $(window).on('load', function(){
 </head>
 
 <body id="page-top">
-    <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-secondary text-uppercase" id="mainNav">
-        <div class="container"><a class="navbar-brand js-scroll-trigger" href="/static/index.html"><img class="rounded-circle" src="assets/img/first_test_frame_2023-Jun-13_12-58-18PM-000_CustomizedView5355212567_png.png" style="width: 50px;">Inkberry</a><button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+    <nav class="navbar navbar-expand-lg fixed-top bg-secondary text-uppercase navbar-light" id="mainNav">
+        <div class="container"><a class="navbar-brand js-scroll-trigger" href="/static/index.html"><img class="rounded-circle" src="assets/img/first_test_frame_2023-Jun-13_12-58-18PM-000_CustomizedView5355212567_png.png" style="width: 50px;">Inkberry</a><button data-bs-toggle="collapse" data-bs-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
-                <div class="dropdown show" id="inkberry_available_devices_dropdown"><a class="dropdown-toggle d-xl-flex justify-content-xl-start align-items-xl-center" aria-expanded="true" data-toggle="dropdown" href="#">SELECT INKBERRY DEVICE</a>
-                    <div class="dropdown-menu show" id="inkberry_available_devices_dropdown_menu"></div>
-                </div>
-                <ul class="navbar-nav ml-auto">
+                <!-- Start: inkberry_available_devices -->
+                <div class="dropdown show" id="inkberry_available_devices_dropdown"><a class="dropdown-toggle d-xl-flex justify-content-xl-start align-items-xl-center" aria-expanded="true" data-bs-toggle="dropdown" href="#">SELECT INKBERRY DEVICE</a>
+                    <div class="dropdown-menu show" data-bs-popper="none" id="inkberry_available_devices_dropdown_menu"></div>
+                </div><!-- End: inkberry_available_devices -->
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link align-items-center py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#portfolio"></a></li>
                 </ul>
             </div>
@@ -44,7 +46,7 @@ $(window).on('load', function(){
                         <h5></h5>
                     </div>
                     <div class="col">
-                        <p class="font-weight-bolder" style="text-align: justify;font-size: 23px;">To change the elements displayed on the Inkberry, please use the preview image on the left. If you click on elements in it, this settings field shows the possible parameters to be changed. After a change, this preview is updated immediately.</p>
+                        <p class="fw-bolder" style="text-align: justify;font-size: 23px;">To change the elements displayed on the Inkberry, please use the preview image on the left. If you click on elements in it, this settings field shows the possible parameters to be changed. After a change, this preview is updated immediately.</p>
                     </div>
                     <div class="col-2">
                         <h1></h1>
@@ -75,7 +77,7 @@ $(window).on('load', function(){
                             <h4>PARAMETER</h4>
                         </div>
                         <div class="col">
-                            <h4 class="font-weight-bolder text-center" id="inkberry_user_selected_parameter_id_text">---</h4>
+                            <h4 class="fw-bolder text-center" id="inkberry_user_selected_parameter_id_text">---</h4>
                         </div>
                     </div>
                     <div class="row">
@@ -101,25 +103,43 @@ $(window).on('load', function(){
         </div>
         <div class="row">
             <div class="col">
+                <!-- Start: Banner Heading -->
                 <section class="py-4 py-xl-5">
                     <div class="container">
                         <div class="text-white bg-dark border rounded border-dark p-4 p-md-5">
-                            <h2 class="font-weight-bold text-white mb-3">FINAL SCREEN</h2>
-                            <p class="font-weight-bolder" style="text-align: justify;font-size: 23px;">The following images reflect the expected image displayed on the Inkberry device. Please note that these changes will not be visible until the Inkberry hardware has gone through an update cycle. This depends on the set refresh rate. A manual refresh is possible via the button on the display itself.</p><img id="inkberry_device_renderered_image" src="assets/img/portfolio/first_test_frame_2023-Jun-13_12-58-18PM-000_CustomizedView5355212567_png.png" width="100%" style="margin: initial;padding-right: 20%;padding-left: 20%;">
+                            <h2 class="fw-bold text-white mb-3">FINAL SCREEN</h2>
+                            <p class="fw-bolder" style="text-align: justify;font-size: 23px;">The following images reflect the expected image displayed on the Inkberry device. Please note that these changes will not be visible until the Inkberry hardware has gone through an update cycle. This depends on the set refresh rate. A manual refresh is possible via the button on the display itself.</p><img id="inkberry_device_renderered_image" src="assets/img/portfolio/first_test_frame_2023-Jun-13_12-58-18PM-000_CustomizedView5355212567_png.png" width="100%" style="margin: initial;padding-right: 20%;padding-left: 20%;">
                             <div class="row">
                                 <div class="col" style="margin: auto;padding: 50px;position: relative;overflow: hidden;text-align: center;">
-                                    <h2 class="font-weight-bold text-white mb-3">DIRECT IMAGE LINKS</h2>
-                                    <p class="font-weight-bolder" style="text-align: justify;font-size: 23px;">Please use the following buttons to open a popup-window with the permanent image URL of the current selected screen.</p>
+                                    <h2 class="fw-bold text-white mb-3">DIRECT IMAGE LINKS</h2>
+                                    <p class="fw-bolder" style="text-align: justify;font-size: 23px;">Please use the following buttons to open a popup-window with the permanent image URL of the current selected screen.</p>
                                     <div class="btn-group" role="group" id="inkberry_open_preview_button_group" style="display: inline-block;width: 100%;"><button class="btn btn-primary" id="inkberry_open_preview_popup_html" type="button" style="margin: 10px;display: block;width: 100%;text-align: center;height: auto;">HTML</button><button class="btn btn-primary" id="inkberry_open_preview_popup_png" type="button" style="margin: 10px;display: block;width: 100%;text-align: center;height: auto;">PNG</button><button class="btn btn-primary" id="inkberry_open_preview_popup_svg" type="button" style="margin: 10px;display: block;width: 100%;text-align: center;height: auto;">SVG</button><button class="btn btn-primary" id="inkberry_open_preview_popup_bmp" type="button" style="margin: 10px;display: block;width: 100%;text-align: center;height: auto;">BMP</button><button class="btn btn-primary" id="inkberry_open_preview_popup_pdf" type="button" style="margin: 10px;display: block;width: 100%;text-align: center;height: auto;">PDF</button><button class="btn btn-primary" id="inkberry_open_preview_popup_ps" type="button" style="margin: 10px;display: block;width: 100%;text-align: center;height: auto;">PS</button><button class="btn btn-primary" id="inkberry_open_preview_popup_eps" type="button" style="margin: 10px;display: block;width: 100%;text-align: center;height: auto;">EPS</button><button class="btn btn-primary" id="inkberry_open_preview_popup_jpeg" type="button" style="margin: 10px;display: block;width: 100%;text-align: center;height: auto;">JPEG</button><button class="btn btn-primary" id="inkberry_open_preview_popup_calepd" type="button" style="margin: 10px;display: block;width: 100%;text-align: center;height: auto;">CalEPD</button></div>
+                                    <p class="fw-bolder" style="text-align: justify;font-size: 23px;">If a display with CalEPD firmware is used as the display device, there are special requirements for the generated image file. The following link can be used as an image source in CalEPD.</p>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr></tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="background: var(--bs-table-striped-bg);">
+                                                        <div class="input-group"><span class="input-group-text">CalEPD</span><input class="form-control" type="text" id="inkberry_calepd_link_text_output" readonly="readonly" style="height: 45px;"><button class="btn btn-primary" id="inkberry_calepd_link_text_output_copy_button" type="button">COPY</button></div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </section>
+                </section><!-- End: Banner Heading -->
             </div>
         </div>
         <div class="row">
-            <div class="col"></div>
+            <div class="col">
+                <div class="btn-group" role="group" id="inkberry_management_button_group"><button class="btn btn-warning btn-lg" id="inkberry_disbale_device_btn" type="button" style="margin: 10px;text-align: left;display: block;">DISABLE INKBERRY</button><button class="btn btn-danger btn-lg" id="inkberry_delete_device_btn" type="button" style="margin: 10px;text-align: left;display: block;">DELETE INKBERRY</button></div>
+            </div>
         </div>
     </header>
     <div class="copyright py-4 text-center text-white">
@@ -129,7 +149,7 @@ $(window).on('load', function(){
     <div class="modal text-center" role="dialog" tabindex="-1" id="portfolio-modal-1">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header"><button class="close" type="button" aria-label="Close" data-dismiss="modal"><span aria-hidden="true">×</span></button></div>
+                <div class="modal-header"><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body">
                     <div class="container text-center">
                         <div class="row">
@@ -148,7 +168,7 @@ $(window).on('load', function(){
     <div class="modal text-center" role="dialog" tabindex="-1" id="portfolio-modal-2">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header"><button class="close" type="button" aria-label="Close" data-dismiss="modal"><span aria-hidden="true">×</span></button></div>
+                <div class="modal-header"><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body">
                     <div class="container text-center">
                         <div class="row">
@@ -167,7 +187,7 @@ $(window).on('load', function(){
     <div class="modal text-center" role="dialog" tabindex="-1" id="portfolio-modal-3">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header"><button class="close" type="button" aria-label="Close" data-dismiss="modal"><span aria-hidden="true">×</span></button></div>
+                <div class="modal-header"><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body">
                     <div class="container text-center">
                         <div class="row">
@@ -186,7 +206,7 @@ $(window).on('load', function(){
     <div class="modal text-center" role="dialog" tabindex="-1" id="portfolio-modal-4">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header"><button class="close" type="button" aria-label="Close" data-dismiss="modal"><span aria-hidden="true">×</span></button></div>
+                <div class="modal-header"><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body">
                     <div class="container text-center">
                         <div class="row">
@@ -205,7 +225,7 @@ $(window).on('load', function(){
     <div class="modal text-center" role="dialog" tabindex="-1" id="portfolio-modal-5">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header"><button class="close" type="button" aria-label="Close" data-dismiss="modal"><span aria-hidden="true">×</span></button></div>
+                <div class="modal-header"><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body">
                     <div class="container text-center">
                         <div class="row">
@@ -224,7 +244,7 @@ $(window).on('load', function(){
     <div class="modal text-center" role="dialog" tabindex="-1" id="portfolio-modal-6">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header"><button class="close" type="button" aria-label="Close" data-dismiss="modal"><span aria-hidden="true">×</span></button></div>
+                <div class="modal-header"><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body">
                     <div class="container text-center">
                         <div class="row">
@@ -245,8 +265,9 @@ $(window).on('load', function(){
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
     <script src="assets/js/freelancer.js"></script>
     <script src="assets/js/jquery.easing.min.js"></script>
-    <script src="assets/js/inkberry.js"></script>
+    <script src="assets/js/inkberry_editor.js"></script>
     <script src="assets/js/entrypoint.js"></script>
+    <script src="assets/js/inkberry_helper.js"></script>
 </body>
 
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-bs-theme="dark">
 
 <head>
     <meta charset="utf-8">
@@ -8,6 +8,7 @@
     <title>Home - Inkberry</title>
     <meta name="description" content="A smart eink display">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
     <link rel="stylesheet" href="assets/css/Lato.css">
     <link rel="stylesheet" href="assets/css/Montserrat.css">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
@@ -19,10 +20,10 @@ $(window).on('load', function(){
 </head>
 
 <body id="page-top">
-    <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-secondary text-uppercase" id="mainNav">
-        <div class="container"><a class="navbar-brand js-scroll-trigger" href="/static/index.html"><img class="rounded-circle" src="assets/img/first_test_frame_2023-Jun-13_12-58-18PM-000_CustomizedView5355212567_png.png" style="width: 50px;">Inkberry</a><button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+    <nav class="bg-secondary navbar navbar-expand-lg fixed-top text-uppercase navbar-light" id="mainNav">
+        <div class="container"><a class="navbar-brand js-scroll-trigger" href="/static/index.html"><img class="rounded-circle" src="assets/img/first_test_frame_2023-Jun-13_12-58-18PM-000_CustomizedView5355212567_png.png" style="width: 50px;">Inkberry</a><button data-bs-toggle="collapse" data-bs-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link align-items-center py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#portfolio"></a></li>
                 </ul>
             </div>
@@ -43,7 +44,8 @@ $(window).on('load', function(){
         </div>
         <div class="row">
             <div class="col">
-                <section class="py-4 py-xl-5"></section>
+                <!-- Start: Banner Heading -->
+                <section class="py-4 py-xl-5"></section><!-- End: Banner Heading -->
             </div>
         </div>
     </header>
@@ -53,6 +55,7 @@ $(window).on('load', function(){
     <script src="assets/js/freelancer.js"></script>
     <script src="assets/js/jquery.easing.min.js"></script>
     <script src="assets/js/entrypoint.js"></script>
+    <script src="assets/js/inkberry_helper.js"></script>
     <script src="assets/js/inkberry_reactivate.js"></script>
 </body>
 
