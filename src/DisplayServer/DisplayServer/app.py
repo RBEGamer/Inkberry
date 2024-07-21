@@ -86,9 +86,7 @@ def set_delete_display(device_id: str):
     if not Devices.Devices.CheckDeviceExists(device_id):
         return jsonify({"CheckDeviceExistsFailed": None}), 500
     else:
-        device_spec = Devices.Devices.GetDeviceSpecification(device_id)
-        device_spec.mark_deleted = True
-        Devices.Devices.DeleteDevice(device_spec)
+        Devices.Devices.DeleteDevice(device_id)
         return jsonify({"error": None}), 200
 
 @app_flask.route('/api/set_display_state/<string:device_id>/<string:enable_state>', methods=['GET', 'POST'])
