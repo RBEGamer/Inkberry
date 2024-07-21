@@ -80,6 +80,14 @@ class Devices:
         d: DeviceSpecification.DeviceSpecification = DeviceSpecification.DeviceSpecification(Devices.GetDeviceRecord(_id))
         return d
 
+    @staticmethod
+    def DeleteDevice(_id: str):
+        spec = Devices.GetDeviceSpecification(_id)
+        if spec is not None:
+            spec.mark_deleted = True
+            spec.device_id = "DELETED" + spec.device_id
+            Devices.UpdateDeviceSpecification(spec)
+
 
     @staticmethod
     def CheckDeviceExists(_id: str) -> bool:
