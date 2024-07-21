@@ -158,5 +158,5 @@ class DeviceSpecification:
         if _load_from_dict is not None:
             self.from_dict(_load_from_dict)
         else:
-            default_device: ImplementedDevices.ImplementedDevices = ImplementedDevices.ImplementedDevices.MINIMAL
-            self.from_dict(DeviceLookUpTable.DeviceLookUpTable.get_hardware_definition(default_device).to_dict())
+            default_device: ImplementedDevices = ImplementedDevices.ImplementedDevices.MINIMAL
+            DeviceLookUpTable.DeviceLookUpTable.get_hardware_definition(default_device, self)

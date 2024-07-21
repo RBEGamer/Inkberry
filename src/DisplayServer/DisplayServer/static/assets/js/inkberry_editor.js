@@ -4,12 +4,12 @@ var current_svg_clickable_areas = [];
 
 
 function generate_image_link(_did, _type){
- return "/api/render/" + current_loaded_device_id + "?type=" + _type;  
+ return window.location.origin + "/api/render/" + current_loaded_device_id + "?type=" + _type;  
 }
 
 function open_render_preview_popup(_type = "html"){
     console.log("open_render_preview_popup " + _type);
-    windows.open(generate_image_link(current_loaded_device_id, _type), '_blank');
+    window.open(generate_image_link(current_loaded_device_id, _type), '_blank');
 }
 
 
@@ -135,7 +135,8 @@ function load_svg_to_canvas(_id, callback) {
 
     if(!svgString){
         alert("cant get Device Document from " + url);
-        window.location.reload();
+        window.location.assign("/");
+        //window.location.reload();
         return;
     }
     const parser = new DOMParser();
@@ -188,6 +189,8 @@ function load_editor_for_device(_id){
     editor_refresh_rendering(_id);
     
     $('#inkberry_calepd_link_text_output').val(generate_image_link(_id, 'calepd'));
+    
+    $('#inkberry_inkberry_link_text_output').val(generate_image_link(_id, 'inkfw'));
 
     //LOAD PARAMETER TABLE
     $.getJSON("/api/information/" + _id, function( data ) {
@@ -284,7 +287,10 @@ function set_delete(deivce_id){
     });
 }
 
-
+function copy_calepd_link(_elem_id){
+    var link_content = $('#' + _elem_id).val();
+        copyTextToClipboard(link_content);
+}
 function inkberry_init(){
     resize_canvas();
     $(window).on( "resize", function() {
@@ -306,11 +312,7 @@ function inkberry_init(){
         open_render_preview_popup(popup_type);
     });
     
-    $('#inkberry_calepd_link_text_output_copy_button').on('click', 'button', function(event) {
-        var link_content = $('#inkberry_calepd_link_text_output').val()
-        copyTextToClipboard(link_content);
-    });
-    
+   
     
     $('#inkberry_delete_device_btn').on('click', 'button', function(event) {
       set_delete(current_loaded_device_id);

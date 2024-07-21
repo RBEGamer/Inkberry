@@ -135,7 +135,7 @@ class SVGRenderer:
 
                 elif _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_7COLOR:
                     # FOR 7 COLOR DIPLAYS
-                    num_colors = 16 # generate_seven_colors_colorpalette generates 7 colors so 16 shades of each color
+                    num_colors = 2 # generate_seven_colors_colorpalette generates 7 colors so 16 shades of each color
                     img.depth = 8
                     img.type = 'palette'
 

@@ -9,8 +9,8 @@
     <meta name="description" content="A smart eink display">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
-    <link rel="stylesheet" href="assets/css/Lato.css">
-    <link rel="stylesheet" href="assets/css/Montserrat.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&amp;display=swap">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/Pricing-Free-Paid-badges.css">
     <link rel="stylesheet" href="assets/css/Pricing-Free-Paid-icons.css">
@@ -21,7 +21,8 @@
         <div class="container"><img class="rounded-circle" src="assets/img/first_test_frame_2023-Jun-13_12-58-18PM-000_CustomizedView5355212567_png.png" style="width: 50px;margin-right: 20px;"><a class="navbar-brand js-scroll-trigger" href="/static/index.html">Inkberry</a><button data-bs-toggle="collapse" data-bs-target="#navbarResponsive" class="navbar-toggler text-white bg-primary rounded" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item mx-0 mx-lg-1"><button class="btn btn-primary" id="open_editor_redirect" type="button" style="margin-right: 29px;">OPEN INKBERRY EDITOR</button></li>
+                    <li class="nav-item mx-0 mx-lg-1"><button class="btn btn-primary" id="open_editor_redirect" type="button" style="margin-right: 29px;">EDITOR</button></li>
+                    <li class="nav-item mx-0 mx-lg-1"><button class="btn btn-primary" id="open_setup_redirect" type="button" style="margin-right: 29px;">SETUP</button></li>
                     <li class="nav-item mx-0 mx-lg-1"></li>
                 </ul>
             </div>
@@ -69,8 +70,7 @@
         </div>
     </section>
     <div class="text-center text-white copyright py-4">
-        <!-- Start: Pricing Free Paid -->
-        <div class="container py-4 py-xl-5">
+        <div class="container py-4 py-xl-5" style="text-align: left;">
             <div class="row">
                 <div class="col">
                     <h2 class="text-uppercase text-center text-white" style="padding-bottom: 26px;">About INKBERRY</h2>
@@ -87,16 +87,16 @@
                         </div>
                     </div>
                     <div class="bg-light border rounded border-light p-4">
-                        <ul class="list-unstyled mb-0">
+                        <ul class="list-unstyled mb-0" style="color: var(--bs-body-bg);">
                             <li class="d-flex mb-2"><span class="bs-icon-xs bs-icon-rounded bs-icon-primary-light bs-icon bs-icon-xs me-2" style="color: var(--dark);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check-lg" style="color: var(--dark);">
                                         <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022"></path>
-                                    </svg></span><span style="color: var(--dark);text-align: left;">Setup your own Inkberry server and displays</span></li>
+                                    </svg></span><span style="color: var(--bs-body-bg);text-align: left;">Setup your own Inkberry server and displays</span></li>
                             <li class="d-flex mb-2" style="color: var(--dark);"><span class="bs-icon-xs bs-icon-rounded bs-icon-primary-light bs-icon bs-icon-xs me-2" style="color: var(--dark);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check-lg" style="color: var(--dark);">
                                         <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022"></path>
-                                    </svg></span><span style="color: var(--dark);text-align: left;">Inkberry e-ink displays are not included and are available for purchase separately.</span></li>
+                                    </svg></span><span style="color: var(--bs-body-bg);text-align: left;">Inkberry e-ink displays are not included and are available for purchase separately.</span></li>
                             <li class="d-flex mb-2" style="color: var(--dark);"><span class="bs-icon-xs bs-icon-rounded bs-icon-primary-light bs-icon bs-icon-xs me-2" style="color: var(--dark);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check-lg" style="color: var(--dark);">
                                         <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022"></path>
-                                    </svg></span><span style="color: var(--dark);">Wifi infrastrucutre required</span></li>
+                                    </svg></span><span style="color: var(--dark);text-align: left;">Wifi infrastrucutre required</span></li>
                             <li class="d-flex mb-2" style="color: var(--dark);"><span class="bs-icon-xs bs-icon-rounded bs-icon-primary-light bs-icon bs-icon-xs me-2" style="color: var(--dark);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check-lg" style="color: var(--dark);">
                                         <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022"></path>
                                     </svg></span><span style="color: var(--dark);text-align: left;">Runs on every Docker capable device, even on your favorite SBC</span></li>
@@ -115,17 +115,17 @@
                         <ul class="list-unstyled mb-0">
                             <li class="d-flex mb-2"><span class="bs-icon-xs bs-icon-rounded bs-icon-primary-light bs-icon bs-icon-xs me-2" style="color: var(--dark);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check-lg" style="color: var(--dark);">
                                         <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022"></path>
-                                    </svg></span><span style="color: var(--dark);text-align: left;">Central managed by us with uptime guarantee</span></li>
+                                    </svg></span><span style="color: var(--bs-body-bg);text-align: left;">Central managed by us with uptime guarantee</span></li>
                             <li class="d-flex mb-2" style="color: var(--dark);"><span class="bs-icon-xs bs-icon-rounded bs-icon-primary-light bs-icon bs-icon-xs me-2" style="color: var(--dark);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check-lg" style="color: var(--dark);">
                                         <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022"></path>
-                                    </svg></span><span style="color: var(--dark);">Best for testing our fantastic&nbsp; features</span></li>
+                                    </svg></span><span style="color: var(--bs-body-bg);text-align: left;">Best for testing our fantastic&nbsp; features</span></li>
                             <li class="d-flex mb-2" style="color: var(--dark);"><span class="bs-icon-xs bs-icon-rounded bs-icon-primary-light bs-icon bs-icon-xs me-2" style="color: var(--dark);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check-lg" style="color: var(--dark);">
                                         <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022"></path>
-                                    </svg></span><span style="color: var(--dark);text-align: left;">Inkberry e-ink displays are not included and are available for purchase separately.</span></li>
+                                    </svg></span><span style="color: var(--bs-body-bg);text-align: left;">Inkberry e-ink displays are not included and are available for purchase separately.</span></li>
                             <li class="d-flex mb-2" style="color: var(--dark);"></li>
                             <li class="d-flex mb-2"><span class="bs-icon-xs bs-icon-rounded bs-icon-primary-light bs-icon bs-icon-xs me-2" style="color: var(--dark);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check-lg" style="color: var(--dark);">
                                         <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022"></path>
-                                    </svg></span><span style="color: var(--dark);text-align: left;">Wifi infrastrucutre with internet access required</span></li>
+                                    </svg></span><span style="color: var(--bs-body-bg);text-align: left;">Wifi infrastrucutre with internet access required</span></li>
                         </ul>
                     </div>
                 </div>
@@ -141,21 +141,21 @@
                         <ul class="list-unstyled mb-0" style="height: 208px;">
                             <li class="d-flex mb-2" style="color: var(--dark);"><span class="bs-icon-xs bs-icon-rounded bs-icon-primary-light bs-icon bs-icon-xs me-2" style="color: var(--dark);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check-lg" style="color: var(--dark);">
                                         <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022"></path>
-                                    </svg></span><span style="color: var(--dark);">100% offline and isolated setup&nbsp;</span></li>
+                                    </svg></span><span style="color: var(--bs-body-bg);text-align: left;">100% offline and isolated setup&nbsp;</span></li>
                             <li class="d-flex mb-2" style="color: var(--dark);"><span class="bs-icon-xs bs-icon-rounded bs-icon-primary-light bs-icon bs-icon-xs me-2" style="color: var(--dark);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check-lg" style="color: var(--dark);">
                                         <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022"></path>
-                                    </svg></span><span style="color: var(--dark);">Dedicated Inkberry server setup</span></li>
+                                    </svg></span><span style="color: var(--bs-body-bg);text-align: left;">Dedicated Inkberry server setup</span></li>
                             <li class="d-flex mb-2" style="color: var(--dark);"><span class="bs-icon-xs bs-icon-rounded bs-icon-primary-light bs-icon bs-icon-xs me-2" style="color: var(--dark);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check-lg" style="color: var(--dark);">
                                         <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022"></path>
-                                    </svg></span><span style="color: var(--dark);">Display layout service included</span></li>
+                                    </svg></span><span style="color: var(--bs-body-bg);text-align: left;">Display layout service included</span></li>
                             <li class="d-flex mb-2" style="color: var(--dark);"><span class="bs-icon-xs bs-icon-rounded bs-icon-primary-light bs-icon bs-icon-xs me-2" style="color: var(--dark);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check-lg" style="color: var(--dark);">
                                         <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022"></path>
-                                    </svg></span><span style="color: var(--dark);text-align: left;">Inkberry e-ink displays are not included and are available for purchase separately.</span></li>
+                                    </svg></span><span style="color: var(--bs-body-bg);text-align: left;">Inkberry e-ink displays are not included and are available for purchase separately.</span></li>
                         </ul>
                     </div>
                 </div>
             </div>
-        </div><!-- End: Pricing Free Paid -->
+        </div>
         <div class="container"><a href="https://marcelochsendorf.com/impressum"><br><span style="color: rgb(255, 255, 255);">IMPRESSUM</span></a></div>
     </div>
     <div class="d-lg-none scroll-to-top position-fixed rounded"><a class="text-center d-block js-scroll-trigger rounded" href="#page-top"><i class="fa fa-chevron-up"></i></a></div>

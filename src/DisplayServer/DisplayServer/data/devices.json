@@ -14,9 +14,12 @@
          "screen_size_h": 480,
          "wakeup_interval": 1,
          "content_scale": 1.0,
+         "current_content_hash": "",
+         "last_served_content_hash": "",
+         "current_content_svg": "",
+         "mark_deleted": false,
          "id": 136168391603048615,
          "tile_specifications": [
-
             {
                "name": "Logo Image Tile Test",
                "module_name": "DisplayFramework.tiles.ImageTile.ImageTile",

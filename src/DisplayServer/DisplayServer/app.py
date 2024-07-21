@@ -48,7 +48,7 @@ def favicon_redirect():  # put application's code here
 @app_flask.route('/api/list_devices', methods=['GET', 'POST'])
 def api_list_devices():
     ret: dict = {}
-    ret['devices'] = Devices.Devices.GetRegisteredDeviceIds()
+    ret['devices'] = Devices.Devices.GetRegisteredDeviceIds(True)
     return jsonify(ret)
 
 
@@ -75,7 +75,7 @@ def imageapi(image: str):
         if Devices.Devices.CheckDeviceExists(image_id):
             device_spec = Devices.Devices.GetDeviceSpecification(image_id)
         else:
-            device_spec = Devices.Devices.GetRandomDeviceSpecification()
+            return jsonify({"error": "invalid id"}), 200
 
     return generate_rendered_screen_response(image_id, device_spec, image_type, 0, request)
 
@@ -340,10 +340,7 @@ def flask_server_task(_config: dict):
     debug: bool = _config.get("dbg", False)
 
     app_flask.config.update(_config)
-    #with flas
-    #    flask.g.test = 0
 
-    #app_flask.app_context().push()
     if debug:
         app_flask.run(host=host, port=port, debug=debug)
     else:

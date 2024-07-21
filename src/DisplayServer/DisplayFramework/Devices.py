@@ -51,10 +51,16 @@ class Devices:
             return {}
 
     @staticmethod
-    def GetRegisteredDeviceIds() -> list:
+    def GetRegisteredDeviceIds(_include_only_not_deleted: bool = False) -> list:
         try:
             rt: list = []
-            for d in Devices.getDB().getAll():
+            qr: list = []
+            if _include_only_not_deleted:
+                qr = Devices.getDB().getBy({"mark_deleted": False})
+            else:
+                qr = Devices.getDB().getAll()
+
+            for d in qr:
                 rt.append({'id': d["device_id"], 'name': d["allocation"]})
             return rt
         except Exception as e:
@@ -62,7 +68,7 @@ class Devices:
             return []
     @staticmethod
     def GetRandomDeviceRecord() -> dict:
-        k = random.choice(Devices.getDB().getAll())
+        k = random.choice(Devices.getDB().getBy({"mark_deleted": False}))
         if k is None or 'device_id' not in k or not Devices.CheckDeviceExists(k['device_id']):
             return {}
         return k
@@ -85,8 +91,8 @@ class Devices:
         spec = Devices.GetDeviceSpecification(_id)
         if spec is not None:
             spec.mark_deleted = True
-            spec.device_id = "DELETED" + spec.device_id
-            Devices.UpdateDeviceSpecification(spec)
+            spec.device_id = "__DELETED__" + spec.device_id
+            Devices.UpdateDeviceSpecification(spec, _id)
 
 
     @staticmethod
@@ -103,25 +109,24 @@ class Devices:
         return False
 
     @staticmethod
-    def UpdateDeviceSpecification(spec: DeviceSpecification.DeviceSpecification) -> bool:
-        if Devices.CheckDeviceExists(spec.device_id):
+    def UpdateDeviceSpecification(spec: DeviceSpecification.DeviceSpecification, _alternative_device_id: str = None) -> bool:
+        did: str = spec.device_id
+        if _alternative_device_id is not None:
+            did = _alternative_device_id
+
+        if Devices.CheckDeviceExists(did):
             dr: dict = {}
-            original_record = Devices.GetDeviceRecord(spec.device_id)
+            original_record = Devices.GetDeviceRecord(did)
             update_data = spec.to_dict()
-            id: int = original_record.get('id')
 
             dr.update(original_record)
 
             dr.update(update_data)
-            result = Devices.getDB().updateByQuery({"device_id":spec.device_id}, dr)
+            result = Devices.getDB().updateByQuery({"device_id": did}, dr)
 
-            #if dr:
-            #    dr.update(spec.to_dict())
-            #    id: int = original_record.get('id')
-            #    #dr.pop('id')
-            #    Devices.getDB().updateById(id, dr)
-            return True
-                # TODO
+            if result is None:
+                return True
+
         return False
     @staticmethod
     def UpdateDeviceStatus(_id: str, _last_request: str, _dict: dict) -> bool:

@@ -4,8 +4,10 @@ from DisplayFramework import ImplementedDevices, DeviceSpecification
 class DeviceLookUpTable(object):
     # TODO REWORK TO FILE BASED TEMPLATES
     @staticmethod
-    def get_hardware_definition(_hardware_type: ImplementedDevices) -> DeviceSpecification.DeviceSpecification:
-        spec: DeviceSpecification.DeviceSpecification = DeviceSpecification.DeviceSpecification()
+    def get_hardware_definition(_hardware_type: ImplementedDevices,  spec: DeviceSpecification.DeviceSpecification = None) -> DeviceSpecification.DeviceSpecification:
+
+        if spec is None:
+            spec = DeviceSpecification.DeviceSpecification()
 
 
         if _hardware_type == ImplementedDevices.ImplementedDevices.SIMULATED:
@@ -53,7 +55,7 @@ class DeviceLookUpTable(object):
             spec.content_scale = 1.0
             spec.display_orientation = DeviceSpecification.DisplayOrientation.DP_HORIZONTAL
             spec.image_filter = DeviceSpecification.DisplayImageFilters.DIF_NONE
-            spec.colorspace = DeviceSpecification.DisplaySupportedColors.DSC_7COL
+            spec.colorspace = DeviceSpecification.DisplaySupportedColors.DSC_7COLOR
 
 
 
@@ -66,3 +68,4 @@ class DeviceLookUpTable(object):
     @staticmethod
     def get_screen_size_h(_hardware_type: ImplementedDevices) -> int:
         return DeviceLookUpTable.get_hardware_definition(_hardware_type).screen_size_h
+
