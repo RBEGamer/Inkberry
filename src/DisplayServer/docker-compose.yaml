@@ -59,7 +59,7 @@ services:
     ports:
       # Port for the Nginx load balancer
       # HOST:CONTAINER
-      - "55557:80"
+      - "55556:80"
 
 
 # Define named volumes
