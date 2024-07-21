@@ -78,6 +78,19 @@ def imageapi(image: str):
 
     return generate_rendered_screen_response(image_id, device_spec, image_type, 0, request)
 
+
+@app_flask.route('/api/set_delete_display/<string:device_id>', methods=['GET', 'POST'])
+def set_delete_display(device_id: str):
+    device_id = bleach.clean(device_id)
+
+    if not Devices.Devices.CheckDeviceExists(device_id):
+        return jsonify({"CheckDeviceExistsFailed": None}), 500
+    else:
+        device_spec = Devices.Devices.GetDeviceSpecification(device_id)
+        device_spec.mark_deleted = True
+        Devices.Devices.DeleteDevice(device_spec)
+        return jsonify({"error": None}), 200
+
 @app_flask.route('/api/set_display_state/<string:device_id>/<string:enable_state>', methods=['GET', 'POST'])
 def api_setdisplay_state(device_id: str, enable_state: str):
     device_id = bleach.clean(device_id)
@@ -353,8 +366,25 @@ def launch(typer_ctx: typer.Context, port: int = 55556, host: str = "0.0.0.0", d
 
     while (not terminate_flask):
         print("DisplayServer started. http://{}:{}/".format(host, port))
-        if typer.prompt("Terminate  [Y/n]", 'y') == 'y':
-            break
+
+
+        # TODO IMPLEMENT UPDATE CYCLE FOR ALL ENABLED SCREENS
+        # IMPLEMENT A REUTRN FUNCTION IF ANYTHING UPDATED
+        # THEN RENDER THE SCREEN
+        # SAVE THE HASH
+        # SAVE HASH OF NEW GENERATED HASH
+        #_device.current_content_hash = SVGHelper.SVGHelper.generate_sha1_hash(document.getXML())
+        #Devices.Devices.UpdateDeviceSpecification(_device)
+        # TODO SAVE CURRENT SVG CODE IN DB TOO
+
+        # IN GET RENDERED IMAGE FUNCTION
+        # SAVE CURRENT SVG HASH IN DB AS LAST SERVED
+
+        # IF
+
+        # IF
+        #if typer.prompt("Terminate  [Y/n]", 'y') == 'y':
+        #    break
 
     # STOP
     flask_server.terminate()
