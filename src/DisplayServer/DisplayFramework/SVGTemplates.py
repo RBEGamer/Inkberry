@@ -1,11 +1,15 @@
 
+
 from DisplayFramework.pysvg import builders, structure, text, style
-from DisplayFramework import DeviceSpecification, TileFactory, BaseTile, TileSpecification
+from DisplayFramework import DeviceSpecification, TileFactory, BaseTile, TileSpecification, SVGHelper, Devices
 from DisplayFramework.tiles import QrTile
 from DisplayFramework.pysvg.builders import TransformBuilder
 
 
 class SVGTemplates:
+
+
+
     @staticmethod
     def GetScaledSVGContent(_svg: structure.Svg, _target_width) -> structure.Svg:
         if not _target_width or _target_width <= 0:
@@ -31,7 +35,6 @@ class SVGTemplates:
     @staticmethod
     def GenerateCurrentDeviceScreen(_id: str, _device: DeviceSpecification.DeviceSpecification, _target_width: int = 0) -> str:
         document: structure.Svg = SVGTemplates.getEmptyTeamplate(_device)
-
         # APPEND TILES INTO TO FINAL DEVICE SCREEN SVG
         tiles: [] = TileFactory.TileFactory.GetTiles(_device)
         for t in tiles:

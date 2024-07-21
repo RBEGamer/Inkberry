@@ -3,7 +3,7 @@ var current_loaded_device_id = "";
 var current_svg_clickable_areas = [];
 
 
-function generate_image_link(_did, type){
+function generate_image_link(_did, _type){
  return "/api/render/" + current_loaded_device_id + "?type=" + _type;  
 }
 

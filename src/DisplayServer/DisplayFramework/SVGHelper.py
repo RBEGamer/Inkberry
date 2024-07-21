@@ -1,7 +1,19 @@
 import colorsys
-
+import hashlib
 class SVGHelper:
 
+    @staticmethod
+    def generate_sha1_hash(input_string):
+        # Create a new sha1 hash object
+        sha1_hash = hashlib.sha1()
+
+        # Update the hash object with the bytes of the input string
+        sha1_hash.update(input_string.encode('utf-8'))
+
+        # Get the hexadecimal digest of the hash
+        hex_digest = sha1_hash.hexdigest()
+
+        return hex_digest
 
     @staticmethod
     def GetSVGGroupContentString(_svg_str: str):

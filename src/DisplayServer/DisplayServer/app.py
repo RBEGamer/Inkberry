@@ -1,6 +1,7 @@
 import io
 import multiprocessing
 import os
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -350,7 +351,7 @@ def flask_server_task(_config: dict):
 
 
 @app_typer.command()
-def launch(typer_ctx: typer.Context, port: int = 55556, host: str = "0.0.0.0", debug: bool = False):
+def launch(typer_ctx: typer.Context, port: int = 55556, host: str = "0.0.0.0", debug: bool = False, rendernode: bool = True):
     global terminate_flask
 
     sys_cfg = {
@@ -361,9 +362,11 @@ def launch(typer_ctx: typer.Context, port: int = 55556, host: str = "0.0.0.0", d
     flask_config = {"port": port, "host": host, "dbg": debug, "syscfg": sys_cfg}
     flask_server: multiprocessing.Process = multiprocessing.Process(target=flask_server_task, args=(flask_config,))
     flask_server.start()
+    print("DisplayServer started. http://{}:{}/".format(host, port))
 
     while (not terminate_flask):
-        print("DisplayServer started. http://{}:{}/".format(host, port))
+        time.sleep(1)
+
 
 
         # TODO IMPLEMENT UPDATE CYCLE FOR ALL ENABLED SCREENS

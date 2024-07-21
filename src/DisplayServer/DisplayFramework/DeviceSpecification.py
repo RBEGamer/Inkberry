@@ -51,7 +51,12 @@ class DeviceSpecification:
     content_scale: float = 1.0
     display_orientation: DisplayOrientation = DisplayOrientation.DP_HORIZONTAL
     tile_specifications: [TileSpecification.TileSpecification] = []
+    current_content_hash: str = ""
+    last_served_content_hash: str = ""
+    current_content_svg: str = ""
+    mark_deleted: bool = False
     _valid: bool = True
+
 
     def __dict__(self) -> dict:
 
@@ -74,6 +79,10 @@ class DeviceSpecification:
             'auth_token': self.auth_token,
             'colorspace': self.colorspace.value,
             'image_filter': self.image_filter.value,
+            'current_content_hash': self.current_content_hash,
+            'last_served_content_hash': self.last_served_content_hash,
+            'current_content_svg': self.current_content_svg,
+            'mark_deleted': self.mark_deleted
         }
 
     def get_hardware_type(self) -> ImplementedDevices.ImplementedDevices:
@@ -130,6 +139,16 @@ class DeviceSpecification:
             self.colorspace = DisplaySupportedColors.from_int(_dict['colorspace'])
         if 'image_filter' in _dict:
             self.image_filter = DisplayImageFilters.from_int(_dict['image_filter'])
+        if 'current_content_hash' in _dict:
+            self.current_content_hash = _dict['current_content_hash']
+        if 'last_served_content_hash' in _dict:
+            self.last_served_content_hash = _dict['last_served_content_hash']
+        if 'current_content_svg' in _dict:
+            self.current_content_svg = _dict['current_content_svg']
+        if 'mark_deleted' in _dict:
+            self.enabled = bool(_dict['mark_deleted'])
+
+
 
         if errors > 0:
             self._valid = True

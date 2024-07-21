@@ -9,8 +9,8 @@ from svgwrite import Drawing
 from wand.color import Color
 from wand.drawing import Drawing
 from wand.display import display
-from SVGHelper import SVGHelper
-from DisplayFramework import DeviceSpecification
+
+from DisplayFramework import DeviceSpecification, SVGHelper
 
 from enum import Enum
 
@@ -110,13 +110,13 @@ class SVGRenderer:
 
                     if num_colors > 2:
                         # ADD GRAY SHAED TO COLOR PALETTE
-                        gray_steps: [str] = SVGHelper.generate_gray_shades(math.floor(num_colors / 2))
+                        gray_steps: [str] = SVGHelper.SVGHelper.generate_gray_shades(math.floor(num_colors / 2))
                         for idx, red_step in enumerate(gray_steps):
                             img.color_map(idx+palette_index, wand.color.Color(red_step))
                         palette_index = palette_index + len(gray_steps)
 
                         # ADD RED SHADES TO COLOR PALETTE
-                        red_steps: [str] = SVGHelper.generate_red_shades(math.floor(num_colors/2))
+                        red_steps: [str] = SVGHelper.SVGHelper.generate_red_shades(math.floor(num_colors/2))
                         for idx, red_step in enumerate(red_steps):
                             img.color_map(idx+palette_index, wand.color.Color(red_step))
                         palette_index = palette_index + len(red_steps)
@@ -128,7 +128,7 @@ class SVGRenderer:
                     img.type = 'palette'
                     palette_index = 0
 
-                    gray_steps: [str] = SVGHelper.generate_gray_shades(math.floor(num_colors))
+                    gray_steps: [str] = SVGHelper.SVGHelper.generate_gray_shades(math.floor(num_colors))
                     for idx, red_step in enumerate(gray_steps):
                         img.color_map(idx + palette_index, wand.color.Color(red_step))
                     palette_index = palette_index + len(gray_steps)
@@ -139,7 +139,7 @@ class SVGRenderer:
                     img.depth = 8
                     img.type = 'palette'
 
-                    color_palette = SVGHelper.generate_seven_colors_colorpalette(num_colors)
+                    color_palette = SVGHelper.SVGHelper.generate_seven_colors_colorpalette(num_colors)
                     for idx, hexcolor in enumerate(color_palette):
                         img.color_map(idx, wand.color.Color(hexcolor))
 
