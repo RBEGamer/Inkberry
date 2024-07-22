@@ -264,7 +264,6 @@ def api_register_new(did: str, typename: str, allocation: str, orientation: str)
     allocation = bleach.clean(allocation)
     orientation = bleach.clean(orientation)
 
-
     if not Devices.Devices.CheckDeviceExists(did):
         try:
             dorient: DeviceSpecification.DisplayOrientation = DeviceSpecification.DisplayOrientation.from_int(int(orientation))

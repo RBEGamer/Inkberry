@@ -92,27 +92,27 @@ class SVGRenderer:
                 # Convert the image to 4-bit depth
                 img.depth = 4
                 num_colors = None
-
+                max_colors: int = img.colors
 
                 # Create a custom colormap with only black and white
                 if _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_BW:
-                    num_colors = 2
+                    num_colors = min([2, max_colors]) # BLACK WHITE
                     img.depth = 4
                     img.type = 'palette'
                     img.color_map(0, wand.color.Color('#000000'))
                     img.color_map(2, wand.color.Color('#FFFFFF'))
                 elif _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_BWR:
                     # FOR RED BLACK WHITE, A ADDITIONAL COLOR PALETTE IS GENERATED FOR RED AND GRAY COLORS
-                    num_colors = 16
+                    num_colors = min([2*2, max_colors])
                     img.depth = 8
                     img.type = 'palette'
                     palette_index = 0
 
                     if num_colors > 2:
-                        # ADD GRAY SHAED TO COLOR PALETTE
+                        # ADD GRAY SHADED TO COLOR PALETTE
                         gray_steps: [str] = SVGHelper.SVGHelper.generate_gray_shades(math.floor(num_colors / 2))
                         for idx, red_step in enumerate(gray_steps):
-                            img.color_map(idx+palette_index, wand.color.Color(red_step))
+                            img.color_map(idx, wand.color.Color(red_step))
                         palette_index = palette_index + len(gray_steps)
 
                         # ADD RED SHADES TO COLOR PALETTE
@@ -123,7 +123,7 @@ class SVGRenderer:
 
                 elif _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_GRAY:
                     # FOR GRAY, A ADDITIONAL COLOR PALETTE IS GENERATED GRAY COLORS
-                    num_colors = 16
+                    num_colors = min([16, max_colors])
                     img.depth = 8
                     img.type = 'palette'
                     palette_index = 0
@@ -141,6 +141,8 @@ class SVGRenderer:
 
                     color_palette = SVGHelper.SVGHelper.generate_seven_colors_colorpalette(num_colors)
                     for idx, hexcolor in enumerate(color_palette):
+                        if idx > max_colors:
+                            break
                         img.color_map(idx, wand.color.Color(hexcolor))
 
 
