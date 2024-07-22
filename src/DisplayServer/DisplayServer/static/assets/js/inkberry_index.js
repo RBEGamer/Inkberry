@@ -10,6 +10,10 @@ function open_editor_redirect(){
         if(!devices){
             window.location.href = "/static/editor.html";
         }
+        if(devices.length <= 0){
+            alert("THERE ARE CURRENTLY NO DEVICES REGISTERED - PLEASE SETUP A NEW INKBERRY SCREEN");
+            return;
+        }
         const item = devices[Math.floor(Math.random()*devices.length)];
         
         window.location.href = "/static/editor.html?did=" + item['id'];
