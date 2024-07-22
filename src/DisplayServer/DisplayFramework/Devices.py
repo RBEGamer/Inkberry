@@ -91,7 +91,7 @@ class Devices:
                 qr = Devices.getDB().getAll()
 
             for d in qr:
-                rt.append({'id': d["device_id"], 'name': d["allocation"]})
+                rt.append({'id': d["device_id"], 'name': d["allocation"] + " @ " + d["device_id"]})
             return rt
         except Exception as e:
             print(e)

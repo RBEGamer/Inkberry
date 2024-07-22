@@ -226,9 +226,9 @@ def api_information(device_id: str):
         device_spec = Devices.Devices.GetDeviceSpecification(device_id)
 
         ret.update({
-            'hardware': '{} [{}x{} WUP:{}]'.format(device_spec.get_hardware_type().name, device_spec.screen_size_w,
-                                                   device_spec.screen_size_h, device_spec.wakeup_interval),
-            'name': '{} [{}]'.format(device_spec.allocation, device_spec.device_id),
+            'hardware': '{} [{}x{} WUP:{} ENABLED:{}]'.format(device_spec.get_hardware_type().name, device_spec.screen_size_w,
+                                                   device_spec.screen_size_h, device_spec.wakeup_interval, device_spec.enabled),
+            'name': '{} @ {} '.format(device_spec.allocation, device_spec.device_id),
         })
 
     return jsonify(ret)
