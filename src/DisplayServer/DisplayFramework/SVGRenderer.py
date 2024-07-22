@@ -80,7 +80,7 @@ class SVGRenderer:
             # CONVERT PNG TO BMP
             return_bytes = io.BytesIO()
             with wand.image.Image(file=png_bytes,) as img:
-                img.resolution = (75, 75)
+                img.resolution = (72, 72)
                 # Apply dithering
                 img.antialias = False
 
@@ -100,7 +100,7 @@ class SVGRenderer:
                     img.depth = 4
                     img.type = 'palette'
                     img.color_map(0, wand.color.Color('#000000'))
-                    img.color_map(2, wand.color.Color('#FFFFFF'))
+                    img.color_map(1, wand.color.Color('#FFFFFF'))
                 elif _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_BWR:
                     # FOR RED BLACK WHITE, A ADDITIONAL COLOR PALETTE IS GENERATED FOR RED AND GRAY COLORS
                     num_colors = min([2*2, max_colors])
@@ -119,8 +119,9 @@ class SVGRenderer:
                         red_steps: [str] = SVGHelper.SVGHelper.generate_red_shades(math.floor(num_colors/2))
                         for idx, red_step in enumerate(red_steps):
                             img.color_map(idx+palette_index, wand.color.Color(red_step))
-                        palette_index = palette_index + len(red_steps)
-
+                    else:
+                        img.color_map(0, wand.color.Color('#000000'))
+                        img.color_map(1, wand.color.Color('#FFFFFF'))
                 elif _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_GRAY:
                     # FOR GRAY, A ADDITIONAL COLOR PALETTE IS GENERATED GRAY COLORS
                     num_colors = min([16, max_colors])
