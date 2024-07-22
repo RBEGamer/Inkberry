@@ -125,15 +125,16 @@ class Devices:
             spec.device_id = "__DELETED__" + spec.device_id
             Devices.UpdateDeviceSpecification(spec, _id)
             # TODO REWORK ADD DIRECT QUERY
-            # DELETE PARENT DEVICE TOO
+            # DELETE PARENT DEVICE TOO AND UPDATE PARENT ID
             for d in Devices.GetRegisteredDeviceIds():
-                rec: DeviceSpecification.DeviceSpecification = Devices.GetDeviceSpecification(d)
-                if rec.parent_id is not None:
-                    if len(rec.parent_id) > 0:
-                        spec.mark_deleted = True
-                        spec.enabled = False
-                        spec.device_id = "__DELETED__" + spec.device_id
-                        Devices.UpdateDeviceSpecification(spec, _id)
+                child_spec: DeviceSpecification.DeviceSpecification = Devices.GetDeviceSpecification(d)
+                if child_spec.parent_id is not None:
+                    if len(child_spec.parent_id) > 0:
+                        child_spec.mark_deleted = True
+                        child_spec.enabled = False
+                        child_spec.device_id = "__DELETED__" + child_spec.device_id
+                        child_spec.parent_id = spec.device_id
+                        Devices.UpdateDeviceSpecification(child_spec, _id)
 
 
     @staticmethod

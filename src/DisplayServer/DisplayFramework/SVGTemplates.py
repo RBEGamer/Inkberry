@@ -34,6 +34,20 @@ class SVGTemplates:
         return _svg
     @staticmethod
     def GenerateCurrentDeviceScreen(_id: str, _device: DeviceSpecification.DeviceSpecification, _target_width: int = 0) -> str:
+
+        # IF A PARENT IS SET MODIFY THE SPECIFICATION
+        if _device.parent_id is not None:
+            if len(_device.parent_id) > 0:
+                if Devices.Devices.CheckDeviceExists(_device.parent_id):
+                    parent_spec: DeviceSpecification.DeviceSpecification = Devices.Devices.GetDeviceSpecification(_device.parent_id)
+
+                    if not Devices.Devices.CheckDeviceEnabled(parent_spec.device_id):
+                        return SVGTemplates.GenerateDeviceDisabledScreen(_id, _device, _target_width, _headline_text_addition=" [PARENT]")
+
+                    # UPDATE PARENT TILESPECIFICATION UPDATE ENTRY
+                    _device.tile_specifications = parent_spec.tile_specifications
+
+
         document: structure.Svg = SVGTemplates.getEmptyTeamplate(_device)
          # APPEND TILES INTO TO FINAL DEVICE SCREEN SVG
         tiles: [] = TileFactory.TileFactory.GetTiles(_device)
@@ -54,7 +68,7 @@ class SVGTemplates:
         _device.image_filter = DeviceSpecification.DisplayImageFilters.DIF_NONE
         _device.colorspace = DeviceSpecification.DisplaySupportedColors.DSC_BW
         document: structure.Svg = SVGTemplates.getEmptyTeamplate(_device)
-        document = SVGTemplates.getSystemStautsScreen(document, _device, _title="STP:{}".format(_id), _qrcode_url=_qrcode_url)
+        document = SVGTemplates.getSystemStautsScreen(document, _device, _title="SETUP:{}".format(_id), _qrcode_url=_qrcode_url)
 
         if _target_width and _target_width > 0:
             document = SVGTemplates.GetScaledSVGContent(document, _target_width)
@@ -63,11 +77,11 @@ class SVGTemplates:
         return xml
 
     @staticmethod
-    def GenerateDeviceDisabledScreen(_id: str, _device: DeviceSpecification.DeviceSpecification, _target_width: int = 0, _qrcode_url: str = "inkberry.marcelochsendorf.com") -> str:
+    def GenerateDeviceDisabledScreen(_id: str, _device: DeviceSpecification.DeviceSpecification, _target_width: int = 0, _qrcode_url: str = "inkberry.marcelochsendorf.com", _headline_text_addition: str = "") -> str:
         _device.image_filter = DeviceSpecification.DisplayImageFilters.DIF_NONE
         _device.colorspace = DeviceSpecification.DisplaySupportedColors.DSC_BW
         document: structure.Svg = SVGTemplates.getEmptyTeamplate(_device)
-        document = SVGTemplates.getSystemStautsScreen(document, _device , _title="DIS:{}".format(_id), _qrcode_url=_qrcode_url)
+        document = SVGTemplates.getSystemStautsScreen(document, _device , _title="DISABLED{}:{}".format(_id, _headline_text_addition), _qrcode_url=_qrcode_url)
 
         if _target_width and _target_width > 0:
             document = SVGTemplates.GetScaledSVGContent(document, _target_width)
