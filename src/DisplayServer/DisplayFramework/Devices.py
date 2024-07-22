@@ -121,8 +121,19 @@ class Devices:
         spec = Devices.GetDeviceSpecification(_id)
         if spec is not None:
             spec.mark_deleted = True
+            spec.enabled = False
             spec.device_id = "__DELETED__" + spec.device_id
             Devices.UpdateDeviceSpecification(spec, _id)
+            # TODO REWORK ADD DIRECT QUERY
+            # DELETE PARENT DEVICE TOO
+            for d in Devices.GetRegisteredDeviceIds():
+                rec: DeviceSpecification.DeviceSpecification = Devices.GetDeviceSpecification(d)
+                if rec.parent_id is not None:
+                    if len(rec.parent_id) > 0:
+                        spec.mark_deleted = True
+                        spec.enabled = False
+                        spec.device_id = "__DELETED__" + spec.device_id
+                        Devices.UpdateDeviceSpecification(spec, _id)
 
 
     @staticmethod
@@ -205,7 +216,7 @@ class Devices:
             else:
                 did: int = Devices.GetDeviceRecord(_id)['id']
                 Devices.getDB().updateById(did, device_definition_json)
-                return device_definition
+            return device_definition
         except Exception as e:
             print(e)
             return None

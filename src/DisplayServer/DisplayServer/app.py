@@ -302,6 +302,11 @@ def api_register_parent(did: str, typename: str, allocation: str, parent: str): 
 
         if created_device_spec is None:
             return jsonify({'error': 'cant create device'}), 200
+
+
+        if created_device_spec.hardware != parent_spec.hardware:
+            return jsonify({'error': 'invalid hardware type, parent and child hardware revision mut match'}), 200
+
         # APPLY PARENTING
         created_device_spec.parent_id = parent
         Devices.Devices.UpdateDeviceSpecification(created_device_spec)
