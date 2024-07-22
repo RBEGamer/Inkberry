@@ -103,7 +103,7 @@ class SVGRenderer:
                     img.color_map(1, wand.color.Color('#FFFFFF'))
                 elif _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_BWR:
                     # FOR RED BLACK WHITE, A ADDITIONAL COLOR PALETTE IS GENERATED FOR RED AND GRAY COLORS
-                    num_colors = min([2*2, max_colors])
+                    num_colors = min([2*2, max_colors]) # 2 GRAY STEPS FOR BLACK AND RED TO WHITE
                     img.depth = 8
                     img.type = 'palette'
                     palette_index = 0
@@ -132,7 +132,7 @@ class SVGRenderer:
                     gray_steps: [str] = SVGHelper.SVGHelper.generate_gray_shades(math.floor(num_colors))
                     for idx, red_step in enumerate(gray_steps):
                         img.color_map(idx + palette_index, wand.color.Color(red_step))
-                    palette_index = palette_index + len(gray_steps)
+                   
 
                 elif _device.colorspace == DeviceSpecification.DisplaySupportedColors.DSC_7COLOR:
                     # FOR 7 COLOR DIPLAYS
