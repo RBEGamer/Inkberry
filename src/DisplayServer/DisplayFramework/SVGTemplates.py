@@ -35,7 +35,7 @@ class SVGTemplates:
     @staticmethod
     def GenerateCurrentDeviceScreen(_id: str, _device: DeviceSpecification.DeviceSpecification, _target_width: int = 0) -> str:
         document: structure.Svg = SVGTemplates.getEmptyTeamplate(_device)
-        # APPEND TILES INTO TO FINAL DEVICE SCREEN SVG
+         # APPEND TILES INTO TO FINAL DEVICE SCREEN SVG
         tiles: [] = TileFactory.TileFactory.GetTiles(_device)
         for t in tiles:
             t: BaseTile.BaseTile

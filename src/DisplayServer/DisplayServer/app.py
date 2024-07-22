@@ -4,7 +4,7 @@ import os
 import time
 from datetime import datetime
 from pathlib import Path
-
+from apscheduler.schedulers.background import BackgroundScheduler
 import flask
 from flask import Flask, request, jsonify, make_response, redirect, render_template, g, send_file
 from waitress import serve
@@ -51,6 +51,28 @@ def api_list_devices():
     ret['devices'] = Devices.Devices.GetRegisteredDeviceIds(True)
     return jsonify(ret)
 
+@app_flask.route('/api/list_display_orientations', methods=['GET', 'POST'])
+def api_display_orientations():
+    ret: dict = {}
+    ret['orientations'] = []
+
+    for orientation in DeviceSpecification.DisplayOrientation:
+        ret['orientations'].append({'name': orientation.name, 'value': orientation.value})
+    return jsonify(ret)
+
+
+
+
+@app_flask.route('/api/get_hardware_type_name/<string:hardware_type>', methods=['GET', 'POST'])
+def api_get_hardware_type_name(hardware_type: str):
+    hardware_type = bleach.clean(hardware_type).strip(' ').strip('/')
+
+    try:
+        hardware_type_int: int = int(hardware_type)
+
+        return jsonify({"hardware_type_name": ImplementedDevices.ImplementedDevices.from_int(hardware_type_int).name, "error": None, "hardware_type": hardware_type, "hardware_type_int": hardware_type_int}), 200
+    except ValueError:
+        return jsonify({"hardware_type_name": "INVALID", "error": "hardware_type_parameter_invalid_or_not_found", "hardware_type": hardware_type}), 200
 
 @app_flask.route('/api/imageapi/<path:image>', methods=['GET', 'POST'])
 def imageapi(image: str):
@@ -176,6 +198,22 @@ def api_get_parameter_list(device_id: str, parameter_id: str):
         return jsonify(ret)
 
 
+
+
+@app_flask.route('/api/list_possible_parent_devices/<string:did>/<string:devies_type>', methods=['GET', 'POST'])
+def api_list_possible_parent_devices(did: str, devies_type: str):
+    devies_type = bleach.clean(devies_type)
+    did = bleach.clean(did)
+    ret: dict = {}
+    try:
+        devices_enum: ImplementedDevices.ImplementedDevices = ImplementedDevices.ImplementedDevices.from_int(int(devies_type))
+        ret['possible_parents'] = Devices.Devices.GetRegisteredDevicesOfHardwareType(devices_enum, did, True)
+    except Exception as e:
+        ret['possible_parents'] = Devices.Devices.GetRegisteredDeviceIds(True, True)
+        ret['error'] = str(e)
+
+
+    return jsonify(ret)
 @app_flask.route('/api/information/<string:device_id>', methods=['GET', 'POST'])
 def api_information(device_id: str):
     device_id = bleach.clean(device_id)
@@ -219,18 +257,57 @@ def api_state(did: str):  # put application's code here
     return "", 200
 
 
-@app_flask.route('/api/register/<string:did>/<string:typename>', methods=['GET', 'POST'])
-def api_register(did: str, typename: str):  # put application's code here
+@app_flask.route('/api/register_new/<string:did>/<string:typename>/<string:allocation>/<string:orientation>', methods=['GET', 'POST'])
+def api_register_new(did: str, typename: str, allocation: str, orientation: str):  # put application's code here
     did = bleach.clean(did)
     typename = bleach.clean(typename)
+    allocation = bleach.clean(allocation)
+    orientation = bleach.clean(orientation)
+
+
+    if not Devices.Devices.CheckDeviceExists(did):
+        try:
+            dorient: DeviceSpecification.DisplayOrientation = DeviceSpecification.DisplayOrientation.from_int(int(orientation))
+            created_device_spec: DeviceSpecification.DeviceSpecification = Devices.Devices.CreateDeviceFromName(typename, did, _allocation=allocation, _orientation=dorient)
+
+            if created_device_spec is None:
+                return jsonify({'error': 'cant create device'}), 200
+
+            return jsonify(created_device_spec.to_dict()), 200
+        except Exception as e:
+            return jsonify({'error': e}), 200
+
+    return jsonify({'error': 'device already exists'}), 200
+
+
+@app_flask.route('/api/register_parent/<string:did>/<string:typename>/<string:allocation>/<string:parent>', methods=['GET', 'POST'])
+def api_register_parent(did: str, typename: str, allocation: str, parent: str):  # put application's code here
+    did = bleach.clean(did)
+    typename = bleach.clean(typename)
+    allocation = bleach.clean(allocation)
+    parent = bleach.clean(parent)
 
     ret = {}
-    if not Devices.Devices.CheckDeviceExists(did):
-        ret = Devices.Devices.CreateDeviceFromName(typename, did)
+    if Devices.Devices.CheckDeviceExists(parent):
+        # DELETE OLD CHILD DEVICE
+        if Devices.Devices.CheckDeviceExists(did):
+            Devices.Devices.DeleteDevice(did)
 
-    return jsonify(ret)
+        parent_spec: DeviceSpecification.DeviceSpecification = Devices.Devices.GetDeviceSpecification(parent)
 
+        # CHECK TYPE
+        parent_spec.device_id = did
+        parent_spec.allocation = allocation
+        created_device_spec = Devices.Devices.CreateDeviceFromName(typename, did, _allocation=allocation)
 
+        if created_device_spec is None:
+            return jsonify({'error': 'cant create device'}), 200
+        # APPLY PARENTING
+        created_device_spec.parent_id = parent
+        Devices.Devices.UpdateDeviceSpecification(created_device_spec)
+
+        return jsonify(created_device_spec.to_dict())
+    return jsonify({'error': 'device already exists'}), 200
 
 @app_flask.route('/api/useractonredirect/<string:did>', methods=['GET', 'POST'])
 def api_useractonredirect(did: str):
@@ -361,26 +438,21 @@ def launch(typer_ctx: typer.Context, port: int = 55556, host: str = "0.0.0.0", d
     flask_server.start()
     print("DisplayServer started. http://{}:{}/".format(host, port))
 
+
+    # SETUP A SCHEDULER TO UPDATE SCREENS
+    scheduler = BackgroundScheduler()
+
+
+
+    # UPDATE SCHEDULER LIST DEPEND ON THE ENABLED DISPLAYS
     while (not terminate_flask):
         time.sleep(1)
+        jobs = scheduler.get_jobs()
+        registered_and_enabled_devices: [str] = Devices.Devices.GetRegisteredDeviceIds(_include_only_not_deleted=True, _include_only_enabled_devices=True)
 
+        scheduler.add_job(update_screen_components, 'interval', seconds=3, args=[])
 
-
-        # TODO IMPLEMENT UPDATE CYCLE FOR ALL ENABLED SCREENS
-        # IMPLEMENT A REUTRN FUNCTION IF ANYTHING UPDATED
-        # THEN RENDER THE SCREEN
-        # SAVE THE HASH
-        # SAVE HASH OF NEW GENERATED HASH
-        #_device.current_content_hash = SVGHelper.SVGHelper.generate_sha1_hash(document.getXML())
-        #Devices.Devices.UpdateDeviceSpecification(_device)
-        # TODO SAVE CURRENT SVG CODE IN DB TOO
-
-        # IN GET RENDERED IMAGE FUNCTION
-        # SAVE CURRENT SVG HASH IN DB AS LAST SERVED
-
-        # IF
-
-        # IF
+        i = 0
         #if typer.prompt("Terminate  [Y/n]", 'y') == 'y':
         #    break
 
@@ -388,6 +460,10 @@ def launch(typer_ctx: typer.Context, port: int = 55556, host: str = "0.0.0.0", d
     flask_server.terminate()
     flask_server.join()
 
+
+
+def update_screen_components(_job_id: str, _device_id: str):
+    pass
 
 @app_typer.callback(invoke_without_command=True)
 def main(ctx: typer.Context, basepath: str = ""):

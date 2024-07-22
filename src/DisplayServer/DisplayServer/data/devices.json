@@ -1,11 +1,12 @@
 {
    "data": [
       {
+         "parent_id": null,
          "hardware": 4,
          "device_id": "laminatedmint",
          "enabled": true,
          "display_orientation": 0,
-         "allocation": "laminatedmint",
+         "allocation": "home",
          "colorspace": 1,
          "image_filter": 1,
          "auth_token": "",
@@ -39,6 +40,50 @@
                "enabled": true
             }
          ]
+      },
+      {
+         "hardware": 4,
+         "device_id": "laminatedblack",
+         "enabled": true,
+         "allocation": "home",
+         "last_request": "",
+         "screen_size_w": 800,
+         "screen_size_h": 480,
+         "wakeup_interval": 10,
+         "display_orientation": 0,
+         "tile_specifications": [],
+         "content_scale": 1.0,
+         "auth_token": "",
+         "colorspace": 1,
+         "image_filter": 1,
+         "current_content_hash": "",
+         "last_served_content_hash": "",
+         "current_content_svg": "",
+         "mark_deleted": false,
+         "id": 213181612071866276,
+         "parent_id": "laminatedmint"
+      },
+      {
+         "hardware": 4,
+         "device_id": "123",
+         "enabled": true,
+         "allocation": "we",
+         "last_request": "",
+         "screen_size_w": 800,
+         "screen_size_h": 480,
+         "wakeup_interval": 10,
+         "display_orientation": 0,
+         "tile_specifications": [],
+         "content_scale": 1.0,
+         "auth_token": "",
+         "colorspace": 1,
+         "image_filter": 1,
+         "current_content_hash": "",
+         "last_served_content_hash": "",
+         "current_content_svg": "",
+         "mark_deleted": false,
+         "parent_id": null,
+         "id": 282582697857834012
       }
    ]
 }

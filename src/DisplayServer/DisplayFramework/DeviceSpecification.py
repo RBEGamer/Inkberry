@@ -55,6 +55,7 @@ class DeviceSpecification:
     last_served_content_hash: str = ""
     current_content_svg: str = ""
     mark_deleted: bool = False
+    parent_id: str = None
     _valid: bool = True
 
 
@@ -82,7 +83,8 @@ class DeviceSpecification:
             'current_content_hash': self.current_content_hash,
             'last_served_content_hash': self.last_served_content_hash,
             'current_content_svg': self.current_content_svg,
-            'mark_deleted': self.mark_deleted
+            'mark_deleted': self.mark_deleted,
+            'parent_id': self.parent_id
         }
 
     def get_hardware_type(self) -> ImplementedDevices.ImplementedDevices:
@@ -147,6 +149,9 @@ class DeviceSpecification:
             self.current_content_svg = _dict['current_content_svg']
         if 'mark_deleted' in _dict:
             self.enabled = bool(_dict['mark_deleted'])
+        if 'parent_id' in _dict:
+            self.parent_id = _dict['parent_id']
+
 
 
 

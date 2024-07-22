@@ -50,6 +50,34 @@ class Devices:
             print(e)
             return {}
 
+
+    @staticmethod
+    def GetRegisteredDevicesOfHardwareType(_hardware_type: ImplementedDevices.ImplementedDevices, _device_id_to_exclude: str = None, _skip_devices_with_set_parent: bool = False) -> list:
+
+        try:
+            rt: list = []
+            qr: list = Devices.getDB().getBy({"mark_deleted": False, "hardware": _hardware_type.value})
+            if _device_id_to_exclude is None or len(_device_id_to_exclude) <= 0:
+                for d in qr:
+
+                    if _skip_devices_with_set_parent and (d["parent_id"] is not None):
+                        if len(d["parent_id"]) > 0:
+                            continue
+
+                    rt.append({'id': d["device_id"], 'name': d["device_id"] + " @ " + d["allocation"]})
+            else:
+                for d in qr:
+                    if _device_id_to_exclude == d["device_id"]:
+                        continue
+
+                    if _skip_devices_with_set_parent and (d["parent_id"] is not None):
+                        if len(d["parent_id"]) > 0:
+                            continue
+                    rt.append({'id': d["device_id"], 'name': d["device_id"] + " @ " + d["allocation"]})
+            return rt
+        except Exception as e:
+            print(e)
+            return []
     @staticmethod
     def GetRegisteredDeviceIds(_include_only_not_deleted: bool = False, _include_only_enabled_devices: bool = False) -> list:
         try:
@@ -142,11 +170,11 @@ class Devices:
 
 
     @staticmethod
-    def CreateDeviceFromName(_hardware_name: str, _id: str, _allocation: str = "undefined", _force: bool = False) -> dict:
+    def CreateDeviceFromName(_hardware_name: str, _id: str, _allocation: str = "undefined", _force: bool = False, _orientation: DeviceSpecification.DisplayOrientation = DeviceSpecification.DisplayOrientation.DP_HORIZONTAL) -> DeviceSpecification.DeviceSpecification:
         return Devices.CreateDevice(ImplementedDevices.ImplementedDevices.from_name(_hardware_name), _id, _allocation, _force)
 
     @staticmethod
-    def CreateDevice(hardware_type: ImplementedDevices, _id: str, _allocation: str = "undefined", _force: bool = False) -> dict:
+    def CreateDevice(hardware_type: ImplementedDevices, _id: str, _allocation: str = "undefined", _force: bool = False, _orientation: DeviceSpecification.DisplayOrientation = DeviceSpecification.DisplayOrientation.DP_HORIZONTAL) -> DeviceSpecification.DeviceSpecification:
 
         if len(_id) <= 0:
             raise Exception("id is empty")
@@ -164,19 +192,25 @@ class Devices:
         device_definition: DeviceSpecification.DeviceSpecification = DeviceLookUpTable.DeviceLookUpTable.get_hardware_definition(hardware_type)
         device_definition.set_hardware_type(hardware_type)
         device_definition.device_id = _id
-        device_definition.enabled = False
+        device_definition.enabled = True
         device_definition.allocation = _allocation
+        device_definition.display_orientation = _orientation
 
 
         device_definition_json: dict = device_definition.to_dict()
-        # STORE IN DATABASE
-        if not Devices.CheckDeviceExists(_id):
-            Devices.getDB().add(device_definition_json)
-        else:
-            did: int = Devices.GetDeviceRecord(_id)['id']
-            Devices.getDB().updateById(did, device_definition_json)
+        try:
+            # STORE IN DATABASE
+            if not Devices.CheckDeviceExists(_id):
+                Devices.getDB().add(device_definition_json)
+            else:
+                did: int = Devices.GetDeviceRecord(_id)['id']
+                Devices.getDB().updateById(did, device_definition_json)
+                return device_definition
+        except Exception as e:
+            print(e)
+            return None
+        return None
 
-        return device_definition_json
 
 
 
