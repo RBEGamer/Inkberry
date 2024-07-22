@@ -22,8 +22,8 @@ class QrTile(BaseTile.BaseTile):
     }
 
 
-    def update(self):
-       pass
+    def update(self) -> bool:
+       return False
 
     def get_parameter_types(self) -> dict:
         return self.DEFAULT_PARAMETER['types']

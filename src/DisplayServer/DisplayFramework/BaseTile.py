@@ -58,8 +58,8 @@ class BaseTile:
                 self.spec.parameters[k] = v
 
 
-    def update(self):
-        pass
+    def update(self) -> bool:
+        return False
 
 
     def render(self) -> structure.Svg:

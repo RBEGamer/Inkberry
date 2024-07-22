@@ -51,12 +51,14 @@ class Devices:
             return {}
 
     @staticmethod
-    def GetRegisteredDeviceIds(_include_only_not_deleted: bool = False) -> list:
+    def GetRegisteredDeviceIds(_include_only_not_deleted: bool = False, _include_only_enabled_devices: bool = False) -> list:
         try:
             rt: list = []
             qr: list = []
             if _include_only_not_deleted:
                 qr = Devices.getDB().getBy({"mark_deleted": False})
+            elif _include_only_enabled_devices:
+                qr = Devices.getDB().getBy({"mark_deleted": False, "enabled": True})
             else:
                 qr = Devices.getDB().getAll()
 

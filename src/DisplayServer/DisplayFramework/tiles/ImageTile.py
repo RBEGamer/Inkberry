@@ -35,8 +35,8 @@ class ImageTile(BaseTile.BaseTile):
         for k, v in _parameter.items():
             self.spec.parameters['k'] = v
 
-    def update(self):
-       pass
+    def update(self) -> bool:
+       return False
 
 
 

@@ -40,7 +40,7 @@ class TableViewTile(BaseTile.BaseTile):
         for k, v in _parameter.items():
             pass
 
-    def update(self):
+    def update(self) -> bool:
         # FETCH RESOURCE
         table_path: str = ResourceHelper.ResourceHelper.FetchContent(self.spec.parameters.get('url', ''), self.spec.name)
 
@@ -60,8 +60,10 @@ class TableViewTile(BaseTile.BaseTile):
                     else:
                         self.data_rows.append(row)
                     line_count = line_count + 1
+                return True
         except Exception as e:
             print(e)
+            return False
 
 
     def generate_table_figure(self, _data_columns: [], _data_rows: [[str]]):
