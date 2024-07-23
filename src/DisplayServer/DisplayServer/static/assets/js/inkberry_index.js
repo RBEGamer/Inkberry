@@ -1,5 +1,17 @@
 function open_display_setup(){
-    window.location.href = "/static/register.html";
+
+    var did = getAllUrlParams().did;
+    var hardware_type = getAllUrlParams().hardware_type;
+    
+    if(did != undefined && did && hardware_type != undefined && hardware_type){
+        window.location.href = "/static/register.html?did=" + did + "&hardware_type=" + hardware_type;    
+        return;
+    }
+    if(did != undefined && did){
+        window.location.href = "/static/manualregister.html?did=" + did;      
+    }else{
+        window.location.href = "/static/manualregister.html";  
+    }
 }
 
 

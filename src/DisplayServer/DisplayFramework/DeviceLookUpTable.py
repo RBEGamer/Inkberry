@@ -62,6 +62,22 @@ class DeviceLookUpTable(object):
         return spec
 
     @staticmethod
+    def get_compatible_hardware_models(_hardware_type: ImplementedDevices) -> [ImplementedDevices.ImplementedDevices]:
+        rt: [ImplementedDevices.ImplementedDevices] = [_hardware_type]
+        spec_orig = DeviceLookUpTable.get_hardware_definition(_hardware_type)
+        # TODO REWORK
+        for type in ImplementedDevices.ImplementedDevices:
+            spec = DeviceLookUpTable.get_hardware_definition(type)
+
+            if spec_orig.display_orientation == spec.display_orientation and spec_orig.screen_size_w == spec.screen_size_w and spec_orig.screen_size_h == spec.screen_size_h:
+                rt.append(type)
+
+
+        return rt
+
+
+
+    @staticmethod
     def get_screen_size_w(_hardware_type: ImplementedDevices) -> int:
         return DeviceLookUpTable.get_hardware_definition(_hardware_type).screen_size_w
 

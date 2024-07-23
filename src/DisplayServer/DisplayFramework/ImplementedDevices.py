@@ -24,3 +24,5 @@ class ImplementedDevices(IntEnum):
             return ImplementedDevices(_val)
         except:
             return ImplementedDevices.INVALID
+
+

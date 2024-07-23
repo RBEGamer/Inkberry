@@ -47,6 +47,8 @@ class SVGTemplates:
                     # UPDATE PARENT TILESPECIFICATION UPDATE ENTRY
                     _device.tile_specifications = parent_spec.tile_specifications
 
+                    # UPDATE PARAMETER DICT TOO TODO
+
 
         document: structure.Svg = SVGTemplates.getEmptyTeamplate(_device)
          # APPEND TILES INTO TO FINAL DEVICE SCREEN SVG

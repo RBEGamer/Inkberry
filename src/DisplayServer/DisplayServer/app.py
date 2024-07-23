@@ -60,7 +60,14 @@ def api_display_orientations():
         ret['orientations'].append({'name': orientation.name, 'value': orientation.value})
     return jsonify(ret)
 
+@app_flask.route('/api/list_hardware_types', methods=['GET', 'POST'])
+def api_list_hardware_types():
+    ret: dict = {}
+    ret['hardware_type'] = []
 
+    for device in ImplementedDevices.ImplementedDevices:
+        ret['hardware_type'].append({'name': device.name, 'id': device.value})
+    return jsonify(ret)
 
 
 @app_flask.route('/api/get_hardware_type_name/<string:hardware_type>', methods=['GET', 'POST'])
@@ -207,7 +214,14 @@ def api_list_possible_parent_devices(did: str, devies_type: str):
     ret: dict = {}
     try:
         devices_enum: ImplementedDevices.ImplementedDevices = ImplementedDevices.ImplementedDevices.from_int(int(devies_type))
-        ret['possible_parents'] = Devices.Devices.GetRegisteredDevicesOfHardwareType(devices_enum, did, True)
+
+        # GET POSSIBLE COMPATIBLE TYPES
+        possible_types: [ImplementedDevices.ImplementedDevices] = DeviceLookUpTable.DeviceLookUpTable.get_compatible_hardware_models(devices_enum)
+        ret['possible_parents'] = []
+        for type in possible_types:
+            for rt in Devices.Devices.GetRegisteredDevicesOfHardwareType(type, did, True):
+                ret['possible_parents'].append(rt)
+
     except Exception as e:
         ret['possible_parents'] = Devices.Devices.GetRegisteredDeviceIds(True, True)
         ret['error'] = str(e)
