@@ -268,7 +268,9 @@ function load_available_devices(){
         event.preventDefault();
         var clicked_id = $(this).data('data-device_id');
         current_loaded_device_id = clicked_id;
-        load_editor_for_device(current_loaded_device_id);
+        $('#inkberry_available_devices_dropdown_menu_button').html(clicked_id);
+         load_editor_for_device(current_loaded_device_id);
+        
       });
     });
     }

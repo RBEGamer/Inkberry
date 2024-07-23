@@ -16,15 +16,33 @@
                "name": "RoomNumber",
                "module_name": "DisplayFramework.tiles.TextTile.TextTile",
                "position": {
-                  "pos_x": 0,
-                  "pos_y": 0,
+                  "pos_x": -90,
+                  "pos_y": -180,
                   "size_w": 800,
                   "size_h": 480
                },
                "parameters": {
-                  "text":"HAM HAM NICHT VERGESSEN!",
+                  "text":"GUTEN ABEND !",
                   "fontsize": "3.2",
                   "charakter_rotation": 0
+               }
+            },
+            {
+               "enabled": true,
+               "name": "Logo Image Tile Test",
+               "module_name": "DisplayFramework.tiles.ImageTile.ImageTile",
+               "position": {
+                  "pos_x": 190,
+                  "pos_y": 100,
+                  "size_w": 0,
+                  "size_h": 0
+               },
+               "parameters": {
+                  "url":"np_evening.png",
+                  "rotation": 0,
+                  "image_rotation": 0,
+                  "preserve_aspect_ration": 1,
+                  "scale_factor": 0.8
                }
             }
          ],
