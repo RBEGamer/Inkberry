@@ -22,7 +22,7 @@
                   "size_h": 480
                },
                "parameters": {
-                  "text":"GUTEN ABEND !",
+                  "text":"GUTEN MORGEN",
                   "fontsize": "3.2",
                   "charakter_rotation": 0
                }
@@ -38,7 +38,7 @@
                   "size_h": 0
                },
                "parameters": {
-                  "url":"np_evening.png",
+                  "url":"np_morning.png",
                   "rotation": 0,
                   "image_rotation": 0,
                   "preserve_aspect_ration": 1,
