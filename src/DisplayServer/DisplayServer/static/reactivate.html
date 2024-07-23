@@ -20,7 +20,7 @@ $(window).on('load', function(){
 </head>
 
 <body id="page-top">
-    <nav class="bg-secondary navbar navbar-expand-lg fixed-top text-uppercase navbar-light" id="mainNav">
+    <nav class="navbar navbar-expand-lg fixed-top bg-secondary text-uppercase navbar-light" id="mainNav">
         <div class="container"><a class="navbar-brand js-scroll-trigger" href="/static/index.html"><img class="rounded-circle" src="assets/img/first_test_frame_2023-Jun-13_12-58-18PM-000_CustomizedView5355212567_png.png" style="width: 50px;">Inkberry</a><button data-bs-toggle="collapse" data-bs-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
@@ -32,20 +32,23 @@ $(window).on('load', function(){
     <header class="masthead bg-primary text-white text-center">
         <div class="row">
             <div class="col">
-                <h1 style="height: 152px;">REACTIVATE YOUR INKBERRY</h1>
-                <p>Please note: After clicking</p>
+                <h1 style="padding: 5px;">MANAGE YOUR INKBERRY</h1>
+                <p class="fw-bolder" style="text-align: justify;font-size: 23px;margin: 2%;">This link enables you to manage the current dispay render state. Its possible to activate or deactivate the screen, so no further updates will be rendered on the screen until enabled again.</p>
             </div>
         </div>
         <div class="container">
-            <div class="row">
-                <div class="col-5 col-lg-5"><button class="btn btn-primary btn-lg" id="inkberry_disable_button" type="button" style="color: var(--light);background: var(--red);width: 100%;">DISBALE</button></div>
+            <div class="row" style="margin: initial;">
+                <div class="col-5 col-lg-5"><button class="btn btn-warning btn-lg" id="inkberry_disable_button" type="button" style="width: 100%;">DISBALE</button></div>
                 <div class="col"><button class="btn btn-dark btn-lg" id="inkberry_enable_button" type="button" style="width: 100%;">ENABLE</button></div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="height: 20%;margin: 2%;"><div><br><br><br></div>
             <div class="col">
-                <section class="py-4 py-xl-5"></section>
+                <p class="fw-bolder" style="text-align: justify;font-size: 23px;margin: 2%;">The delete option removes the display from the system. If the current display is a parent display, all child displays will be deleted too. A configuration backup is stored in the database for later manual restore. All displays can be setup again, using their QR codes.</p>
             </div>
+        </div>
+        <div class="row" style="margin: 2%;">
+            <div class="col"><button class="btn btn-danger btn-lg" id="inkberry_delete_button" type="button" style="width: 100%;">DELETE</button></div>
         </div>
     </header>
     <script src="assets/js/jquery.min.js"></script>

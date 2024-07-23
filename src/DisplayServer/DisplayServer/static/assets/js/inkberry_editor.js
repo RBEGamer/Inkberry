@@ -275,17 +275,6 @@ function load_available_devices(){
 
 
 
-function set_activation_state(deivce_id, new_state){
-    $.getJSON("/api/set_display_state/" + deivce_id + "/" + new_state, function( data ) {
-
-    });
-}
-
-function set_delete(deivce_id){
-    $.getJSON("/api/set_delete_display/" + deivce_id, function( data ) {
-
-    });
-}
 
 function copy_calepd_link(_elem_id){
     var link_content = $('#' + _elem_id).val();
@@ -314,13 +303,10 @@ function inkberry_init(){
     
    
     
-    $('#inkberry_delete_device_btn').on('click', 'button', function(event) {
-      set_delete(current_loaded_device_id);
+    $('#inkberry_manage_inkberry_btn').on('click', 'button', function(event) {
+      window.location.assign("/static/reactivate.html");
     });
     
-    $('#inkberry_disbale_device_btn').on('click', 'button', function(event) {
-      set_activation_state(current_loaded_device_id, 0);
-    });
     
     
     

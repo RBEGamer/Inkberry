@@ -1,5 +1,10 @@
 var did = null;
 
+function set_delete(){
+    $.getJSON("/api/set_delete_display/" + did, function( data ) {
+
+    });
+}
 
 function enable_screen(){
     set_activation_state(did, "1");
@@ -32,5 +37,6 @@ function inkberry_init(){
     
     $("#inkberry_enable_button").click(enable_screen);
     $("#inkberry_disable_button").click(disable_screen);
+     $("#inkberry_delete_button").click(set_delete);
     
 }
