@@ -188,9 +188,9 @@ function load_editor_for_device(_id){
 
     editor_refresh_rendering(_id);
     
-    $('#inkberry_calepd_link_text_output').val(generate_image_link(_id, 'calepd'));
+    $('#inkberry_calepd_link_text_output').val(generate_image_link(_id, 'calepd').replace("https:", "http:"));
     
-    $('#inkberry_inkberry_link_text_output').val(generate_image_link(_id, 'inkfw'));
+    $('#inkberry_inkberry_link_text_output').val(generate_image_link(_id, 'inkfw').replace("https:", "http:"));
 
     //LOAD PARAMETER TABLE
     $.getJSON("/api/information/" + _id, function( data ) {
