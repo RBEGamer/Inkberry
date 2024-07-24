@@ -22,8 +22,8 @@
                   "size_h": 480
                },
                "parameters": {
-                  "text":"HALLO LOTTE",
-                  "fontsize": "3.2",
+                  "text":"HAPPY BIRTHDAY LOTTE",
+                  "fontsize": "3.0",
                   "charakter_rotation": 0
                }
             },
@@ -38,7 +38,7 @@
                   "size_h": 0
                },
                "parameters": {
-                  "url":"np_morning.png",
+                  "url":"np_birthday.png",
                   "rotation": 0,
                   "image_rotation": 0,
                   "preserve_aspect_ration": 1,
