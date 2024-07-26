@@ -64,7 +64,7 @@ class ImageTile(BaseTile.BaseTile):
 
         image_rotation: int = int(_spec.parameters.get('image_rotation', 1)) % 360
         if image_rotation != 0:
-            loaded_image = _image.rotate(image_rotation, expand=True)
+            _image = _image.rotate(image_rotation, expand=True)
 
         # SCALE IMAGE
         width_org, height_org = _image.size
@@ -75,12 +75,12 @@ class ImageTile(BaseTile.BaseTile):
         width, height = loaded_image.size
 
         # RESIZE SVG CONTAINER TO FIT IMAGE
-        if _spec.position.size_w <= 0 or _spec.position.size_w <= 0:
-            _spec.position.size_w = width
-            _spec.position.size_h = height
+        #if _spec.position.size_w <= 0 or _spec.position.size_w <= 0:
+        #    _spec.position.size_w = width
+        #    _spec.position.size_h = height
 
-        svg_document.set_width(_spec.position.size_w)
-        svg_document.set_height(_spec.position.size_h)
+        svg_document.set_width(width)
+        svg_document.set_height(height)
 
         # FINALLY CREATE IMAGE SVG ELEMENT
         preserve_aspect_ration: bool = True
@@ -99,7 +99,8 @@ class ImageTile(BaseTile.BaseTile):
         # ADD CENTER STYLING
         # TODO NEEDED ?
         s: builders.StyleBuilder = builders.StyleBuilder({})
-        s.setDisplayAlign("middle")
+        s.setDisplayAlign("left")
+
         i.set_style(s.getStyle())
 
         svg_document.addElement(i)

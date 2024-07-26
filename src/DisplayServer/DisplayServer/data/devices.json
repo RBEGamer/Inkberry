@@ -33,12 +33,10 @@
                "module_name": "DisplayFramework.tiles.ImageTile.ImageTile",
                "position": {
                   "pos_x": 190,
-                  "pos_y": 100,
-                  "size_w": 0,
-                  "size_h": 0
+                  "pos_y": 100
                },
                "parameters": {
-                  "url":"np_birthday.png",
+                  "url":"np_hello.png",
                   "rotation": 0,
                   "image_rotation": 0,
                   "preserve_aspect_ration": 1,
