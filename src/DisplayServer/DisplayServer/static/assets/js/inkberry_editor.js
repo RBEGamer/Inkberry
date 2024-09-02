@@ -4,16 +4,17 @@ var current_svg_clickable_areas = [];
 
 function generate_manage_link(){
     return window.location.origin + "/static/reactivate.html" + current_loaded_device_id + "?did=" + _type;
-};
+}
+
+function generate_display_link(){
+    window.open(window.location.origin + "/static/display.html" + current_loaded_device_id + "?did=" + _type;, '_blank');
+}
 
 function generate_image_link(_did, _type){
  return window.location.origin + "/api/render/" + current_loaded_device_id + "?type=" + _type;  
 }
 
-function open_render_preview_popup(_type = "html"){
-    console.log("open_render_preview_popup " + _type);
-    window.open(generate_image_link(current_loaded_device_id, _type), '_blank');
-}
+
 
 
 function resize_canvas(_width = null, _height = null){
@@ -169,18 +170,14 @@ function load_svg_to_canvas(_id, callback) {
     };
     img.src = url;
 
-
-
     const objs = extractSVGObjects(xmlDoc);
     if(objs){
         current_svg_clickable_areas = objs;
     }
-    //debugger;
 }
 
 
 function editor_refresh_rendering(_id){
-     $("#inkberry_device_renderered_image").attr("src","/api/render/" + _id + "?type=png&ts=" +String(Date.now()));
      resize_canvas(document.getElementById("inkberry_device_editor_canvas_container").clientWidth, document.getElementById("inkberry_device_editor_canvas_container").clientHeight);
      load_svg_to_canvas(_id);
 }
@@ -190,11 +187,8 @@ function load_editor_for_device(_id){
     console.log('load_editor_for_device: ' + _id, null); // Beispielaktion
 
     editor_refresh_rendering(_id);
-    
-    $('#inkberry_calepd_link_text_output').val(generate_image_link(_id, 'calepd').replace("https:", "http:"));
-    
-    $('#inkberry_inkberry_link_text_output').val(generate_image_link(_id, 'inkfw').replace("https:", "http:"));
-
+  
+  
     //LOAD PARAMETER TABLE
     $.getJSON("/api/information/" + _id, function( data ) {
         if(!data['error']){
@@ -300,17 +294,14 @@ function inkberry_init(){
         load_editor_for_device(current_loaded_device_id);
     }
     
-    
-    // REGISTER OPEN PREVIEW POPUP BUITTONS EVENT
-    $('#inkberry_open_preview_button_group').on('click', 'button', function(event) {
-        var popup_type = this.textContent.toLowerCase();
-        open_render_preview_popup(popup_type);
-    });
-    
-   
+
     
     $('#inkberry_manage_inkberry_btn').on('click', 'button', function(event) {
       generate_manage_link();
+    });
+    
+    $('#inkberry_display_inkberry_btn').on('click', 'button', function(event) {
+      generate_display_link();
     });
     
     
