@@ -2,6 +2,9 @@ var current_svg_content = "";
 var current_loaded_device_id = "";
 var current_svg_clickable_areas = [];
 
+function generate_manage_link(){
+    return window.location.origin + "/static/reactivate.html" + current_loaded_device_id + "?did=" + _type;
+};
 
 function generate_image_link(_did, _type){
  return window.location.origin + "/api/render/" + current_loaded_device_id + "?type=" + _type;  
@@ -282,6 +285,7 @@ function copy_calepd_link(_elem_id){
     var link_content = $('#' + _elem_id).val();
         copyTextToClipboard(link_content);
 }
+
 function inkberry_init(){
     resize_canvas();
     $(window).on( "resize", function() {
@@ -306,7 +310,7 @@ function inkberry_init(){
    
     
     $('#inkberry_manage_inkberry_btn').on('click', 'button', function(event) {
-      window.location.assign("/static/reactivate.html");
+      generate_manage_link();
     });
     
     

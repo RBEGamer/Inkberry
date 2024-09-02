@@ -16,15 +16,12 @@
                "name": "RoomNumber",
                "module_name": "DisplayFramework.tiles.TextTile.TextTile",
                "position": {
-                  "pos_x": -90,
-                  "pos_y": -180,
-                  "size_w": 800,
-                  "size_h": 480
+                  "pos_x": 90,
+                  "pos_y": 180
                },
                "parameters": {
-                  "text":"Ham Ham nicht vergessen!",
-                  "fontsize": "3.0",
-                  "charakter_rotation": 0
+                  "text":"Hallo <3",
+                  "fontsize": "3.0"
                }
             },
             {

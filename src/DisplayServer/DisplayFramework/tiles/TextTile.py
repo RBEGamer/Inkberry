@@ -76,4 +76,6 @@ class TextTile(BaseTile.BaseTile):
         t.set_style(s.getStyle())
         svg_document.addElement(t)
 
+
+        # SET SVG DOCUMENT SIZE BASE ON THE BIGGEST VIEWBOX OF CONTAINONG ELEMENTS
         return svg_document
