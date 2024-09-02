@@ -38,14 +38,15 @@ function inkberry_init(){
     
    
 
-    load_available_devices();
     
     var did = getAllUrlParams().did;
     if(did){
         current_loaded_device_id = did;
         load_editor_for_device(current_loaded_device_id);
     }else{
-        alert("");
+        alert("DID not specified - please open this page using the EDITOR page.");
+        return window.location.origin + "/static/index.html";
+        
     }
     
     
