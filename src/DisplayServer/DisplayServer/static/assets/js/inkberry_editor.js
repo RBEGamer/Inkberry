@@ -3,7 +3,7 @@ var current_loaded_device_id = "";
 var current_svg_clickable_areas = [];
 
 function generate_manage_link(){
-    return window.location.origin + "/static/reactivate.html?did=" + current_loaded_device_id;
+    return window.location.origin + "/static/reactivate.html?did=" + current_loaded_device_id;  
 }
 
 function generate_display_link(){
