@@ -10,7 +10,7 @@ from svgwrite import Drawing
 from wand.color import Color
 from wand.drawing import Drawing
 from wand.display import display
-
+import xml.etree.ElementTree as ET
 from DisplayFramework import DeviceSpecification, SVGHelper
 
 from enum import Enum
@@ -39,17 +39,18 @@ class SVGRenderer:
 
     @staticmethod
     def SVGGetSize(_svg: str) -> [int, int]:
-        img_io = io.BytesIO(_svg.encode(encoding="UTF-8"))
-        paths, attributes = svg2paths(img_io)
 
-        svg_size_w: int = 0
-        svg_size_h: int = 0
-        for a in attributes:
-            if 'width' in a and 'height' in a:
-                svg_size_w = int(a['width'])
-                svg_size_h = int(a['height'])
-                break
-        return svg_size_w, svg_size_h
+        root = ET.fromstring(_svg)
+
+        # Find the SVG element and get its 'viewBox' attribute
+        viewBox: str = root.attrib.get('viewBox')
+
+        if len(viewBox) > 3:
+            sp = viewBox.split(" ")
+            if len(sp) >= 4:
+                return int(sp[3]), int(sp[4])
+
+        return 0, 0
 
 
 

@@ -11,27 +11,18 @@ class SVGTemplates:
 
 
     @staticmethod
-    def GetScaledSVGContent(_svg: structure.Svg, _target_width) -> structure.Svg:
+    def GetSVGContentScaleFactorToMatchGivenTargetWidth(_svg: structure.Svg, _target_width) -> float:
         if not _target_width or _target_width <= 0:
-            return _svg
+            return 1.0
 
         origin_w: int = _svg.get_width()
         origin_h: int = _svg.get_height()
 
         scale_factor: float = _target_width / origin_w
 
-        # SCALE CONTENT
+        return scale_factor
 
-        # SET NEW SVG SIZE TO RENDER IN CORRECT DIMENSIONS
-        new_w: int = int(origin_w * scale_factor)
-        new_h: int = int(origin_h * scale_factor)
-        _svg.set_x(0)
-        _svg.set_y(0)
-        _svg.set_width(new_w)
-        _svg.set_height(new_h)
-        _svg.set_viewBox("{} {} {} {}".format(0, 0, new_w, new_h))
 
-        return _svg
     @staticmethod
     def GenerateCurrentDeviceScreen(_id: str, _device: DeviceSpecification.DeviceSpecification, _target_width: int = 0) -> str:
 
@@ -50,7 +41,32 @@ class SVGTemplates:
                     # UPDATE PARAMETER DICT TOO TODO
 
 
+
+
         document: structure.Svg = SVGTemplates.getEmptyTeamplate(_device)
+        document.set_width(_device.screen_size_w)
+        document.set_height(_device.screen_size_h)
+        # CALC IMAGE SIZE
+        tw: int = _device.screen_size_w
+        th: int = _device.screen_size_h
+        factor: float = 1.0
+        if _target_width and _target_width > 0:
+            factor = SVGTemplates.GetSVGContentScaleFactorToMatchGivenTargetWidth(document, _target_width)
+
+            tw = int(tw * factor)
+            th = int(th * factor)
+
+
+        content_group: structure.G = structure.G()
+
+
+        # ADD BACKGROUND
+        # ADD CONTENT RECT
+        shape_builder: builders.ShapeBuilder = builders.ShapeBuilder()
+        # ADD RECT FOR CONTENT TO LIVE IN
+        content_rect = shape_builder.createRect(0, 0, tw, th, strokewidth=1, stroke="black", fill="rgb(250, 250, 250)")
+        content_group.addElement(content_rect)
+
          # APPEND TILES INTO TO FINAL DEVICE SCREEN SVG
         tiles: [] = TileFactory.TileFactory.GetTiles(_device)
 
@@ -60,10 +76,33 @@ class SVGTemplates:
             if t.spec.enabled:
                 t.update()
                 svg = t.render()
-                document.addElement(svg)
+                content_group.addElement(svg)
 
-        if _target_width and _target_width > 0:
-            document = SVGTemplates.GetScaledSVGContent(document, _target_width)
+
+
+
+
+
+
+
+
+
+
+
+
+        document.set_x(0)
+        document.set_y(0)
+        document.set_width(tw)
+        document.set_height(th)
+        document.set_viewBox("{} {} {} {}".format(0, 0, tw, th))
+        document.addElement(content_group)
+
+        scale_transform = TransformBuilder()
+        scale_transform.setScaling(factor, factor)
+        document.set_transform(scale_transform.getTransform())
+
+        content_group.set_transform("scale({});".format(factor))
+
 
         return document.getXML()
 
@@ -75,7 +114,7 @@ class SVGTemplates:
         document = SVGTemplates.getSystemStautsScreen(document, _device, _title="SETUP:{}".format(_id), _qrcode_url=_qrcode_url)
 
         if _target_width and _target_width > 0:
-            document = SVGTemplates.GetScaledSVGContent(document, _target_width)
+            document = SVGTemplates.GetSVGContentScaleFactorToMatchGivenTargetWidth(document, _target_width)
 
         xml: str = document.getXML()
         return xml
@@ -88,7 +127,7 @@ class SVGTemplates:
         document = SVGTemplates.getSystemStautsScreen(document, _device , _title="DISABLED{}:{}".format(_id, _headline_text_addition), _qrcode_url=_qrcode_url)
 
         if _target_width and _target_width > 0:
-            document = SVGTemplates.GetScaledSVGContent(document, _target_width)
+            document = SVGTemplates.GetSVGContentScaleFactorToMatchGivenTargetWidth(document, _target_width)
 
         xml: str = document.getXML()
         return xml
@@ -133,17 +172,6 @@ class SVGTemplates:
 
 
 
-        # ADD SYSTEM INFO
-        info_text: str = ""
-
-        #info_style : builders.StyleBuilder = builders.StyleBuilder({})
-        #info_style.setFontSize('{}em'.format(_list_text_site))
-        #for k, v in _device.to_dict().items():
-        #    info_text = "{}={}".format(k, v)
-        #    cy += headline_line_offset * 1.5
-        #    list_text_element = text.Text(info_text, 10, cy)
-        #    list_text_element.set_style(info_style.getStyle())
-        #    _svg.addElement(list_text_element)
 
         return _svg
     @staticmethod
@@ -165,11 +193,9 @@ class SVGTemplates:
         # ADD CONTENT RECT
         shape_builder: builders.ShapeBuilder = builders.ShapeBuilder()
 
-        scale_transform = TransformBuilder()
-        scale_transform.setScaling(_device.content_scale, _device.content_scale)
-        svg_document.set_transform(scale_transform.getTransform())
+
 
         # ADD RECT FOR CONTENT TO LIVE IN
         content_rect = shape_builder.createRect(0, 0, w, h, strokewidth=1,stroke="black", fill="rgb(250, 250, 250)")
-        svg_document.addElement(content_rect)
+        #svg_document.addElement(content_rect)
         return svg_document

@@ -29,6 +29,9 @@ function resize_canvas(_width = null, _height = null){
     //SET DIV SIZE
     $("#inkberry_device_editor_canvas_container").width(_width);
     $("#inkberry_device_editor_canvas_container").height(_height);
+
+    $("#inkberry_device_editor_canvas").width(_width);
+    $("#inkberry_device_editor_canvas").height(_height);
     // SET CANVAS SIZE
     var canvas = document.getElementById('inkberry_device_editor_canvas');
     canvas.width = _width;
@@ -128,7 +131,7 @@ function extractSVGObjects(_xml_doc) {
 function load_svg_to_canvas(_id, callback) {
 
     // GET CANVAS SIZE
-    const dw = Math.floor($("#inkberry_device_editor_canvas_container").width() * 0.8);
+    const dw = Math.floor($("#inkberry_device_editor_canvas_container").width());
     const dh = Math.floor($("#inkberry_device_editor_canvas_container").height());
 
     // FETCH SVG
@@ -178,7 +181,8 @@ function load_svg_to_canvas(_id, callback) {
 
 
 function editor_refresh_rendering(_id){
-     resize_canvas(document.getElementById("inkberry_device_editor_canvas_container").clientWidth, document.getElementById("inkberry_device_editor_canvas_container").clientHeight);
+     
+    //resize_canvas(480, 800);
      load_svg_to_canvas(_id);
 }
 

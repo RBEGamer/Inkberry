@@ -383,6 +383,13 @@ def generate_rendered_screen_response(did: str, device_spec: DeviceSpecification
         hardware_type: str = bleach.clean(request.args.get('hw', default='99')).lower().strip(' ')
         base_url = "{}api/useractonredirect/{}?hardware_type={}".format(_origin_request.host_url, did, hardware_type)
 
+
+    # TODO REMOVE
+    # LIMIT MAX SCREEN SIZE TO ACTUAL SIZE
+    if target_width > device_spec.screen_size_w:
+        target_width = device_spec.screen_size_w
+
+
     if not device_spec.is_valid() or not Devices.Devices.CheckDeviceExists(did):
         svg = SVGTemplates.SVGTemplates.GenerateDeviceSetupScreen(did, device_spec, target_width, base_url)
     elif not Devices.Devices.CheckDeviceEnabled(did):
