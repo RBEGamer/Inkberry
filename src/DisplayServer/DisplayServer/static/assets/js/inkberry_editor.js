@@ -3,11 +3,11 @@ var current_loaded_device_id = "";
 var current_svg_clickable_areas = [];
 
 function generate_manage_link(){
-    return window.location.origin + "/static/reactivate.html" + current_loaded_device_id + "?did=" + _type;
+    return window.location.origin + "/static/reactivate.html?did=" + current_loaded_device_id;
 }
 
 function generate_display_link(){
-    window.open(window.location.origin + "/static/display.html" + current_loaded_device_id + "?did=" + current_loaded_device_id, '_blank');
+    window.open(window.location.origin + "/static/display.html?did=" + current_loaded_device_id, '_blank');
 }
 
 function generate_image_link(_did, _type){
