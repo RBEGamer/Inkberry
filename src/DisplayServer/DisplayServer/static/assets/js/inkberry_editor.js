@@ -7,7 +7,7 @@ function generate_manage_link(){
 }
 
 function generate_display_link(){
-    window.open(window.location.origin + "/static/display.html" + current_loaded_device_id + "?did=" + _type, '_blank');
+    window.open(window.location.origin + "/static/display.html" + current_loaded_device_id + "?did=" + current_loaded_device_id, '_blank');
 }
 
 function generate_image_link(_did, _type){
