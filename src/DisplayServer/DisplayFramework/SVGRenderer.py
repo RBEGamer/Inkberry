@@ -1,5 +1,6 @@
 import io
 import math
+import traceback
 from io import BytesIO
 import cairosvg
 from PIL import Image
@@ -55,8 +56,11 @@ class SVGRenderer:
     @staticmethod
     def calculateNeededSVGScaleFactorForImageConversion(_svg: str, _device: DeviceSpecification.DeviceSpecification = None) -> float:
         scale_factor: float = 1.0
-
-        svg_size_w, svg_size_h = SVGRenderer.SVGGetSize(_svg)
+        try:
+            svg_size_w, svg_size_h = SVGRenderer.SVGGetSize(_svg)
+        except Exception as e:
+            print("".join(traceback.format_exception_only(type(e), e)))
+            return scale_factor
 
         if svg_size_w != _device.screen_size_w or svg_size_h != _device.screen_size_h:
             scale_factor = max([0.1, min([_device.screen_size_w / svg_size_w, _device.screen_size_h / svg_size_h])])

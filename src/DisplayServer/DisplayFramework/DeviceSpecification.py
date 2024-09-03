@@ -1,4 +1,4 @@
-from DisplayFramework import ImplementedDevices, TileSpecification, DeviceLookUpTable
+from DisplayFramework import ImplementedDevices, TileSpecification, DeviceLookUpTable, SVGHelper
 from enum import IntEnum
 
 class DisplayOrientation(IntEnum):

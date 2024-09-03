@@ -1,6 +1,18 @@
 import colorsys
 import hashlib
+import re
+import html
 class SVGHelper:
+
+
+
+
+    def sanitize_svg_input(_textinput: str) -> str:
+
+        t = html.escape(_textinput)
+        return t
+
+
 
     @staticmethod
     def generate_sha1_hash(input_string):

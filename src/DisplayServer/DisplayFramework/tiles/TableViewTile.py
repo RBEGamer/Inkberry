@@ -3,7 +3,7 @@ import csv
 from matplotlib import pyplot as plt
 
 
-from DisplayFramework import BaseTile, TileSpecification, ResourceHelper
+from DisplayFramework import BaseTile, TileSpecification, ResourceHelper, DeviceSpecification
 from DisplayFramework.pysvg import structure, builders, text
 from DisplayFramework.tiles import ImageTile
 from PIL import Image
@@ -13,21 +13,23 @@ class TableViewTile(BaseTile.BaseTile):
 
     DEFAULT_PARAMETER: dict = {
         "types": {
-            "url": "str",
-            "figure_aspect_ratio":"str",
-            "scale_factor":"float",
-            "tile_size": "int",
-            "title": "str",
-            "figure_scale_factor": "float",
-            "image_rotation": "int"
-        },"default":{
+            "url": BaseTile.TileParameterTypes.STRING,
+            "figure_aspect_ratio": BaseTile.TileParameterTypes.STRING,
+            "scale_factor": BaseTile.TileParameterTypes.FLOAT,
+            "tile_size": BaseTile.TileParameterTypes.INTEGER,
+            "title": BaseTile.TileParameterTypes.STRING,
+            "figure_scale_factor": BaseTile.TileParameterTypes.FLOAT,
+            "image_rotation": BaseTile.TileParameterTypes.INTEGER,
+            "show_lines": BaseTile.TileParameterTypes.BOOL
+        }, "default": {
             "url": "",
             "figure_aspect_ratio": "7:3",
             "scale_factor": 1.0,
             "tile_size": 8,
             "title": "",
             "figure_scale_factor": 1.0,
-            "image_rotation": 0
+            "image_rotation": 0,
+            "show_lines": False
         }
     }
 
@@ -35,14 +37,13 @@ class TableViewTile(BaseTile.BaseTile):
     data_rows: [str] = []
 
 
-
-    def update_parameters(self, _parameter: dict):
-        for k, v in _parameter.items():
-            pass
+    def __init__(self, _hardware: DeviceSpecification.DeviceSpecification, _specification: TileSpecification.TileSpecification):
+        super().__init__(_hardware, _specification)
 
     def update(self) -> bool:
         # FETCH RESOURCE
-        table_path: str = ResourceHelper.ResourceHelper.FetchContent(self.spec.parameters.get('url', ''), self.spec.name)
+        url: str = self.get_spec_parameters('url')
+        table_path: str = ResourceHelper.ResourceHelper.FetchContent(url, self.spec.name)
 
         if not table_path.endswith(".csv"):
             pass
@@ -70,21 +71,28 @@ class TableViewTile(BaseTile.BaseTile):
 
         apr_w: float = 7.0
         apr_h: float = 3.0
-        if ":" in self.spec.parameters.get('figure_aspect_ratio', "7:3"):
-            spr: [str] = self.spec.parameters.get('figure_aspect_ratio', "7:3").split(":")
+
+        figure_aspect_ratio: str = self.get_spec_parameters('figure_aspect_ratio')
+        figure_scale_factor: float = self.get_spec_parameters('figure_scale_factor')
+        title: str = self.get_spec_parameters('title')
+        tile_size: int = self.get_spec_parameters('tile_size')
+        show_lines: bool = self.get_spec_parameters('show_lines')
+
+        if ":" in figure_aspect_ratio:
+            spr: [str] = figure_aspect_ratio.split(":")
             apr_w = max(1.0, float(spr[0]))
             apr_h = max(1.0, float(spr[1]))
 
 
         # CREATE TABLE VIEW IN MATPLOTLIB
-        figure_scale_factor: float = abs(float(self.spec.parameters.get('figure_scale_factor', 1.0)))
         plt.rcParams["figure.figsize"] = [apr_w * figure_scale_factor, apr_h * figure_scale_factor]
         plt.rcParams["figure.autolayout"] = True
 
         fig = plt.figure(figsize=(apr_w * figure_scale_factor, apr_h * figure_scale_factor), dpi=300)
         ax = plt.subplot()
 
-        ax.set_title(self.spec.parameters.get('title', ''), fontsize=int(self.spec.parameters.get('tile_size', 8)))
+        if len(title) > 0:
+            ax.set_title(title, fontsize=tile_size)
 
         rows = _data_rows[::-1]
         ncols: int = len(_data_columns)
@@ -127,16 +135,12 @@ class TableViewTile(BaseTile.BaseTile):
             )
 
         # Add dividing lines
-        if bool(int(self.spec.parameters.get('show_lines', 0))):
+        if show_lines:
             ax.plot([ax.get_xlim()[0], ax.get_xlim()[1]], [nrows, nrows], lw=1.5, color='black', marker='', zorder=4)
             ax.plot([ax.get_xlim()[0], ax.get_xlim()[1]], [0, 0], lw=1.5, color='black', marker='', zorder=4)
+
             for x in range(1, nrows):
                 ax.plot([ax.get_xlim()[0], ax.get_xlim()[1]], [x, x], lw=1.15, color='gray', ls=':', zorder=3, marker='')
-
-
-
-        # ABTRACT FROM IMAGE
-        # IMAGE GENERATION FUNCTION
 
 
         ax.set_axis_off()
@@ -148,26 +152,19 @@ class TableViewTile(BaseTile.BaseTile):
 
         return plt
 
-    def get_parameter_types(self) -> dict:
-        return self.DEFAULT_PARAMETER['types']
-
-    def get_parameter_defaults(self) -> dict:
-        return self.DEFAULT_PARAMETER['default']
-
-    def get_parameter_current(self) -> dict:
-        return self.spec.parameters
-
-
 
     def render(self) -> structure.Svg:
+
+        scale_factor: float = self.get_spec_parameters('scale_factor')
 
         plot_figure = self.generate_table_figure(self.data_columns, self.data_rows)
 
         # GENERATE IMAGE FROM PLOT
         plot_image = io.BytesIO()
         plot_figure.savefig(plot_image, format='png', transparent=True, dpi=300)
+        plt.close()
         plot_image.seek(0)
 
         # CREATE PIL IMAGE TO GENERATE SVG ELEMENT
         loaded_image = Image.open(plot_image)
-        return ImageTile.ImageTile.generate_image_container(loaded_image, self.spec)
+        return ImageTile.ImageTile.generate_image_container(loaded_image, self.spec, _scale_factor=scale_factor, _preserve_aspect_ratio=True)

@@ -37,7 +37,7 @@ class TileFactory:
             # CREATE INSTANCE
             try:
                 tile_class = getattr(module, class_name)
-                tile_class_instance: BaseTile = tile_class(e)
+                tile_class_instance: BaseTile = tile_class(_description, e)
                 tiles.append(tile_class_instance)
             except Exception as exi:
                 raise ImportError(exi)

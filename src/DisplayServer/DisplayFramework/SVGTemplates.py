@@ -53,8 +53,10 @@ class SVGTemplates:
         document: structure.Svg = SVGTemplates.getEmptyTeamplate(_device)
          # APPEND TILES INTO TO FINAL DEVICE SCREEN SVG
         tiles: [] = TileFactory.TileFactory.GetTiles(_device)
+
         for t in tiles:
             t: BaseTile.BaseTile
+            #t.tile_init()
             if t.spec.enabled:
                 t.update()
                 svg = t.render()
@@ -121,7 +123,7 @@ class SVGTemplates:
 
             qrctsp.position.pos_x = 10
             qrctsp.position.pos_y = headline_line_offset * headline_offset_multiplier
-            qrcode: QrTile.QrTile = QrTile.QrTile(qrctsp)
+            qrcode: QrTile.QrTile = QrTile.QrTile(_device, qrctsp)
 
             qrcode.update_parameters({'url': _qrcode_url})
             _svg.addElement(qrcode.render())
