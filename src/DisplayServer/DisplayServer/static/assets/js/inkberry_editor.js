@@ -29,9 +29,6 @@ function resize_canvas(_width = null, _height = null){
     //SET DIV SIZE
     $("#inkberry_device_editor_canvas_container").width(_width);
     $("#inkberry_device_editor_canvas_container").height(_height);
-
-    $("#inkberry_device_editor_canvas").width(_width);
-    $("#inkberry_device_editor_canvas").height(_height);
     // SET CANVAS SIZE
     var canvas = document.getElementById('inkberry_device_editor_canvas');
     canvas.width = _width;
@@ -131,7 +128,7 @@ function extractSVGObjects(_xml_doc) {
 function load_svg_to_canvas(_id, callback) {
 
     // GET CANVAS SIZE
-    const dw = Math.floor($("#inkberry_device_editor_canvas_container").width());
+    const dw = Math.floor($("#inkberry_device_editor_canvas_container").width() * 0.8);
     const dh = Math.floor($("#inkberry_device_editor_canvas_container").height());
 
     // FETCH SVG
@@ -181,8 +178,7 @@ function load_svg_to_canvas(_id, callback) {
 
 
 function editor_refresh_rendering(_id){
-     
-    //resize_canvas(480, 800);
+     resize_canvas(document.getElementById("inkberry_device_editor_canvas_container").clientWidth, document.getElementById("inkberry_device_editor_canvas_container").clientHeight);
      load_svg_to_canvas(_id);
 }
 
@@ -253,44 +249,15 @@ function load_parameters(_id, _parameter_id){
 
 
 
-function load_available_devices(){
-    $('#inkberry_available_devices_dropdown_menu').empty();
 
-    $.getJSON("/api/list_devices", function( data ) {
-      $.each( data['devices'], function( key, val ) {
-            var item = $('<a>', {
-            class: 'dropdown-item',
-            text: val['name']
-        }).data("data-device_id", val['id']);
-        $('#inkberry_available_devices_dropdown_menu').append(item);
-      });
-
-      $('#inkberry_available_devices_dropdown_menu').on('click', '.dropdown-item', function(event) {
-        event.preventDefault();
-        var clicked_id = $(this).data('data-device_id');
-        current_loaded_device_id = clicked_id;
-        $('#inkberry_available_devices_dropdown_menu_button').html(clicked_id);
-         load_editor_for_device(current_loaded_device_id);
-        
-      });
-    });
-    }
-
-
-
-
-function copy_calepd_link(_elem_id){
-    var link_content = $('#' + _elem_id).val();
-        copyTextToClipboard(link_content);
-}
 
 function inkberry_init(){
-    resize_canvas();
+    //resize_canvas();
     $(window).on( "resize", function() {
         load_svg_to_canvas(current_loaded_device_id);
     });
 
-    load_available_devices();
+    
     
     var did = getAllUrlParams().did;
     if(did){
