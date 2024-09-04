@@ -124,10 +124,6 @@ class SVGTemplates:
         _device.image_filter = DeviceSpecification.DisplayImageFilters.DIF_NONE
         _device.colorspace = DeviceSpecification.DisplaySupportedColors.DSC_BW
         document: structure.Svg = SVGTemplates.getEmptyTeamplate(_device)
-        document = SVGTemplates.getSystemStautsScreen(document, _device , _title="DISABLED{}:{}".format(_id, _headline_text_addition), _qrcode_url=_qrcode_url)
-
-        if _target_width and _target_width > 0:
-            document = SVGTemplates.GetSVGContentScaleFactorToMatchGivenTargetWidth(document, _target_width)
 
         xml: str = document.getXML()
         return xml
@@ -196,6 +192,6 @@ class SVGTemplates:
 
 
         # ADD RECT FOR CONTENT TO LIVE IN
-        content_rect = shape_builder.createRect(0, 0, w, h, strokewidth=1,stroke="black", fill="rgb(250, 250, 250)")
-        #svg_document.addElement(content_rect)
+        content_rect = shape_builder.createRect(0, 0, w, h, strokewidth=0,stroke="black", fill="rgb(255, 255, 255)")
+        svg_document.addElement(content_rect)
         return svg_document

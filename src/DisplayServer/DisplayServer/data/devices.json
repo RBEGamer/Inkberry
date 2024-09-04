@@ -16,11 +16,11 @@
                "module_name": "DisplayFramework.tiles.TextTile.TextTile",
                "parameters": {
                   "text": "E 020",
-                  "fontsize": "40"
+                  "fontsize": "50"
                },
                "position": {
                   "pos_x": 20,
-                  "pos_y": 50,
+                  "pos_y": 60,
                   "size_w": 500,
                   "size_h": 250
                },

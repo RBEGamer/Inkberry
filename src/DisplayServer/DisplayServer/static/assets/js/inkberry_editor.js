@@ -10,10 +10,6 @@ function generate_display_link(){
     window.open(window.location.origin + "/static/display.html?did=" + current_loaded_device_id, '_blank');
 }
 
-function generate_image_link(_did, _type){
- return window.location.origin + "/api/render/" + current_loaded_device_id + "?type=" + _type;  
-}
-
 
 
 
@@ -158,7 +154,7 @@ function load_svg_to_canvas(_id, callback) {
     const dh = Math.floor($("#inkberry_device_editor_canvas_container").height());
 
     // FETCH SVG
-    const url = '/api/render/' + _id + "?type=svg&target_width="+ dw +"&ts=" + String(Date.now());
+    const url = '/api/render/' + _id + "?type=svg&target_width="+ dw +"&ts=" + String(Date.now() + "&fcsr=1");
 
 
     const svgString = loadSVGSync(url);

@@ -107,7 +107,7 @@ def imageapi(image: str):
         else:
             return jsonify({"error": "invalid id"}), 200
 
-    return generate_rendered_screen_response(image_id, device_spec, image_type, 0, request)
+    return generate_rendered_screen_response(image_id, device_spec, image_type, 0 , False, request)
 
 
 @app_flask.route('/api/set_delete_display/<string:device_id>', methods=['GET', 'POST'])
@@ -365,6 +365,7 @@ def api_render(did: str):
     did: str = bleach.clean(did)
     image_type: str = bleach.clean(request.args.get('type', default='png')).lower().strip(' ')
     hw_type: int = int(bleach.clean(request.args.get('hw', default='0')))
+    force_current_screen_render: bool = bool(int(bleach.clean(request.args.get('fcsr', default='0'))))
     target_width: int = 0
 
     try:
@@ -391,11 +392,11 @@ def api_render(did: str):
         target_width = 0
 
 
-    return generate_rendered_screen_response(did, device_spec, image_type, target_width, request)
+    return generate_rendered_screen_response(did, device_spec, image_type, target_width, force_current_screen_render, request)
 
 
 def generate_rendered_screen_response(did: str, device_spec: DeviceSpecification.DeviceSpecification, image_type: str,
-                                      target_width: int = 0, _origin_request: flask.Request = None) -> flask.Response:
+                                      target_width: int = 0, _force_current_screen_render: bool = True, _origin_request: flask.Request = None) -> flask.Response:
     # GENERATE SVG IMAGE DEPENDING ON THE DISPLAY CONFIGURED STATE
 
     # FOR POSSIBLE QR CODES
@@ -410,8 +411,9 @@ def generate_rendered_screen_response(did: str, device_spec: DeviceSpecification
     if target_width > device_spec.screen_size_w:
         target_width = device_spec.screen_size_w
 
-
-    if not device_spec.is_valid() or not Devices.Devices.CheckDeviceExists(did):
+    if _force_current_screen_render:
+        svg = SVGTemplates.SVGTemplates.GenerateCurrentDeviceScreen(did, device_spec, target_width)
+    elif not device_spec.is_valid() or not Devices.Devices.CheckDeviceExists(did):
         svg = SVGTemplates.SVGTemplates.GenerateDeviceSetupScreen(did, device_spec, target_width, base_url)
     elif not Devices.Devices.CheckDeviceEnabled(did):
         svg = SVGTemplates.SVGTemplates.GenerateDeviceDisabledScreen(did, device_spec, target_width, base_url)
