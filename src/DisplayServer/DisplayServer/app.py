@@ -13,6 +13,7 @@ import bleach
 import typer
 import pathlib
 from DisplayFramework import Devices, SVGRenderer, SVGTemplates, DeviceSpecification, BaseTile, ImplementedDevices, DeviceLookUpTable
+from DisplayFramework.TileSpecification import TileSpecification
 
 app_typer = typer.Typer(add_completion=True)
 
@@ -179,6 +180,25 @@ def api_update_parameter(device_id: str, tile_id: str, parameter_id: str, value:
 
         Devices.Devices.UpdateDeviceSpecification(device_spec)
 
+    return jsonify(ret)
+
+
+@app_flask.route('/api/get_tiles_list/<string:device_id>', methods=['GET', 'POST'])
+def api_get_tiles_list(device_id: str):
+    device_id = bleach.clean(device_id)
+    tiles: [str] = []
+    ret = {"error": None, 'tiles': []}
+
+    ret = {"error": None, 'parameters': [], 'system_parameters': []}
+    if not Devices.Devices.CheckDeviceExists(device_id):
+        ret.update({'error': 'invalid_device'})
+    else:
+        device_spec = Devices.Devices.GetDeviceSpecification(device_id)
+        for tile in device_spec.tile_specifications:
+            tile: TileSpecification
+            tiles.append({'name': tile.name})
+
+    ret['tiles'] = tiles
     return jsonify(ret)
 
 
@@ -369,6 +389,7 @@ def api_render(did: str):
         target_width = target_width
     else:
         target_width = 0
+
 
     return generate_rendered_screen_response(did, device_spec, image_type, target_width, request)
 

@@ -2,8 +2,8 @@ var current_svg_content = "";
 var current_loaded_device_id = "";
 var current_svg_clickable_areas = [];
 
-function generate_manage_link(){
-    return window.location.origin + "/static/reactivate.html?did=" + current_loaded_device_id;  
+function generate_manage_link(){    
+    window.open(window.location.origin + "/static/reactivate.html?did=" + current_loaded_device_id, '_blank');
 }
 
 function generate_display_link(){
@@ -124,6 +124,32 @@ function extractSVGObjects(_xml_doc) {
     return objects;
 }
 
+function load_tile_parameters(event){
+    event.preventDefault();
+    const clicked_id = $(this).data('data-device_id');  
+    const clicked_tileid = $(this).data('data-tile_id');  
+    console.log(clicked_id);
+    
+    load_parameters(clicked_id, clicked_tileid);
+}
+
+function load_available_tiles(_id){
+    $.getJSON("/api/get_tiles_list/" + _id, function( data ) {
+        $('#inkberry_tile_button_group').empty();
+      $.each( data['tiles'], function( key, val ) {
+            var item = $('<a>', {
+            class: 'btn btn-dark',
+            text: val['name'],
+            style: 'margin: 10px;display: block;width: 100%;text-align: center;height: auto;'
+            //id: 'inkberry_tile_button_' + val['name']
+            
+        }).data("data-device_id", _id).data("data-tile_id", val['name']).click(load_tile_parameters);
+          
+        $('#inkberry_tile_button_group').append(item);
+      });
+    });
+}
+
 
 function load_svg_to_canvas(_id, callback) {
 
@@ -178,8 +204,10 @@ function load_svg_to_canvas(_id, callback) {
 
 
 function editor_refresh_rendering(_id){
-     resize_canvas(document.getElementById("inkberry_device_editor_canvas_container").clientWidth, document.getElementById("inkberry_device_editor_canvas_container").clientHeight);
-     load_svg_to_canvas(_id);
+    resize_canvas(document.getElementById("inkberry_device_editor_canvas_container").clientWidth,
+    document.getElementById("inkberry_device_editor_canvas_container").clientHeight);
+    load_svg_to_canvas(_id);
+    load_available_tiles(_id);
 }
 
 
@@ -187,7 +215,7 @@ function load_editor_for_device(_id){
     console.log('load_editor_for_device: ' + _id, null); // Beispielaktion
 
     editor_refresh_rendering(_id);
-  
+    load_available_tiles(_id);
   
     //LOAD PARAMETER TABLE
     $.getJSON("/api/information/" + _id, function( data ) {
@@ -263,6 +291,10 @@ function inkberry_init(){
     if(did){
         current_loaded_device_id = did;
         load_editor_for_device(current_loaded_device_id);
+    }else{
+        alert("DID PARAMETER NOT SPECIFIED");
+        window.location.href = "/static/editorselect.html";
+        return;
     }
     
 

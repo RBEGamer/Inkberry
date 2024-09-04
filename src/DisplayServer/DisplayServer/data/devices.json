@@ -12,108 +12,101 @@
          "display_orientation": 1,
          "tile_specifications": [
             {
-               "enabled": true,
                "name": "RoomNumber",
                "module_name": "DisplayFramework.tiles.TextTile.TextTile",
+               "parameters": {
+                  "text": "E 020",
+                  "fontsize": "40"
+               },
                "position": {
                   "pos_x": 20,
                   "pos_y": 50,
                   "size_w": 500,
                   "size_h": 250
                },
-               "parameters": {
-                  "text": "E 020",
-                  "fontsize": "40"
-               }
+               "enabled": true
             },
             {
-               "enabled": true,
                "name": "RoomName",
                "module_name": "DisplayFramework.tiles.TextTile.TextTile",
+               "parameters": {
+                  "text": "%%allocation%%",
+                  "fontsize": "35"
+               },
                "position": {
                   "pos_x": 20,
                   "pos_y": 100,
                   "size_w": 0,
                   "size_h": 0
                },
-               "parameters": {
-                  "text": "%%allocation%%",
-                  "fontsize": "35"
-               }
+               "enabled": true
             },
             {
-               "enabled": true,
                "name": "RoomOwner",
                "module_name": "DisplayFramework.tiles.TextTile.TextTile",
+               "parameters": {
+                  "text": "Makerspace Team",
+                  "fontsize": "20"
+               },
                "position": {
                   "pos_x": 20,
                   "pos_y": 140,
                   "size_w": 500,
                   "size_h": 80
                },
-               "parameters": {
-                  "text": "Makerspace Team",
-                  "fontsize": "20"
-               }
+               "enabled": true
             },
             {
-               "enabled": true,
                "name": "RoomPhone",
                "module_name": "DisplayFramework.tiles.TextTile.TextTile",
+               "parameters": {
+                  "text": "Tel. +49 241 6009 54437",
+                  "fontsize": "15"
+               },
                "position": {
                   "pos_x": 20,
                   "pos_y": 180,
                   "size_w": 0,
                   "size_h": 0
                },
-               "parameters": {
-                  "text": "Tel. +49 241 6009 54437",
-                  "fontsize": "15"
-               }
+               "enabled": true
             },
             {
-               "enabled": true,
                "name": "RoomMail",
                "module_name": "DisplayFramework.tiles.TextTile.TextTile",
+               "parameters": {
+                  "text": "makerspace@fh-aachen.de",
+                  "fontsize": "15"
+               },
                "position": {
                   "pos_x": 20,
                   "pos_y": 200,
                   "size_w": 0,
                   "size_h": 0
                },
-               "parameters": {
-                  "text": "makerspace@fh-aachen.de",
-                  "fontsize": "15"
-               }
+               "enabled": true
             },
             {
-               "enabled": true,
-               "name": "Logo Image Tile Test",
+               "name": "FHLogoImage",
                "module_name": "DisplayFramework.tiles.ImageTile.ImageTile",
-               "position": {
-                  "pos_x": 390,
-                  "pos_y": 10,
-                  "size_w": 0,
-                  "size_h": 0
-               },
                "parameters": {
                   "url": "FHAachen-logo2010.svg.png",
                   "rotation": 0,
                   "image_rotation": 180,
                   "preserve_aspect_ration": 1,
                   "scale_factor": 0.5
-               }
-            },
-            {
-               "enabled": true,
-               "name": "Table View Test",
-               "module_name": "DisplayFramework.tiles.TableViewTile.TableViewTile",
+               },
                "position": {
-                  "pos_x": -30,
-                  "pos_y": 250,
+                  "pos_x": 390,
+                  "pos_y": 10,
                   "size_w": 0,
                   "size_h": 0
                },
+               "enabled": true
+            },
+            {
+               "name": "OpeningHourTable",
+               "module_name": "DisplayFramework.tiles.TableViewTile.TableViewTile",
                "parameters": {
                   "url": "opening_hours.csv",
                   "scale_factor": 0.45,
@@ -123,22 +116,29 @@
                   "tile_size": 18,
                   "image_rotation": 0,
                   "show_lines": 0
-               }
+               },
+               "position": {
+                  "pos_x": -30,
+                  "pos_y": 250,
+                  "size_w": 0,
+                  "size_h": 0
+               },
+               "enabled": true
             },
             {
-               "enabled": true,
-               "name": "SETUP QR CODE",
+               "name": "WebsiteQRCode",
                "module_name": "DisplayFramework.tiles.QrTile.QrTile",
+               "parameters": {
+                  "url": "https://makerspace.fh-aachen.de/",
+                  "scale_factor": "0.7"
+               },
                "position": {
                   "pos_x": 110,
                   "pos_y": 550,
                   "size_w": 0,
                   "size_h": 0
                },
-               "parameters": {
-                  "url": "https://makerspace.fh-aachen.de/",
-                  "scale_factor": "0.7"
-               }
+               "enabled": true
             }
          ],
          "content_scale": 1.0,

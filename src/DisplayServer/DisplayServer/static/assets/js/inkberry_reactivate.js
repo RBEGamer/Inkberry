@@ -18,9 +18,9 @@ function set_activation_state(deivce_id, new_state){
     $.getJSON("/api/set_display_state/" + deivce_id + "/" + new_state, function( data ) {
         
         if(new_state){
-            window.location.href = "/static/editor.html"; 
+           alert("INKBERRY DEVICE ENABLED");
         }else{
-             window.location.href = "/static/index.html";
+            alert("INKBERRY DEVICE DISBALED");
         }
            
     });

@@ -17,7 +17,7 @@ function open_display_setup(){
 function open_editor_redirect(){  
         var did = getAllUrlParams().did;
         if(did){
-            window.location.href = "/static/editor.html?did=" + did];
+            window.location.href = "/static/editor.html?did=" + did;
         }else{
             window.location.href = "/static/editorselect.html";     
         }  
