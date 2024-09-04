@@ -171,6 +171,11 @@ def api_update_parameter(device_id: str, tile_id: str, parameter_id: str, value:
                                 device_spec.tile_specifications[idx].enabled = True
                             elif value == "false" or value == "0" or value == "False":
                                 device_spec.tile_specifications[idx].enabled = False
+                        elif parameter_id == "position_x":
+                            device_spec.tile_specifications[idx].position.pos_x = int(value)
+                        elif parameter_id == "position_y":
+                            device_spec.tile_specifications[idx].position.pos_y = int(value)
+
                     except Exception:
                         pass
                 else:
@@ -196,7 +201,7 @@ def api_get_tiles_list(device_id: str):
         device_spec = Devices.Devices.GetDeviceSpecification(device_id)
         for tile in device_spec.tile_specifications:
             tile: TileSpecification
-            tiles.append({'name': tile.name})
+            tiles.append({'name': tile.name, 'is_system_parameter': False})
 
     ret['tiles'] = tiles
     return jsonify(ret)
@@ -220,7 +225,7 @@ def api_get_parameter_list(device_id: str, parameter_id: str):
                 ret.update({'parameters': tile.parameters})
 
                 # ADD SYSTEM PARAMETERS EQUAL FOR EACH TILE
-                ret.update({'system_parameters': {'enabled': tile.enabled}})
+                ret.update({'system_parameters': {'enabled': tile.enabled, 'position_x': tile.position.pos_x, 'position_y': tile.position.pos_y}})
 
         return jsonify(ret)
 

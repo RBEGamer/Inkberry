@@ -195,6 +195,28 @@
          "mark_deleted": false,
          "parent_id": "laminatedblack",
          "id": 186225726936514898
+      },
+      {
+         "hardware": 3,
+         "device_id": "inkberryinkplate10",
+         "enabled": true,
+         "allocation": "INKBERRY-HOOD",
+         "last_request": "",
+         "screen_size_w": 1200,
+         "screen_size_h": 820,
+         "wakeup_interval": 10,
+         "display_orientation": 0,
+         "tile_specifications": [],
+         "content_scale": 1.0,
+         "auth_token": "",
+         "colorspace": 2,
+         "image_filter": 0,
+         "current_content_hash": "",
+         "last_served_content_hash": "",
+         "current_content_svg": "",
+         "mark_deleted": false,
+         "parent_id": null,
+         "id": 218863249070363639
       }
    ]
 }
