@@ -3,19 +3,19 @@
       {
          "hardware": 4,
          "device_id": "laminatedblack",
-         "enabled": false,
+         "enabled": true,
          "allocation": "Makerspace",
          "last_request": "",
          "screen_size_w": 800,
          "screen_size_h": 480,
          "wakeup_interval": 10,
-         "display_orientation": 1,
+         "display_orientation": 0,
          "tile_specifications": [
             {
                "name": "RoomNumber",
                "module_name": "DisplayFramework.tiles.TextTile.TextTile",
                "parameters": {
-                  "text": "E 020 -",
+                  "text": "E 020",
                   "fontsize": "50"
                },
                "position": {
@@ -31,11 +31,11 @@
                "module_name": "DisplayFramework.tiles.TextTile.TextTile",
                "parameters": {
                   "text": "%%allocation%%",
-                  "fontsize": "35"
+                  "fontsize": "40"
                },
                "position": {
-                  "pos_x": 20,
-                  "pos_y": 100,
+                  "pos_x": 280,
+                  "pos_y": 53,
                   "size_w": 0,
                   "size_h": 0
                },
@@ -50,7 +50,7 @@
                },
                "position": {
                   "pos_x": 20,
-                  "pos_y": 140,
+                  "pos_y": 100,
                   "size_w": 500,
                   "size_h": 80
                },
@@ -65,7 +65,7 @@
                },
                "position": {
                   "pos_x": 20,
-                  "pos_y": 180,
+                  "pos_y": 130,
                   "size_w": 0,
                   "size_h": 0
                },
@@ -80,7 +80,7 @@
                },
                "position": {
                   "pos_x": 20,
-                  "pos_y": 200,
+                  "pos_y": 160,
                   "size_w": 0,
                   "size_h": 0
                },
@@ -94,11 +94,11 @@
                   "rotation": 0,
                   "image_rotation": 180,
                   "preserve_aspect_ration": 1,
-                  "scale_factor": 0.5
+                  "scale_factor": 0.8
                },
                "position": {
-                  "pos_x": 390,
-                  "pos_y": 10,
+                  "pos_x": 680,
+                  "pos_y": 20,
                   "size_w": 0,
                   "size_h": 0
                },
@@ -118,8 +118,8 @@
                   "show_lines": 0
                },
                "position": {
-                  "pos_x": -30,
-                  "pos_y": 250,
+                  "pos_x": -60,
+                  "pos_y": 170,
                   "size_w": 0,
                   "size_h": 0
                },
@@ -133,8 +133,8 @@
                   "scale_factor": "0.7"
                },
                "position": {
-                  "pos_x": 110,
-                  "pos_y": 550,
+                  "pos_x": 420,
+                  "pos_y": 220,
                   "size_w": 0,
                   "size_h": 0
                },
