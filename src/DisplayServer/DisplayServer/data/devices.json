@@ -3,7 +3,7 @@
       {
          "hardware": 4,
          "device_id": "laminatedblack",
-         "enabled": true,
+         "enabled": false,
          "allocation": "Makerspace",
          "last_request": "",
          "screen_size_w": 800,
@@ -15,7 +15,7 @@
                "name": "RoomNumber",
                "module_name": "DisplayFramework.tiles.TextTile.TextTile",
                "parameters": {
-                  "text": "E 020",
+                  "text": "E 020 -",
                   "fontsize": "50"
                },
                "position": {
