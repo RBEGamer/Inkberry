@@ -40,6 +40,12 @@ class TextTile(BaseTile.BaseTile):
         svg_document.set_width(self.hardware_spec.screen_size_w)
         svg_document.set_height(self.hardware_spec.screen_size_h)
 
+        # SKIP If NO TEXT PROVIDED
+        if len(usertext) <= 0:
+            return svg_document
+
+
+
         if rotation > 0:
             svg_document.set_transform("rotate(-{})".format(rotation))
 

@@ -4,7 +4,7 @@
          "hardware": 4,
          "device_id": "laminatedblack",
          "enabled": true,
-         "allocation": "Makerspace",
+         "allocation": "E 020 - Makerspace",
          "last_request": "",
          "screen_size_w": 800,
          "screen_size_h": 480,
@@ -15,7 +15,7 @@
                "name": "RoomNumber",
                "module_name": "DisplayFramework.tiles.TextTile.TextTile",
                "parameters": {
-                  "text": "E 020",
+                  "text": " ",
                   "fontsize": "50"
                },
                "position": {
@@ -31,11 +31,11 @@
                "module_name": "DisplayFramework.tiles.TextTile.TextTile",
                "parameters": {
                   "text": "%%allocation%%",
-                  "fontsize": "40"
+                  "fontsize": "45"
                },
                "position": {
-                  "pos_x": 280,
-                  "pos_y": 53,
+                  "pos_x": 20,
+                  "pos_y": 60,
                   "size_w": 0,
                   "size_h": 0
                },
@@ -156,17 +156,17 @@
          "hardware": 4,
          "device_id": "laminatedmint",
          "enabled": true,
-         "allocation": "OtherRoom",
+         "allocation": "A 103 - FH GRÜNDET",
          "last_request": "",
-         "screen_size_w": 480,
-         "screen_size_h": 800,
+         "screen_size_w": 800,
+         "screen_size_h": 480,
          "wakeup_interval": 10,
-         "display_orientation": 1,
+         "display_orientation": 0,
          "tile_specifications": [],
          "content_scale": 1.0,
          "auth_token": "",
          "colorspace": 1,
-         "image_filter": 1,
+         "image_filter": 0,
          "current_content_hash": "",
          "last_served_content_hash": "",
          "current_content_svg": "",
