@@ -129,7 +129,7 @@
                "name": "WebsiteQRCode",
                "module_name": "DisplayFramework.tiles.QrTile.QrTile",
                "parameters": {
-                  "url": "https://makerspace.fh-aachen.de/",
+                  "url": "inkberry.marcelochsendorf.com",
                   "scale_factor": "0.7"
                },
                "position": {

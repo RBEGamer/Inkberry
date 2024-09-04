@@ -1,45 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html data-bs-theme="dark" style="height: 0;position: fixed;overflow: hidden;">
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Inkberry_BS5</title>
-    <meta name="description" content="A smart eink display - HTML PREVIEW">
+    <meta name="description" content="A smart eink display">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&amp;display=swap">
     <link rel="stylesheet" href="assets/css/Pricing-Free-Paid-badges.css">
     <link rel="stylesheet" href="assets/css/Pricing-Free-Paid-icons.css">
-
-
-    <style>
-        /* HTML und Body auf Vollbild setzen und das Bild zentrieren */
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f0f0f0; /* Optional: Hintergrundfarbe */
-        }
-
-        img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain; /* Beibehaltung des Seitenverhältnisses */
-        }
-    </style>
-
 </head>
 
-
-<body>
-
-    <img id="dynamicImage" src="https://example.com/image.jpg" alt="Zentriertes Bild">
-
-
+<body style="color: var(--light);background: var(--secondary);width: inherit;height: inherit;">
+    <div class="row" style="height: 100%;width: 100%;position: relative;display: block;overflow: hidden;">
+        <div class="col"><img style="margin: 50%;"></div>
+    </div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
@@ -47,53 +26,6 @@
     <script src="assets/js/jquery.easing.min.js"></script>
     <script src="assets/js/entrypoint.js"></script>
     <script src="assets/js/inkberry_helper.js"></script>
-
-
-    <script>
-        var imageUrl = "";
-        const imageElement = document.getElementById("dynamicImage");
-        let lastImageHash = '';
-
-
-        async function getImageHash(url) {
-            const response = await fetch(url, { cache: "no-store" });
-            const blob = await response.blob();
-            const arrayBuffer = await blob.arrayBuffer();
-            const hash = await crypto.subtle.digest('SHA-256', arrayBuffer);
-            return hash;
-        }
-
-        async function checkImageUpdate() {
-
-            if(!imageUrl || imageUrl === ""){
-                return;
-            }
-
-            const currentHash = await getImageHash(imageUrl);
-            if (lastImageHash !== currentHash) {
-                imageElement.src = `${imageUrl}&ts=${new Date().getTime()}`;
-                lastImageHash = currentHash;
-            }
-        }
-
-
-        function inkberry_init() {
-
-            var did = getAllUrlParams().did;
-            if(did){
-                imageUrl = window.location.origin + "/api/render/" + did + "?type=png";
-
-                imageElement.src = `${imageUrl}&ts=${new Date().getTime()}`;
-            }else{
-                alert("DID PARAMETER NOT SPECIFIED");
-                window.location.href = "/static/editorselect.html";
-                return;
-            }
-
-            setInterval(checkImageUpdate, 5000); // Alle 5 Sekunden prüfen
-        };
-        inkberry_init();
-    </script>
 </body>
 
 </html>
