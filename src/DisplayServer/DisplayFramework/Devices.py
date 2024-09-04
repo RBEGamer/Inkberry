@@ -113,7 +113,8 @@ class Devices:
 
     @staticmethod
     def GetDeviceSpecification(_id: str) -> DeviceSpecification.DeviceSpecification:
-        d: DeviceSpecification.DeviceSpecification = DeviceSpecification.DeviceSpecification(Devices.GetDeviceRecord(_id))
+        rec: dict = Devices.GetDeviceRecord(_id)
+        d: DeviceSpecification.DeviceSpecification = DeviceSpecification.DeviceSpecification(rec)
         return d
 
     @staticmethod

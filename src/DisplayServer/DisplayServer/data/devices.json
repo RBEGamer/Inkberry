@@ -15,7 +15,7 @@
                "name": "RoomNumber",
                "module_name": "DisplayFramework.tiles.TextTile.TextTile",
                "parameters": {
-                  "text": " ",
+                  "text": "  ",
                   "fontsize": "50"
                },
                "position": {

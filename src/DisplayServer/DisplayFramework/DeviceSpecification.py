@@ -148,7 +148,7 @@ class DeviceSpecification:
         if 'current_content_svg' in _dict:
             self.current_content_svg = _dict['current_content_svg']
         if 'mark_deleted' in _dict:
-            self.enabled = bool(_dict['mark_deleted'])
+            self.mark_deleted = bool(_dict['mark_deleted'])
         if 'parent_id' in _dict:
             self.parent_id = _dict['parent_id']
 
