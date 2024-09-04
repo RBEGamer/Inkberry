@@ -45,7 +45,7 @@
                "name": "RoomOwner",
                "module_name": "DisplayFramework.tiles.TextTile.TextTile",
                "parameters": {
-                  "text": "Makerspace Team",
+                  "text": "FH Team",
                   "fontsize": "20"
                },
                "position": {
@@ -75,7 +75,7 @@
                "name": "RoomMail",
                "module_name": "DisplayFramework.tiles.TextTile.TextTile",
                "parameters": {
-                  "text": "makerspace@fh-aachen.de",
+                  "text": "team@fh-aachen.de",
                   "fontsize": "15"
                },
                "position": {
@@ -166,6 +166,28 @@
          "content_scale": 1.0,
          "auth_token": "",
          "colorspace": 1,
+         "image_filter": 0,
+         "current_content_hash": "",
+         "last_served_content_hash": "",
+         "current_content_svg": "",
+         "mark_deleted": false,
+         "parent_id": "laminatedblack",
+         "id": 186225726936514898
+      },
+      {
+         "hardware": 4,
+         "device_id": "home",
+         "enabled": true,
+         "allocation": "An apple a day ... ",
+         "last_request": "",
+         "screen_size_w": 800,
+         "screen_size_h": 480,
+         "wakeup_interval": 10,
+         "display_orientation": 0,
+         "tile_specifications": [],
+         "content_scale": 1.0,
+         "auth_token": "",
+         "colorspace": 3,
          "image_filter": 0,
          "current_content_hash": "",
          "last_served_content_hash": "",
