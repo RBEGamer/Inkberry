@@ -448,11 +448,8 @@ def generate_rendered_screen_response(did: str, device_spec: DeviceSpecification
 
     elif image_type == "html":
         w, h = SVGRenderer.SVGRenderer.SVGGetSize(svg)
-        rsp = make_response(
-            "<html><head><meta http-equiv='refresh' content='1'></head><body><img src='{}{}?type={}' width='{}' height='{}' /></body></html>".format(
-                '/api/render/', did, 'svg', w, h), 200)
-        rsp.mimetype = "text/html"
-        return rsp
+
+        return redirect('/static/htmlpreview.html?did={}&w={}&h={}'.format(did, w, h))
     else:
         return send_file(SVGRenderer.SVGRenderer.SVG2Image(svg, device_spec, SVGRenderer.SVG_ExportTypes.BMP),
                          mimetype='image/bmp')
