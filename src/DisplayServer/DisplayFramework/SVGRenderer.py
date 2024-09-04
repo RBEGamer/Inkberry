@@ -48,7 +48,7 @@ class SVGRenderer:
         if len(viewBox) > 3:
             sp = viewBox.split(" ")
             if len(sp) >= 4:
-                return int(sp[3]), int(sp[4])
+                return int(sp[2]), int(sp[3])
 
         return 0, 0
 
@@ -171,13 +171,14 @@ class SVGRenderer:
                     img.depth = 24
                     img.transform_colorspace('rgb')
                 else:
-                    raise Exception("Unsupported color space")
+                    raise Exception("SVGRenderer Unsupported color space")
 
                 # EXPORT AS BMP
                 img.format = 'bmp'
                 img.compression = 'no'  # This ensures no compression
 
                 img.save(file=return_bytes)
+                img.save(filename="./bmp.bmp")
                 return_bytes.seek(0)
                 return return_bytes
 

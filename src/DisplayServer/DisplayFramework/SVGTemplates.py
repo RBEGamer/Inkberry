@@ -64,7 +64,7 @@ class SVGTemplates:
         # ADD CONTENT RECT
         shape_builder: builders.ShapeBuilder = builders.ShapeBuilder()
         # ADD RECT FOR CONTENT TO LIVE IN
-        content_rect = shape_builder.createRect(0, 0, tw, th, strokewidth=1, stroke="black", fill="rgb(250, 250, 250)")
+        content_rect = shape_builder.createRect(0, 0, tw, th, strokewidth=1, stroke="black", fill="rgb(255, 255, 255)")
         content_group.addElement(content_rect)
 
          # APPEND TILES INTO TO FINAL DEVICE SCREEN SVG

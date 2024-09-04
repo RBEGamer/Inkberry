@@ -6,8 +6,8 @@
          "enabled": true,
          "allocation": "Makerspace",
          "last_request": "",
-         "screen_size_w": 480,
-         "screen_size_h": 800,
+         "screen_size_w": 800,
+         "screen_size_h": 480,
          "wakeup_interval": 10,
          "display_orientation": 1,
          "tile_specifications": [
